@@ -1,4 +1,8 @@
+
 # axag-lint
+
+[![Homepage](https://img.shields.io/badge/homepage-axag.org-blue?logo=semantic-web)](https://axag.org)
+[![CLI Homepage](https://img.shields.io/badge/cli.axag.org-AXAG%20CLI-blueviolet?logo=terminal)](https://cli.axag.org)
 
 Static linter for [AXAG](https://axag.org) annotations in HTML, JSX, and TSX files. Validates semantic contracts on interactive UI elements to ensure agent-ready markup is correct, complete, and consistent.
 
@@ -102,6 +106,7 @@ const result = await lint('./src', {
 console.log(`Errors: ${result.errorCount}`);
 console.log(`Warnings: ${result.warningCount}`);
 ```
+
 
 ## Links
 
