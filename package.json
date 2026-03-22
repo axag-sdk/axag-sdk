@@ -1,6 +1,6 @@
 {
   "name": "@web-axag/axag-lint",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Static linter for AXAG annotations in HTML, JSX, and TSX files",
   "type": "module",
   "bin": {
