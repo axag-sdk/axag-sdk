@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head><title>Contradiction Errors</title></head>
+<body>
+  <!-- AXAG-LINT-012: Approval required but no roles -->
+  <button
+    axag-intent="config.update"
+    axag-entity="config"
+    axag-action-type="write"
+    axag-risk-level="high"
+    axag-confirmation-required="true"
+    axag-approval-required="true"
+    axag-idempotent="true"
+    axag-scope="tenant"
+    axag-preconditions='["config_exists"]'
+  >Update Config</button>
+
+  <!-- AXAG-LINT-013: Read with critical risk -->
+  <button
+    axag-intent="data.export"
+    axag-entity="data"
+    axag-action-type="read"
+    axag-risk-level="critical"
+  >Export Data</button>
+
+  <!-- AXAG-LINT-015: Navigate with side-effects -->
+  <a href="/checkout"
+    axag-intent="checkout.begin"
+    axag-entity="checkout"
+    axag-action-type="navigate"
+    axag-risk-level="none"
+    axag-side-effects='["session_started"]'
+  >Go to Checkout</a>
+
+  <!-- AXAG-LINT-016: tenant_admin role but user scope -->
+  <button
+    axag-intent="user.promote"
+    axag-entity="user"
+    axag-action-type="write"
+    axag-risk-level="high"
+    axag-confirmation-required="true"
+    axag-approval-required="true"
+    axag-approval-roles='["tenant_admin"]'
+    axag-scope="user"
+    axag-idempotent="true"
+    axag-preconditions='["user_exists"]'
+  >Promote User</button>
+</body>
+</html>
