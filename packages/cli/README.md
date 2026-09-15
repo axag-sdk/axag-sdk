@@ -152,7 +152,7 @@ Validate existing AXAG annotations against the specification.
 ```bash
 axag validate                         # Validate current directory
 axag validate ./src                   # Validate specific directory
-axag validate --level AA              # Validate at AA conformance
+axag validate --level intermediate    # Validate at intermediate conformance
 axag validate --strict                # Fail on warnings too
 ```
 
@@ -186,7 +186,7 @@ Create `axag.config.json` in your project root (or run `axag init`):
     "excludePatterns": ["logout", "signout", "/admin"]
   },
   "validation": {
-    "conformanceLevel": "AA",
+    "conformanceLevel": "intermediate",
     "strict": false
   }
 }
@@ -203,7 +203,7 @@ The CLI uses a pattern-matching engine with 25+ rules covering:
 - **Destructive actions** — delete, remove, deactivate → `high`/`critical` risk, confirmation required
 - **Write actions** — checkout, submit, create, save → `write` action type, appropriate risk
 - **Read actions** — search, filter, view, download → `read` action type, no risk
-- **Execute actions** — run, deploy, send → `execute` action type, confirmation gates
+- **Execute actions** — run, deploy, send → `write` action type, confirmation gates
 - **Auth actions** — login, logout, register → appropriate intent patterns
 - **Navigation** — next, back, close → generic read navigation
 
@@ -306,7 +306,7 @@ jobs:
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
       - run: npm install -g axag-cli
-      - run: axag validate --level AA --strict
+      - run: axag validate --level intermediate --strict
 ```
 
 ## Supported File Types

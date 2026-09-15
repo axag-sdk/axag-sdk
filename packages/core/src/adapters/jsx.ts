@@ -1,13 +1,15 @@
 /**
- * JSX adapter — extract elements from JSX/TSX source with Babel.
+ * JSX adapter — read JSX/TSX source with Babel.
  * Requires the optional peer dependencies `@babel/parser` and `@babel/traverse`.
  */
 
 import { parse } from '@babel/parser';
 import _traverse from '@babel/traverse';
-import type { TraverseOptions } from '@babel/traverse';
-import type { JSXAttribute, Node } from '@babel/types';
-import { hasIntent, normalizeAttributes } from '../annotation.js';
+import type { NodePath, TraverseOptions } from '@babel/traverse';
+import type { JSXAttribute, JSXElement, Node } from '@babel/types';
+import { hasIntent } from '../annotation.js';
+import { appendChild, createNode, selectElements } from '../tree.js';
+import type { ElementNode, ElementTree } from '../tree.js';
 import type { AnnotatedElement, ElementFilter } from '../types.js';
 
 // @babel/traverse is CJS; its default export is nested under ESM interop.
@@ -21,44 +23,64 @@ export interface ExtractOptions {
 
 const byIntent: ElementFilter = el => hasIntent(el.allAttributes);
 
-export function extractJsx(source: string, filePath: string, options: ExtractOptions = {}): AnnotatedElement[] {
-  const filter = options.filter ?? byIntent;
-  const elements: AnnotatedElement[] = [];
+/**
+ * Every JSX element becomes a node. Fragments are transparent, and JSX nested
+ * inside expressions (`{open && <Dialog/>}`, `.map(...)`) attaches to the
+ * nearest enclosing JSX element. Unparseable source yields an empty tree.
+ */
+export function parseJsxTree(source: string, filePath: string): ElementTree {
+  const tree: ElementTree = { filePath, roots: [] };
 
   let ast;
   try {
     ast = parse(source, { sourceType: 'module', plugins: ['jsx', 'typescript'], errorRecovery: true });
   } catch {
-    return elements;
+    return tree;
   }
 
+  const nodes = new Map<JSXElement, ElementNode>();
+  const enclosing = (path: NodePath): ElementNode | undefined => {
+    const parent = path.findParent(p => p.isJSXElement());
+    return parent ? nodes.get(parent.node as JSXElement) : undefined;
+  };
+
   traverse(ast, {
-    JSXOpeningElement(path) {
-      const node = path.node;
+    JSXElement(path) {
+      const opening = path.node.openingElement;
       let tagName = 'unknown';
-      if (node.name.type === 'JSXIdentifier') tagName = node.name.name.toLowerCase();
-      else if (node.name.type === 'JSXMemberExpression') tagName = 'component';
+      if (opening.name.type === 'JSXIdentifier') tagName = opening.name.name.toLowerCase();
+      else if (opening.name.type === 'JSXMemberExpression') tagName = 'component';
 
-      const allAttributes: Record<string, string> = {};
-      for (const attr of node.attributes) {
+      const attributes: Record<string, string> = {};
+      for (const attr of opening.attributes) {
         if (attr.type !== 'JSXAttribute' || attr.name.type !== 'JSXIdentifier') continue;
-        allAttributes[attr.name.name] = staticValue(attr);
+        attributes[attr.name.name] = staticValue(attr);
       }
-      if (!filter({ tagName, allAttributes })) return;
 
-      elements.push({
+      const node = createNode({
         tagName,
-        attributes: normalizeAttributes(allAttributes),
-        allAttributes,
-        filePath,
-        line: node.loc?.start.line ?? 1,
+        attributes,
+        line: opening.loc?.start.line ?? 1,
         // Babel columns are 0-based.
-        column: (node.loc?.start.column ?? 0) + 1,
+        column: (opening.loc?.start.column ?? 0) + 1,
       });
+      nodes.set(path.node, node);
+
+      const parent = enclosing(path);
+      if (parent) appendChild(parent, node);
+      else tree.roots.push(node);
+    },
+    JSXText(path) {
+      const parent = enclosing(path);
+      if (parent) parent.ownText += path.node.value;
     },
   });
 
-  return elements;
+  return tree;
+}
+
+export function extractJsx(source: string, filePath: string, options: ExtractOptions = {}): AnnotatedElement[] {
+  return selectElements(parseJsxTree(source, filePath), options.filter ?? byIntent);
 }
 
 /** Statically known attribute value; dynamic expressions read as an empty string. */

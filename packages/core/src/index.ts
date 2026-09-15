@@ -10,3 +10,5 @@ export type { AnnotationAction, ReadResult } from './annotation.js';
 export { buildManifest, determineConformance } from './manifest.js';
 export type { ManifestOptions, ManifestResult } from './manifest.js';
 export { generateToolRegistry, actionToTool, buildInputSchema } from './tools.js';
+export { walk, ancestors, textContent, findById, selectElements, toAnnotatedElement } from './tree.js';
+export type { ElementNode, ElementTree } from './tree.js';

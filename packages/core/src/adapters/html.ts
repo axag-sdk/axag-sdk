@@ -1,11 +1,13 @@
 /**
- * HTML adapter — extract elements from an HTML string with cheerio (parse5).
+ * HTML adapter — read an HTML string with cheerio (parse5).
  * Requires the optional peer dependency `cheerio`.
  */
 
 import { load } from 'cheerio';
-import type { Element } from 'domhandler';
-import { hasIntent, normalizeAttributes } from '../annotation.js';
+import type { AnyNode, Element } from 'domhandler';
+import { hasIntent } from '../annotation.js';
+import { appendChild, createNode, selectElements } from '../tree.js';
+import type { ElementNode, ElementTree } from '../tree.js';
 import type { AnnotatedElement, ElementFilter } from '../types.js';
 
 export interface ExtractOptions {
@@ -15,32 +17,41 @@ export interface ExtractOptions {
 
 const byIntent: ElementFilter = el => hasIntent(el.allAttributes);
 
-export function extractHtml(html: string, filePath: string, options: ExtractOptions = {}): AnnotatedElement[] {
-  const filter = options.filter ?? byIntent;
+export function parseHtmlTree(html: string, filePath: string): ElementTree {
   const $ = load(html, { sourceCodeLocationInfo: true });
-  const elements: AnnotatedElement[] = [];
+  const tree: ElementTree = { filePath, roots: [] };
 
-  $('*').each((_i, node) => {
-    const el = node as Element;
-    const allAttributes: Record<string, string> = {};
-    for (const [key, value] of Object.entries(el.attribs ?? {})) {
-      allAttributes[key] = String(value ?? '');
+  const visit = (domNodes: AnyNode[], parent: ElementNode | null): void => {
+    for (const domNode of domNodes) {
+      if (domNode.type === 'text') {
+        if (parent) parent.ownText += domNode.data;
+        continue;
+      }
+      if (domNode.type !== 'tag' && domNode.type !== 'script' && domNode.type !== 'style') continue;
+
+      const el = domNode as Element;
+      const attributes: Record<string, string> = {};
+      for (const [key, value] of Object.entries(el.attribs ?? {})) attributes[key] = String(value ?? '');
+
+      // parse5 locations are 1-based; synthesized <html>/<head>/<body> have none.
+      const loc = el.sourceCodeLocation;
+      const node = createNode({
+        tagName: el.tagName.toLowerCase(),
+        attributes,
+        line: loc?.startLine ?? 1,
+        column: loc?.startCol ?? 1,
+        rawHtml: () => ($.html(el) || '').slice(0, 200),
+      });
+      if (parent) appendChild(parent, node);
+      else tree.roots.push(node);
+      visit(el.children, node);
     }
-    const tagName = el.tagName?.toLowerCase() || 'unknown';
-    if (!filter({ tagName, allAttributes })) return;
+  };
 
-    // parse5 locations are 1-based; synthesized <html>/<body> have none.
-    const loc = el.sourceCodeLocation;
-    elements.push({
-      tagName,
-      attributes: normalizeAttributes(allAttributes),
-      allAttributes,
-      filePath,
-      line: loc?.startLine ?? 1,
-      column: loc?.startCol ?? 1,
-      rawHtml: ($.html(el) || '').slice(0, 200),
-    });
-  });
+  visit($.root().children().toArray() as AnyNode[], null);
+  return tree;
+}
 
-  return elements;
+export function extractHtml(html: string, filePath: string, options: ExtractOptions = {}): AnnotatedElement[] {
+  return selectElements(parseHtmlTree(html, filePath), options.filter ?? byIntent);
 }

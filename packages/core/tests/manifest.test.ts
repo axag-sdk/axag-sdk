@@ -11,8 +11,10 @@ const Ajv = (_Ajv as unknown as { default: typeof _Ajv.default }).default;
 const addFormats = (_addFormats as unknown as { default: typeof _addFormats.default }).default;
 
 describe('buildManifest', () => {
-  it('produces a schema-valid manifest for the whole corpus', () => {
-    const elements = Object.entries(corpus).flatMap(([name, html]) => extractHtml(html, `${name}.html`));
+  it('produces a schema-valid manifest for every valid corpus snippet', () => {
+    const elements = Object.entries(corpus)
+      .filter(([name]) => !name.startsWith('invalid-'))
+      .flatMap(([name, html]) => extractHtml(html, `${name}.html`));
     const { manifest } = buildManifest(elements, { paths: ['corpus'] });
 
     const ajv = new Ajv({ allErrors: true });
@@ -51,5 +53,38 @@ describe('buildManifest', () => {
       },
       required: ['passengers'],
     });
+  });
+
+  it('carries safety, scope and roles into tool metadata', () => {
+    const elements = extractHtml(corpus['safety-full'], 's.html');
+    const [tool] = generateToolRegistry(buildManifest(elements, { paths: ['.'] }).manifest, 'm.json').tools;
+    expect(tool.metadata).toEqual({
+      action_type: 'write',
+      risk_level: 'critical',
+      idempotent: true,
+      confirmation_required: true,
+      approval_required: true,
+      approval_roles: ['super_admin', 'security_admin'],
+      scope: 'tenant',
+      tenant_boundary: 'strict',
+      side_effects: ['session_revocation', 'audit_log'],
+      preconditions: ['user is active'],
+      postconditions: ['user cannot sign in'],
+      source_intent: 'user.deactivate',
+      source_entity: 'user',
+    });
+  });
+
+  it('maps parameter constraints to JSON Schema keywords', () => {
+    const html = `<form axag-intent="profile.update" axag-action-type="write" axag-required-parameters='[{"name":"site","type":"string","format":"url","pattern":"^https://","minLength":8},{"name":"tags","type":"array","items":{"type":"string"}}]' axag-async="true" axag-required-roles='["editor"]'></form>`;
+    const { manifest } = buildManifest(extractHtml(html, 'p.html'), { paths: ['.'] });
+    const [tool] = generateToolRegistry(manifest, 'm.json').tools;
+
+    expect(manifest.actions[0]).toMatchObject({ async: true, required_roles: ['editor'] });
+    expect(tool.input_schema.properties).toEqual({
+      site: { type: 'string', format: 'uri', pattern: '^https://', minLength: 8 },
+      tags: { type: 'array', items: { type: 'string' } },
+    });
+    expect(tool.metadata).toMatchObject({ async: true, required_roles: ['editor'] });
   });
 });

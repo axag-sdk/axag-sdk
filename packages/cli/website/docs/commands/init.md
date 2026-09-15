@@ -51,7 +51,7 @@ Running `axag init` creates an `axag.config.json` in your project root:
     "excludePatterns": ["logout", "signout", "/admin"]
   },
   "validation": {
-    "conformanceLevel": "AA",
+    "conformanceLevel": "intermediate",
     "strict": false
   }
 }
@@ -65,7 +65,7 @@ The init wizard asks:
 2. **AI inference** — Enable AI-powered inference? (requires API key)
 3. **AI provider** — OpenAI or Anthropic?
 4. **Max pages** — How many pages to crawl?
-5. **Conformance level** — Target validation level (A, AA, AAA)?
+5. **Conformance level** — Target validation level (basic, intermediate, full)?
 
 ## Config File Locations
 

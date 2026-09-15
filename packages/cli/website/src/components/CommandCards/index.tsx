@@ -28,7 +28,7 @@ const COMMANDS = [
     name: 'validate',
     icon: '✓',
     desc: 'Validate existing AXAG annotations against the specification at any conformance level.',
-    usage: 'axag validate --level AA',
+    usage: 'axag validate --level intermediate',
     link: '/docs/commands/validate',
   },
   {

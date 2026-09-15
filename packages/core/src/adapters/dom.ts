@@ -1,8 +1,10 @@
 /**
- * DOM adapter — read elements from a live document (browser extensions, runtimes).
+ * DOM adapter — read a live document (browser extensions, runtimes).
  */
 
-import { hasIntent, normalizeAttributes } from '../annotation.js';
+import { hasIntent } from '../annotation.js';
+import { appendChild, createNode, selectElements } from '../tree.js';
+import type { ElementNode, ElementTree } from '../tree.js';
 import type { AnnotatedElement, ElementFilter } from '../types.js';
 
 export interface ExtractOptions {
@@ -13,40 +15,49 @@ export interface ExtractOptions {
 }
 
 const byIntent: ElementFilter = el => hasIntent(el.allAttributes);
+const ELEMENT_NODE = 1;
+const TEXT_NODE = 3;
 
-export function extractDom(root: ParentNode, options: ExtractOptions = {}): AnnotatedElement[] {
-  const filter = options.filter ?? byIntent;
+/** Build a tree from `root`'s descendants (a document yields its `<html>`). */
+export function readDomTree(root: ParentNode, source?: string): ElementTree {
   const doc = (root as Node).ownerDocument ?? (root as Document);
-  const source = options.source ?? doc.URL ?? '';
-  const elements: AnnotatedElement[] = [];
+  const tree: ElementTree = { filePath: source ?? doc.URL ?? '', roots: [] };
 
-  for (const el of Array.from(root.querySelectorAll('*'))) {
-    const allAttributes: Record<string, string> = {};
-    for (const attr of Array.from(el.attributes)) allAttributes[attr.name] = attr.value;
-    const tagName = el.tagName.toLowerCase();
-    if (!filter({ tagName, allAttributes })) continue;
+  const visit = (el: Element, parent: ElementNode | null): void => {
+    const attributes: Record<string, string> = {};
+    for (const attr of Array.from(el.attributes)) attributes[attr.name] = attr.value;
 
-    elements.push({
-      tagName,
-      attributes: normalizeAttributes(allAttributes),
-      allAttributes,
-      filePath: source,
+    const node = createNode({
+      tagName: el.tagName.toLowerCase(),
+      attributes,
       // A live DOM has no source positions; the selector locates the element instead.
       line: 1,
       column: 1,
-      rawHtml: el.outerHTML.slice(0, 200),
       selector: selectorFor(el),
+      rawHtml: () => el.outerHTML.slice(0, 200),
     });
-  }
+    if (parent) appendChild(parent, node);
+    else tree.roots.push(node);
 
-  return elements;
+    for (const child of Array.from(el.childNodes)) {
+      if (child.nodeType === TEXT_NODE) node.ownText += child.textContent ?? '';
+      else if (child.nodeType === ELEMENT_NODE) visit(child as Element, node);
+    }
+  };
+
+  for (const child of Array.from(root.children)) visit(child, null);
+  return tree;
+}
+
+export function extractDom(root: ParentNode, options: ExtractOptions = {}): AnnotatedElement[] {
+  return selectElements(readDomTree(root, options.source), options.filter ?? byIntent);
 }
 
 /** Shortest id-anchored, nth-of-type CSS path to the element. */
 export function selectorFor(el: Element): string {
   const parts: string[] = [];
   let current: Element | null = el;
-  while (current && current.nodeType === 1) {
+  while (current && current.nodeType === ELEMENT_NODE) {
     if (current.id) {
       parts.unshift(`#${CSS.escape(current.id)}`);
       break;

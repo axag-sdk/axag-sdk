@@ -103,7 +103,7 @@ interface InferredAnnotation {
   attributes: {
     'axag-intent': string;
     'axag-entity': string;
-    'axag-action-type': 'read' | 'write' | 'execute';
+    'axag-action-type': 'read' | 'write' | 'delete' | 'navigate';
     'axag-description': string;
     'axag-risk-level': 'none' | 'low' | 'medium' | 'high' | 'critical';
     'axag-idempotent'?: string;

@@ -50,7 +50,7 @@ const QUICKSTART = [
   { step: '1', label: 'Initialize', code: 'axag init' },
   { step: '2', label: 'Scan', code: 'axag scan https://your-app.com' },
   { step: '3', label: 'Apply', code: 'axag apply' },
-  { step: '4', label: 'Validate', code: 'axag validate --level AA' },
+  { step: '4', label: 'Validate', code: 'axag validate --level intermediate' },
 ];
 
 export default function Home(): JSX.Element {

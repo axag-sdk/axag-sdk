@@ -1,10 +1,10 @@
-name: Deploy Website
+name: Deploy CLI Website
 
 on:
   push:
     branches: [main]
     paths:
-      - 'website/**'
+      - 'packages/cli/website/**'
   workflow_dispatch:
 
 permissions:
@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: website
+        working-directory: packages/cli/website
     steps:
       - uses: actions/checkout@v4
 
@@ -29,7 +29,7 @@ jobs:
         with:
           node-version: '20'
           cache: npm
-          cache-dependency-path: website/package-lock.json
+          cache-dependency-path: packages/cli/website/package-lock.json
 
       - name: Install dependencies
         run: npm ci
@@ -40,7 +40,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: website/build
+          path: packages/cli/website/build
 
   deploy:
     environment:

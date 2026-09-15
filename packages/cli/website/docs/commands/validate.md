@@ -23,8 +23,8 @@ axag validate
 # Validate specific directory
 axag validate ./src
 
-# Validate at AA conformance level
-axag validate --level AA
+# Validate at intermediate conformance level
+axag validate --level intermediate
 
 # Strict mode — fail on warnings too
 axag validate --strict
@@ -34,7 +34,7 @@ axag validate --strict
 
 | Flag | Default | Description |
 |------|---------|-------------|
-| `--level <level>` | `A` | Conformance level: `A` (basic), `AA` (intermediate), `AAA` (full) |
+| `--level <level>` | `basic` | Conformance level: `basic`, `intermediate`, `full`. The legacy `A`, `AA`, `AAA` names still work. |
 | `--strict` | `false` | Treat warnings as errors |
 | `--format <format>` | `text` | Output format: `text`, `json` |
 
@@ -42,9 +42,9 @@ axag validate --strict
 
 | Level | Name | Checks |
 |-------|------|--------|
-| **A** | Basic | Required attributes present (`axag-intent`, `axag-action-type`) |
-| **AA** | Intermediate | + entity, risk-level, description, idempotency |
-| **AAA** | Full | + parameters, preconditions, confirmation gates, tenant boundaries |
+| **basic** | Basic | Required attributes present (`axag-intent`, `axag-action-type`) |
+| **intermediate** | Intermediate | + entity, risk-level, description, idempotency |
+| **full** | Full | + parameters, preconditions, confirmation gates, tenant boundaries |
 
 ## Exit Codes
 
@@ -57,12 +57,12 @@ axag validate --strict
 ## Example Output
 
 ```
-✓  button#submit     — A: pass, AA: pass
-✗  button#delete-all — AA: missing axag-risk-level (expected "high" or "critical")
-⚠  a#nav-home        — AA: missing axag-description
+✓  button#submit     — basic: pass, intermediate: pass
+✗  button#delete-all — intermediate: missing axag-risk-level (expected "high" or "critical")
+⚠  a#nav-home        — intermediate: missing axag-description
 
 Results: 18 passed, 2 errors, 1 warning
-Conformance: AA — FAIL
+Conformance: intermediate — FAIL
 ```
 
 ## CI Usage

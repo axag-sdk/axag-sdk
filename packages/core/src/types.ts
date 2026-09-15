@@ -5,6 +5,7 @@ import type {
   ParameterType,
   RiskLevel,
   Scope,
+  TenantBoundary,
 } from './vocabulary.js';
 
 /* ─── Source elements ─────────────────────────── */
@@ -62,8 +63,14 @@ export interface ManifestParameter {
   min?: number;
   max?: number;
   maxLength?: number;
+  minLength?: number;
+  pattern?: string;
   format?: ParameterFormat;
   default?: unknown;
+  /** JSON Schema for array elements. */
+  items?: Record<string, unknown>;
+  /** JSON Schema properties for object parameters. */
+  properties?: Record<string, unknown>;
 }
 
 export interface ManifestAction {
@@ -79,7 +86,10 @@ export interface ManifestAction {
   approval_required?: boolean;
   approval_roles?: string[];
   idempotent?: boolean;
+  async?: boolean;
   scope?: Scope;
+  tenant_boundary?: TenantBoundary;
+  required_roles?: string[];
   side_effects?: string[];
   preconditions?: string[];
   postconditions?: string[];
@@ -110,8 +120,12 @@ export interface JSONSchemaProperty {
   minimum?: number;
   maximum?: number;
   maxLength?: number;
+  minLength?: number;
+  pattern?: string;
   format?: string;
   default?: unknown;
+  items?: Record<string, unknown>;
+  properties?: Record<string, unknown>;
 }
 
 export interface MCPToolDefinition {
@@ -123,11 +137,19 @@ export interface MCPToolDefinition {
     required: string[];
   };
   metadata: {
+    action_type: string;
     risk_level: string;
     idempotent: boolean;
     confirmation_required: boolean;
     approval_required: boolean;
+    approval_roles?: string[];
+    async?: boolean;
     scope?: string;
+    tenant_boundary?: string;
+    required_roles?: string[];
+    side_effects?: string[];
+    preconditions?: string[];
+    postconditions?: string[];
     source_intent: string;
     source_entity: string;
   };

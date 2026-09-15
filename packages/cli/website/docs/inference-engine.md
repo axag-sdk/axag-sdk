@@ -24,7 +24,7 @@ The rule engine contains 25+ pattern-matching rules that analyze:
 | **Destructive** | delete, remove, deactivate, cancel | `action-type="write"`, `risk-level="high"`, `requires-confirmation="true"` |
 | **Write** | checkout, submit, create, save, add | `action-type="write"`, appropriate risk level |
 | **Read** | search, filter, view, download, export | `action-type="read"`, `risk-level="none"` |
-| **Execute** | run, deploy, send, trigger, execute | `action-type="execute"`, confirmation gates |
+| **Execute** | run, deploy, send, trigger, execute | `action-type="write"`, confirmation gates |
 | **Auth** | login, logout, register, sign up | Domain-specific intent patterns |
 | **Navigation** | next, back, close, menu, tab | `action-type="read"`, navigation intents |
 

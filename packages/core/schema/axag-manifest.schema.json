@@ -151,6 +151,10 @@
           "type": "boolean",
           "description": "Whether the operation is safe to retry"
         },
+        "async": {
+          "type": "boolean",
+          "description": "Whether the operation completes asynchronously"
+        },
         "scope": {
           "type": "string",
           "enum": [
@@ -160,6 +164,21 @@
             "global"
           ],
           "description": "Operational boundary"
+        },
+        "tenant_boundary": {
+          "type": "string",
+          "enum": [
+            "strict",
+            "relaxed"
+          ],
+          "description": "Cross-tenant enforcement for tenant-scoped operations"
+        },
+        "required_roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Roles permitted to invoke the operation"
         },
         "side_effects": {
           "type": "array",
@@ -214,6 +233,7 @@
           "enum": [
             "string",
             "number",
+            "integer",
             "boolean",
             "array",
             "object"
@@ -240,6 +260,15 @@
           "type": "integer",
           "description": "Maximum string length"
         },
+        "minLength": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Minimum string length"
+        },
+        "pattern": {
+          "type": "string",
+          "description": "Regular expression the value must match"
+        },
         "format": {
           "type": "string",
           "enum": [
@@ -253,6 +282,14 @@
         },
         "default": {
           "description": "Default value if not provided"
+        },
+        "items": {
+          "type": "object",
+          "description": "JSON Schema for array elements (when type is array)"
+        },
+        "properties": {
+          "type": "object",
+          "description": "JSON Schema properties (when type is object)"
         }
       },
       "additionalProperties": false

@@ -61,7 +61,7 @@ export type TenantBoundary = (typeof TENANT_BOUNDARIES)[number];
 export const CONFORMANCE_LEVELS = ['basic', 'intermediate', 'full'] as const;
 export type ConformanceLevel = (typeof CONFORMANCE_LEVELS)[number];
 
-export const PARAMETER_TYPES = ['string', 'number', 'boolean', 'array', 'object'] as const;
+export const PARAMETER_TYPES = ['string', 'number', 'integer', 'boolean', 'array', 'object'] as const;
 export type ParameterType = (typeof PARAMETER_TYPES)[number];
 
 export const PARAMETER_FORMATS = ['email', 'url', 'date', 'datetime', 'uuid'] as const;

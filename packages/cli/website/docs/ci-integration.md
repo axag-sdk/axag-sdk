@@ -24,7 +24,7 @@ jobs:
         with:
           node-version: '20'
       - run: npm install -g axag-cli
-      - run: axag validate --level AA --strict
+      - run: axag validate --level intermediate --strict
 ```
 
 ## Configuration
@@ -34,7 +34,7 @@ Customize the validation level and strictness in `axag.config.json`:
 ```json
 {
   "validation": {
-    "conformanceLevel": "AA",
+    "conformanceLevel": "intermediate",
     "strict": true
   }
 }
@@ -63,7 +63,7 @@ axag validate --format json > validation-results.json
   "passed": 18,
   "errors": 2,
   "warnings": 1,
-  "level": "AA",
+  "level": "intermediate",
   "result": "FAIL",
   "details": [
     {

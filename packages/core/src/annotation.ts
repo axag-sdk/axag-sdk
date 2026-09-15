@@ -3,7 +3,7 @@
  */
 
 import { ATTR, ENUM_ATTRIBUTES, isAxagAttribute } from './vocabulary.js';
-import type { ActionType, RiskLevel, Scope } from './vocabulary.js';
+import type { ActionType, RiskLevel, Scope, TenantBoundary } from './vocabulary.js';
 import type { CoreDiagnostic, ManifestAction, ManifestParameter } from './types.js';
 
 /** Fields of a manifest action that come from the annotation itself. */
@@ -86,7 +86,11 @@ export function readAnnotation(attrs: Record<string, string>): ReadResult {
   const approvalRoles = jsonArray(ATTR.approvalRoles);
   if (approvalRoles) action.approval_roles = approvalRoles.map(String);
   if (attrs[ATTR.idempotent]) action.idempotent = attrs[ATTR.idempotent] === 'true';
+  if (attrs[ATTR.async]) action.async = attrs[ATTR.async] === 'true';
   if (attrs[ATTR.scope]) action.scope = attrs[ATTR.scope] as Scope;
+  if (attrs[ATTR.tenantBoundary]) action.tenant_boundary = attrs[ATTR.tenantBoundary] as TenantBoundary;
+  const requiredRoles = jsonArray(ATTR.requiredRoles);
+  if (requiredRoles) action.required_roles = requiredRoles.map(String);
   const sideEffects = jsonArray(ATTR.sideEffects);
   if (sideEffects) action.side_effects = sideEffects.map(String);
   const preconditions = jsonArray(ATTR.preconditions);
@@ -99,6 +103,10 @@ export function readAnnotation(attrs: Record<string, string>): ReadResult {
 
 type RawParameter = string | (Partial<ManifestParameter> & { name: string });
 
+const PARAMETER_FIELDS = [
+  'description', 'enum', 'min', 'max', 'maxLength', 'minLength', 'pattern', 'format', 'default', 'items', 'properties',
+] as const;
+
 function toParameters(items: unknown[] | undefined): ManifestParameter[] {
   if (!items) return [];
   const params: ManifestParameter[] = [];
@@ -109,7 +117,7 @@ function toParameters(items: unknown[] | undefined): ManifestParameter[] {
     }
     if (!item || typeof item.name !== 'string') continue;
     const param: ManifestParameter = { name: item.name, type: item.type || 'string' };
-    for (const key of ['description', 'enum', 'min', 'max', 'maxLength', 'format', 'default'] as const) {
+    for (const key of PARAMETER_FIELDS) {
       if (item[key] !== undefined) (param as unknown as Record<string, unknown>)[key] = item[key];
     }
     params.push(param);

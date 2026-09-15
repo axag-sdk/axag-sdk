@@ -27,7 +27,7 @@ axag-cli works out of the box with zero configuration. For advanced use, create 
     "excludePatterns": ["logout", "signout", "/admin"]
   },
   "validation": {
-    "conformanceLevel": "AA",
+    "conformanceLevel": "intermediate",
     "strict": false
   }
 }
@@ -67,7 +67,7 @@ When AI is enabled, set the `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` environment 
 
 | Field | Type | Default | Description |
 |-------|------|---------|-------------|
-| `conformanceLevel` | `string` | `"AA"` | Target level: `A`, `AA`, or `AAA` |
+| `conformanceLevel` | `string` | `"basic"` | Target level: `basic`, `intermediate`, or `full` (legacy `A`, `AA`, `AAA` still accepted) |
 | `strict` | `boolean` | `false` | Treat warnings as errors |
 
 ## Config File Locations
