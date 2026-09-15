@@ -28,11 +28,13 @@ export interface AnnotatedElement {
   rawHtml?: string;
   /** CSS selector path, for DOM elements. */
   selector?: string;
+  /** Problems found while normalizing attributes (macro errors, conflicts). */
+  diagnostics?: CoreDiagnostic[];
 }
 
 /** The minimum a manifest generator needs from an element. */
 export type ManifestSourceElement = Pick<AnnotatedElement, 'attributes' | 'filePath' | 'line'> &
-  Partial<Pick<AnnotatedElement, 'selector'>>;
+  Partial<Pick<AnnotatedElement, 'selector' | 'diagnostics'>>;
 
 /** Decides which elements an adapter returns. */
 export type ElementFilter = (el: Pick<AnnotatedElement, 'tagName' | 'allAttributes'>) => boolean;
@@ -42,13 +44,17 @@ export type ElementFilter = (el: Pick<AnnotatedElement, 'tagName' | 'allAttribut
 export type CoreDiagnosticCode =
   | 'AXAG-CORE-001' // invalid JSON array attribute
   | 'AXAG-CORE-002' // value outside the attribute's enum
-  | 'AXAG-CORE-003'; // duplicate intent in one manifest
+  | 'AXAG-CORE-003' // duplicate intent in one manifest
+  | 'AXAG-CORE-004' // invalid axag macro
+  | 'AXAG-CORE-005'; // axag macro disagrees with a longhand attribute
 
 export interface CoreDiagnostic {
   code: CoreDiagnosticCode;
   severity: 'error' | 'warning';
   message: string;
   attribute?: string;
+  /** 1-based column within the attribute value, for macro errors. */
+  column?: number;
   filePath?: string;
   line?: number;
 }

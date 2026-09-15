@@ -73,6 +73,10 @@ axag-lint --init
 | AXAG-LINT-024 | Delete action with risk below high | warning |
 | AXAG-LINT-025 | Read action with risk above low | info |
 | AXAG-LINT-026 | Safety metadata mismatch for risk level | warning |
+| AXAG-LINT-027 | Invalid `axag` macro syntax | error |
+| AXAG-LINT-028 | `axag` macro conflicts with a longhand attribute | error |
+
+Elements annotated with the `axag="write:user.deactivate!critical?confirm"` macro are expanded before any rule runs, so every rule applies to macro and longhand annotations alike.
 
 ## Configuration
 

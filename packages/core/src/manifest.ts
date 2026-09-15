@@ -27,7 +27,7 @@ export function buildManifest(elements: ManifestSourceElement[], options: Manife
 
   for (const el of elements) {
     const read = readAnnotation(el.attributes);
-    for (const d of read.diagnostics) {
+    for (const d of [...(el.diagnostics ?? []), ...read.diagnostics]) {
       diagnostics.push({ ...d, filePath: el.filePath, line: el.line });
     }
     if (!read.action) continue;

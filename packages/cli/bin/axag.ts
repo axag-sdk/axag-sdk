@@ -8,6 +8,7 @@
  *   axag report            Generate report from the last scan
  *   axag apply             Apply confirmed annotations to source files
  *   axag validate          Validate existing AXAG annotations
+ *   axag fmt               Convert annotations between macro and longhand form
  *   axag generate-tools    Generate MCP tool definitions from a manifest
  *   axag init              Initialize .axag config in the current project
  */
@@ -20,6 +21,7 @@ import { applyCommand } from '../src/commands/apply.js';
 import { validateCommand } from '../src/commands/validate.js';
 import { generateToolsCommand } from '../src/commands/generate-tools.js';
 import { initCommand } from '../src/commands/init.js';
+import { fmtCommand } from '../src/commands/fmt.js';
 import { CLI_VERSION } from '../src/utils/constants.js';
 
 const program = new Command();
@@ -75,6 +77,14 @@ program
   .option('--strict', 'Use strict validation (fail on warnings)', false)
   .option('--level <level>', 'Minimum conformance level: basic | intermediate | full', 'basic')
   .action(validateCommand);
+
+/* ─── fmt ────────────────────────────────────── */
+program
+  .command('fmt [target]')
+  .description('Rewrite AXAG annotations as axag="..." macros or as longhand axag-* attributes')
+  .option('--to <form>', 'Target form: macro | longhand', 'macro')
+  .option('--check', 'Only report files that would change; exit 1 if any would', false)
+  .action(fmtCommand);
 
 /* ─── init ───────────────────────────────────── */
 program

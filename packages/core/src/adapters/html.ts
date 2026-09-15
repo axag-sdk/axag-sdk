@@ -6,6 +6,8 @@
 import { load } from 'cheerio';
 import type { AnyNode, Element } from 'domhandler';
 import { hasIntent } from '../annotation.js';
+import { formatTree } from '../format.js';
+import type { FormatMode, FormatResult } from '../format.js';
 import { appendChild, createNode, selectElements } from '../tree.js';
 import type { ElementNode, ElementTree } from '../tree.js';
 import type { AnnotatedElement, ElementFilter } from '../types.js';
@@ -42,6 +44,14 @@ export function parseHtmlTree(html: string, filePath: string): ElementTree {
         column: loc?.startCol ?? 1,
         rawHtml: () => ($.html(el) || '').slice(0, 200),
       });
+      // parse5 records attribute offsets; domhandler's type omits them.
+      const attrLocs = (loc as { attrs?: Record<string, { startOffset: number; endOffset: number }> } | undefined)?.attrs;
+      if (attrLocs) {
+        node.spans = {};
+        for (const [name, span] of Object.entries(attrLocs)) {
+          node.spans[name] = { start: span.startOffset, end: span.endOffset, static: true };
+        }
+      }
       if (parent) appendChild(parent, node);
       else tree.roots.push(node);
       visit(el.children, node);
@@ -54,4 +64,9 @@ export function parseHtmlTree(html: string, filePath: string): ElementTree {
 
 export function extractHtml(html: string, filePath: string, options: ExtractOptions = {}): AnnotatedElement[] {
   return selectElements(parseHtmlTree(html, filePath), options.filter ?? byIntent);
+}
+
+/** Rewrite every annotated element in an HTML string to macro or longhand form. */
+export function formatHtml(html: string, filePath: string, mode: FormatMode): FormatResult {
+  return formatTree(html, parseHtmlTree(html, filePath), mode);
 }

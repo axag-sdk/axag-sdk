@@ -156,6 +156,24 @@ axag validate --level intermediate    # Validate at intermediate conformance
 axag validate --strict                # Fail on warnings too
 ```
 
+### `axag fmt [target]`
+
+Rewrite annotations as `axag="..."` macros or as longhand `axag-*` attributes. Only AXAG attributes change; the generated manifest stays identical.
+
+```bash
+axag fmt ./src                        # Longhand → macro (default)
+axag fmt ./src --to longhand          # Macro → longhand
+axag fmt ./src --check                # List files that would change; exit 1 if any
+```
+
+```html
+<!-- before -->
+<button axag-intent="user.deactivate" axag-entity="user" axag-action-type="write"
+        axag-risk-level="critical" axag-approval-required="true">
+<!-- after -->
+<button axag="write:user.deactivate!critical?approval">
+```
+
 ### `axag init`
 
 Initialize AXAG configuration in your project.

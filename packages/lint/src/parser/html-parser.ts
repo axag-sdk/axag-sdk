@@ -1,7 +1,7 @@
 import { extractHtml } from '@axag/core/html';
 import type { AnnotatedElement, ElementFilter } from '@axag/core';
 
-const IDENTITY_ATTRIBUTES = ['axag-intent', 'axag-entity', 'axag-action-type'];
+const IDENTITY_ATTRIBUTES = ['axag', 'axag-intent', 'axag-entity', 'axag-action-type'];
 
 /** Annotated elements, plus interactive elements that rules may flag as unannotated. */
 const lintTargets: ElementFilter = ({ tagName, allAttributes: a }) =>

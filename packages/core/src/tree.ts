@@ -4,7 +4,7 @@
  * this instead of cheerio, Babel or the DOM directly.
  */
 
-import { normalizeAttributes } from './annotation.js';
+import { readAttributes } from './annotation.js';
 import type { AnnotatedElement, ElementFilter } from './types.js';
 
 export interface ElementNode {
@@ -24,6 +24,15 @@ export interface ElementNode {
   selector?: string;
   /** Truncated outer HTML, computed on demand. */
   rawHtml?: () => string;
+  /** Source offsets of each attribute (`name="value"`), when read from source text. */
+  spans?: Record<string, AttributeSpan>;
+}
+
+export interface AttributeSpan {
+  start: number;
+  end: number;
+  /** False for JSX expressions (`axag={spec}`), which can't be rewritten as text. */
+  static: boolean;
 }
 
 export interface ElementTree {
@@ -71,9 +80,10 @@ export function findById(tree: ElementTree, id: string): ElementNode | undefined
 }
 
 export function toAnnotatedElement(node: ElementNode, filePath: string): AnnotatedElement {
+  const { attributes, diagnostics } = readAttributes(node.attributes);
   const el: AnnotatedElement = {
     tagName: node.tagName,
-    attributes: normalizeAttributes(node.attributes),
+    attributes,
     allAttributes: node.attributes,
     filePath,
     line: node.line,
@@ -81,6 +91,7 @@ export function toAnnotatedElement(node: ElementNode, filePath: string): Annotat
   };
   if (node.rawHtml) el.rawHtml = node.rawHtml();
   if (node.selector) el.selector = node.selector;
+  if (diagnostics.length > 0) el.diagnostics = diagnostics;
   return el;
 }
 

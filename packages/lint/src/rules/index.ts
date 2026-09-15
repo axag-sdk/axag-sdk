@@ -42,6 +42,10 @@ import { rule as rule016 } from './contradictions/AXAG-LINT-016.js';
 // Unsafe mutation rules
 import { rule as rule017 } from './unsafe-mutations/AXAG-LINT-017.js';
 
+// Macro rules
+import { rule as rule027 } from './macro/AXAG-LINT-027.js';
+import { rule as rule028 } from './macro/AXAG-LINT-028.js';
+
 export const ALL_RULES: LintRule[] = [
   rule001, rule002, rule003,
   rule004, rule005,
@@ -51,6 +55,7 @@ export const ALL_RULES: LintRule[] = [
   rule011, rule018, rule019, rule020, rule021, rule022,
   rule012, rule013, rule014, rule015, rule016,
   rule017,
+  rule027, rule028,
 ];
 
 export function getRuleById(id: string): LintRule | undefined {

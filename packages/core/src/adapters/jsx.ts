@@ -8,8 +8,10 @@ import _traverse from '@babel/traverse';
 import type { NodePath, TraverseOptions } from '@babel/traverse';
 import type { JSXAttribute, JSXElement, Node } from '@babel/types';
 import { hasIntent } from '../annotation.js';
+import { formatTree } from '../format.js';
+import type { FormatMode, FormatResult } from '../format.js';
 import { appendChild, createNode, selectElements } from '../tree.js';
-import type { ElementNode, ElementTree } from '../tree.js';
+import type { AttributeSpan, ElementNode, ElementTree } from '../tree.js';
 import type { AnnotatedElement, ElementFilter } from '../types.js';
 
 // @babel/traverse is CJS; its default export is nested under ESM interop.
@@ -52,9 +54,11 @@ export function parseJsxTree(source: string, filePath: string): ElementTree {
       else if (opening.name.type === 'JSXMemberExpression') tagName = 'component';
 
       const attributes: Record<string, string> = {};
+      const spans: Record<string, AttributeSpan> = {};
       for (const attr of opening.attributes) {
         if (attr.type !== 'JSXAttribute' || attr.name.type !== 'JSXIdentifier') continue;
         attributes[attr.name.name] = staticValue(attr);
+        spans[attr.name.name] = { start: attr.start ?? 0, end: attr.end ?? 0, static: isStringLiteral(attr) };
       }
 
       const node = createNode({
@@ -63,6 +67,7 @@ export function parseJsxTree(source: string, filePath: string): ElementTree {
         line: opening.loc?.start.line ?? 1,
         // Babel columns are 0-based.
         column: (opening.loc?.start.column ?? 0) + 1,
+        spans,
       });
       nodes.set(path.node, node);
 
@@ -81,6 +86,16 @@ export function parseJsxTree(source: string, filePath: string): ElementTree {
 
 export function extractJsx(source: string, filePath: string, options: ExtractOptions = {}): AnnotatedElement[] {
   return selectElements(parseJsxTree(source, filePath), options.filter ?? byIntent);
+}
+
+/** Rewrite every annotated element in JSX/TSX source to macro or longhand form. */
+export function formatJsx(source: string, filePath: string, mode: FormatMode): FormatResult {
+  return formatTree(source, parseJsxTree(source, filePath), mode);
+}
+
+/** Only plain string attributes (`name="..."`, `name='...'`) can be rewritten as text. */
+function isStringLiteral(attr: JSXAttribute): boolean {
+  return attr.value?.type === 'StringLiteral';
 }
 
 /** Statically known attribute value; dynamic expressions read as an empty string. */

@@ -10,6 +10,7 @@ import type { Element as DomElement } from 'domhandler';
 import { table } from 'table';
 import { AXAG_ATTRIBUTES, CONFORMANCE_LEVELS, RISK_LEVELS, ACTION_TYPES, toConformanceLevel } from '../utils/constants.js';
 import type { ConformanceLevel } from '../utils/constants.js';
+import { readAttributes } from '@axag/core';
 import type { ValidationRuleResult } from '../types/index.js';
 import { logger } from '../utils/logger.js';
 
@@ -198,7 +199,25 @@ export async function validateCommand(
     const $ = cheerio.load(html);
     const relPath = path.relative(resolvedPath, file);
 
-    // Find elements with any axag-* attribute
+    // Expand axag="..." macros in place so the rules below see longhand attributes.
+    $('[axag]').each((_i: number, el: DomElement) => {
+      const { attributes, diagnostics } = readAttributes(el.attribs);
+      for (const [name, value] of Object.entries(attributes)) {
+        if (el.attribs[name] === undefined) $(el).attr(name, value);
+      }
+      for (const d of diagnostics) {
+        allResults.push({
+          ruleId: d.code,
+          ruleName: 'axag macro valid',
+          severity: 'error',
+          passed: false,
+          message: `${relPath}: ${d.message}`,
+          selector: buildSelector($(el), el),
+        });
+      }
+    });
+
+    // Find elements that declare an intent
     const annotatedElements = $('[axag-intent]');
     totalAnnotatedElements += annotatedElements.length;
 

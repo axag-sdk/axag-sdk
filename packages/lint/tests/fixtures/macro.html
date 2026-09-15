@@ -1,0 +1,9 @@
+<!doctype html>
+<html>
+<body>
+  <button axag="write:user.deactivate!critical?confirm&approval&roles=security_admin&idempotent&scope=tenant" axag-preconditions='["user is active"]'>Deactivate</button>
+  <button axag="write:cart.add_item!medium">Add</button>
+  <button axag="mutate:cart.clear">Clear</button>
+  <button axag="delete:invoice.void!high?confirm" axag-risk-level="low">Void</button>
+</body>
+</html>

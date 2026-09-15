@@ -2,6 +2,7 @@
  * Annotation reader — the only place attribute strings become typed values.
  */
 
+import { MACRO_ATTRIBUTE, parseMacro, sameAttributeValue } from './macro.js';
 import { ATTR, ENUM_ATTRIBUTES, isAxagAttribute } from './vocabulary.js';
 import type { ActionType, RiskLevel, Scope, TenantBoundary } from './vocabulary.js';
 import type { CoreDiagnostic, ManifestAction, ManifestParameter } from './types.js';
@@ -15,20 +16,65 @@ export interface ReadResult {
   diagnostics: CoreDiagnostic[];
 }
 
-/**
- * Reduce an element's attributes to its axag-* attributes in canonical form.
- * Adapters call this so every consumer sees the same record.
- */
-export function normalizeAttributes(all: Record<string, string>): Record<string, string> {
-  const out: Record<string, string> = {};
-  for (const [name, value] of Object.entries(all)) {
-    if (isAxagAttribute(name)) out[name] = value;
-  }
-  return out;
+export interface NormalizedAttributes {
+  /** Canonical longhand axag-* attributes, with any `axag` macro expanded. */
+  attributes: Record<string, string>;
+  /** Macro syntax errors and macro/longhand conflicts. */
+  diagnostics: CoreDiagnostic[];
 }
 
+/**
+ * Reduce an element's attributes to canonical longhand axag-* attributes.
+ * An `axag` macro is expanded; where it disagrees with a longhand attribute
+ * the longhand value is kept and the conflict is reported.
+ */
+export function readAttributes(all: Record<string, string>): NormalizedAttributes {
+  const attributes: Record<string, string> = {};
+  const diagnostics: CoreDiagnostic[] = [];
+  for (const [name, value] of Object.entries(all)) {
+    if (isAxagAttribute(name)) attributes[name] = value;
+  }
+
+  // An empty macro is treated as absent: in JSX it is a dynamic `axag={spec}`.
+  const macro = all[MACRO_ATTRIBUTE]?.trim();
+  if (!macro) return { attributes, diagnostics };
+
+  const parsed = parseMacro(macro);
+  for (const error of parsed.errors) {
+    diagnostics.push({
+      code: 'AXAG-CORE-004',
+      severity: 'error',
+      attribute: MACRO_ATTRIBUTE,
+      column: error.column,
+      message: `Invalid axag macro at column ${error.column}: ${error.message}`,
+    });
+  }
+  for (const [name, value] of Object.entries(parsed.attributes)) {
+    const longhand = attributes[name];
+    if (longhand === undefined) {
+      attributes[name] = value;
+    } else if (!sameAttributeValue(name, longhand, value)) {
+      diagnostics.push({
+        code: 'AXAG-CORE-005',
+        severity: 'error',
+        attribute: name,
+        message: `axag macro sets ${name}="${value}" but the element also has ${name}="${longhand}"`,
+      });
+    }
+  }
+  // The grammar derives the entity from the intent; it only fills a gap, so it never conflicts.
+  const intent = parsed.attributes[ATTR.intent];
+  if (intent && attributes[ATTR.entity] === undefined) attributes[ATTR.entity] = intent.split('.')[0];
+  return { attributes, diagnostics };
+}
+
+export function normalizeAttributes(all: Record<string, string>): Record<string, string> {
+  return readAttributes(all).attributes;
+}
+
+/** Whether the attributes declare an intent, directly or through a macro. */
 export function hasIntent(attrs: Record<string, string>): boolean {
-  return Boolean(attrs[ATTR.intent]);
+  return Boolean(attrs[ATTR.intent]) || Boolean(normalizeAttributes(attrs)[ATTR.intent]);
 }
 
 /** Read normalized axag-* attributes into a manifest action. */

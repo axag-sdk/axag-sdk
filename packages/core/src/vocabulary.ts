@@ -11,6 +11,9 @@ export const SPEC_VERSION = '1.1.0';
 export const ATTRIBUTE_PREFIX = 'axag-';
 
 export const ATTR = {
+  /** Macro shorthand that expands to the attributes below. */
+  macro: 'axag',
+
   /* ── Identity ──────────────────────────────── */
   intent: 'axag-intent',
   entity: 'axag-entity',
