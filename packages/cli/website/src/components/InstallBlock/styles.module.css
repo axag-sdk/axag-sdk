@@ -1,0 +1,70 @@
+.block {
+  max-width: 560px;
+  margin: 0 auto;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1a1b26;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+}
+
+.tabs {
+  display: flex;
+  gap: 0;
+  background: #16171f;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.tab {
+  flex: 1;
+  padding: 0.6rem 1rem;
+  border: none;
+  background: transparent;
+  color: #565f89;
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s;
+}
+
+.tab:hover {
+  color: #a9b1d6;
+}
+
+.tabActive {
+  color: #bb9af7;
+  background: rgba(187, 154, 247, 0.08);
+  border-bottom: 2px solid #bb9af7;
+}
+
+.codeRow {
+  display: flex;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  gap: 1rem;
+}
+
+.code {
+  flex: 1;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-size: 0.9rem;
+  color: #7dcfff;
+  background: none;
+  border: none;
+  padding: 0;
+}
+
+.copyBtn {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  padding: 0.4rem 0.6rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background 0.15s;
+  color: #a9b1d6;
+}
+
+.copyBtn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}

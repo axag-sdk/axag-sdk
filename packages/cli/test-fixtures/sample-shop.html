@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>ACME Shop — Electronics</title>
+  <meta name="description" content="Shop electronics, gadgets, and accessories" />
+</head>
+<body>
+  <nav>
+    <a href="/">Home</a>
+    <a href="/products">Products</a>
+    <a href="/cart">Cart</a>
+    <a href="/account">Account</a>
+  </nav>
+
+  <main>
+    <h1>Electronics Catalog</h1>
+
+    <form action="/search" method="GET">
+      <input type="text" name="query" placeholder="Search products..." />
+      <button type="submit">Search</button>
+    </form>
+
+    <section>
+      <h2>Featured Products</h2>
+      <article>
+        <h3>Wireless Headphones</h3>
+        <p>$49.99</p>
+        <button id="add-to-cart-1">Add to Cart</button>
+        <a href="/products/headphones">View Details</a>
+      </article>
+
+      <article>
+        <h3>USB-C Hub</h3>
+        <p>$29.99</p>
+        <button id="add-to-cart-2">Add to Cart</button>
+        <a href="/products/usb-hub">View Details</a>
+      </article>
+    </section>
+
+    <section>
+      <h2>Your Cart</h2>
+      <button id="checkout-btn">Checkout</button>
+      <button id="clear-cart">Clear Cart</button>
+    </section>
+
+    <footer>
+      <a href="/terms">Terms</a>
+      <a href="/privacy">Privacy</a>
+      <button id="newsletter-signup">Subscribe to Newsletter</button>
+    </footer>
+  </main>
+</body>
+</html>

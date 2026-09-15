@@ -1,0 +1,67 @@
+{
+  "name": "@web-axag/axag-cli",
+  "version": "1.0.2",
+  "description": "CLI tool to scan websites, infer AXAG annotations, interactively review, and apply semantic contracts automatically.",
+  "type": "module",
+  "bin": {
+    "axag-cli": "./dist/bin/axag.js",
+    "axag": "./dist/bin/axag.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/bin/axag.js",
+    "lint": "eslint src --ext .ts",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:integration": "vitest run tests/integration/",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "axag",
+    "agent-experience",
+    "accessibility",
+    "semantic-contract",
+    "mcp",
+    "cli",
+    "annotation",
+    "ai-agent"
+  ],
+  "author": "AXAG Standard Contributors",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axag-cli/axag-cli"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@babel/parser": "^7.29.2",
+    "@babel/traverse": "^7.29.0",
+    "@babel/types": "^7.29.0",
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1",
+    "chalk": "^5.3.0",
+    "cheerio": "^1.0.0",
+    "commander": "^12.1.0",
+    "cosmiconfig": "^9.0.0",
+    "diff": "^7.0.0",
+    "fast-glob": "^3.3.3",
+    "inquirer": "^9.3.0",
+    "nanospinner": "^1.1.0",
+    "openai": "^4.68.0",
+    "playwright": "^1.48.0",
+    "table": "^6.8.2",
+    "zod": "^3.23.0"
+  },
+  "devDependencies": {
+    "@types/babel__traverse": "^7.28.0",
+    "@types/diff": "^7.0.0",
+    "@types/inquirer": "^9.0.7",
+    "@types/node": "^22.0.0",
+    "eslint": "^9.0.0",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0"
+  }
+}

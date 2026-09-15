@@ -1,0 +1,109 @@
+{
+  "version": "1.0.0",
+  "generated_at": "2025-01-01T00:00:00.000Z",
+  "source": {
+    "paths": ["/app/src"],
+    "tool": "axag-cli",
+    "tool_version": "1.0.0"
+  },
+  "conformance": "full",
+  "actions": [
+    {
+      "intent": "product.search",
+      "entity": "product",
+      "action_type": "read",
+      "operation_id": "product_search",
+      "description": "Search for products by keyword and optional category filter",
+      "required_parameters": [
+        { "name": "query", "type": "string", "description": "Search keyword" }
+      ],
+      "optional_parameters": [
+        { "name": "category", "type": "string", "description": "Category filter" },
+        { "name": "page", "type": "number", "description": "Page number", "min": 1 },
+        { "name": "sort", "type": "string", "enum": ["relevance", "price_asc", "price_desc", "rating"] }
+      ],
+      "risk_level": "none",
+      "idempotent": true,
+      "scope": "user",
+      "source_file": "/app/src/index.html",
+      "source_line": 12
+    },
+    {
+      "intent": "cart.add_item",
+      "entity": "cart",
+      "action_type": "write",
+      "operation_id": "cart_add_item",
+      "description": "Add a product to the shopping cart",
+      "required_parameters": [
+        { "name": "product_id", "type": "string", "description": "Product identifier" },
+        { "name": "quantity", "type": "number", "description": "Quantity to add", "min": 1, "max": 99 }
+      ],
+      "optional_parameters": [],
+      "risk_level": "low",
+      "idempotent": false,
+      "scope": "user",
+      "side_effects": ["cart_updated"],
+      "source_file": "/app/src/index.html",
+      "source_line": 28
+    },
+    {
+      "intent": "order.place",
+      "entity": "order",
+      "action_type": "write",
+      "operation_id": "order_place",
+      "description": "Place a new order from the current cart",
+      "required_parameters": [],
+      "optional_parameters": [
+        { "name": "shipping_method", "type": "string", "enum": ["standard", "express", "overnight"] },
+        { "name": "gift_wrap", "type": "boolean", "description": "Add gift wrapping" }
+      ],
+      "risk_level": "high",
+      "confirmation_required": true,
+      "idempotent": false,
+      "scope": "user",
+      "side_effects": ["email_sent", "inventory_deducted", "payment_charged"],
+      "preconditions": ["cart_not_empty", "payment_method_set"],
+      "postconditions": ["order_created", "cart_emptied"],
+      "source_file": "/app/src/index.html",
+      "source_line": 44
+    },
+    {
+      "intent": "account.delete",
+      "entity": "account",
+      "action_type": "delete",
+      "operation_id": "account_delete",
+      "description": "Permanently delete the user account and all associated data",
+      "required_parameters": [
+        { "name": "confirmation_text", "type": "string", "description": "Must type 'DELETE' to confirm" }
+      ],
+      "optional_parameters": [],
+      "risk_level": "critical",
+      "confirmation_required": true,
+      "approval_required": true,
+      "approval_roles": ["admin", "compliance_officer"],
+      "idempotent": false,
+      "scope": "user",
+      "preconditions": ["no_pending_orders", "data_export_completed"],
+      "side_effects": ["data_deleted", "subscriptions_cancelled", "email_sent"],
+      "source_file": "/app/src/index.html",
+      "source_line": 60
+    },
+    {
+      "intent": "user.list",
+      "entity": "user",
+      "action_type": "read",
+      "operation_id": "user_list",
+      "description": "List all users in the tenant",
+      "required_parameters": [],
+      "optional_parameters": [
+        { "name": "role", "type": "string", "description": "Filter by role" },
+        { "name": "limit", "type": "number", "description": "Max results", "max": 100 }
+      ],
+      "risk_level": "low",
+      "idempotent": true,
+      "scope": "tenant",
+      "source_file": "/app/src/admin.html",
+      "source_line": 10
+    }
+  ]
+}

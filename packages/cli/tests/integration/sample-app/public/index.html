@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Sample E-Commerce App</title>
+</head>
+<body>
+
+<!-- product.search — read, none risk -->
+<form
+  axag-intent="product.search"
+  axag-entity="product"
+  axag-action-type="read"
+  axag-description="Search for products by keyword and optional category filter"
+  axag-risk-level="none"
+  axag-idempotent="true"
+  axag-scope="user"
+  axag-required-parameters='[{"name":"query","type":"string","description":"Search keyword"}]'
+  axag-optional-parameters='[{"name":"category","type":"string","description":"Category filter"},{"name":"page","type":"number","min":1}]'
+>
+  <input type="text" name="query" placeholder="Search..." />
+  <button type="submit">Search</button>
+</form>
+
+<!-- cart.add_item — write, low risk -->
+<button
+  axag-intent="cart.add_item"
+  axag-entity="cart"
+  axag-action-type="write"
+  axag-description="Add a product to the shopping cart"
+  axag-risk-level="low"
+  axag-idempotent="false"
+  axag-scope="user"
+  axag-required-parameters='[{"name":"product_id","type":"string"},{"name":"quantity","type":"number","min":1,"max":99}]'
+  axag-side-effects='["cart_updated"]'
+>
+  Add to Cart
+</button>
+
+<!-- cart.remove_item — delete, medium risk -->
+<button
+  axag-intent="cart.remove_item"
+  axag-entity="cart"
+  axag-action-type="delete"
+  axag-description="Remove an item from the shopping cart"
+  axag-risk-level="medium"
+  axag-confirmation-required="true"
+  axag-idempotent="true"
+  axag-scope="user"
+  axag-required-parameters='[{"name":"cart_item_id","type":"string"}]'
+>
+  Remove
+</button>
+
+<!-- order.place — write, high risk -->
+<button
+  axag-intent="order.place"
+  axag-entity="order"
+  axag-action-type="write"
+  axag-description="Place a new order from the current cart"
+  axag-risk-level="high"
+  axag-confirmation-required="true"
+  axag-idempotent="false"
+  axag-scope="user"
+  axag-required-parameters='[]'
+  axag-optional-parameters='[{"name":"shipping_method","type":"string","enum":["standard","express","overnight"]}]'
+  axag-side-effects='["email_sent","inventory_deducted","payment_charged"]'
+  axag-preconditions='["cart_not_empty","payment_method_set"]'
+  axag-postconditions='["order_created","cart_emptied"]'
+>
+  Place Order
+</button>
+
+<!-- account.delete — delete, critical risk -->
+<button
+  axag-intent="account.delete"
+  axag-entity="account"
+  axag-action-type="delete"
+  axag-description="Permanently delete the user account and all associated data"
+  axag-risk-level="critical"
+  axag-confirmation-required="true"
+  axag-approval-required="true"
+  axag-approval-roles='["admin","compliance_officer"]'
+  axag-idempotent="false"
+  axag-scope="user"
+  axag-required-parameters='[{"name":"confirmation_text","type":"string","description":"Must type DELETE to confirm"}]'
+  axag-preconditions='["no_pending_orders","data_export_completed"]'
+  axag-side-effects='["data_deleted","subscriptions_cancelled","email_sent"]'
+>
+  Delete My Account
+</button>
+
+<!-- user.view_profile — navigate, none risk -->
+<a
+  href="/profile"
+  axag-intent="user.view_profile"
+  axag-entity="user"
+  axag-action-type="navigate"
+  axag-description="Navigate to the user profile page"
+  axag-risk-level="none"
+  axag-scope="user"
+>
+  View Profile
+</a>
+
+</body>
+</html>

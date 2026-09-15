@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Test — AXAG Annotated Page</title>
+</head>
+<body>
+
+<!-- 1. product.search — read, risk: none -->
+<form
+  axag-intent="product.search"
+  axag-entity="product"
+  axag-action-type="read"
+  axag-description="Search for products by keyword and optional category filter"
+  axag-risk-level="none"
+  axag-idempotent="true"
+  axag-scope="user"
+  axag-required-parameters='[{"name":"query","type":"string","description":"Search keyword"}]'
+  axag-optional-parameters='[{"name":"category","type":"string","description":"Category filter"}]'
+>
+  <input type="text" name="query" placeholder="Search products..." />
+  <button type="submit">Search</button>
+</form>
+
+<!-- 2. cart.add_item — write, risk: low -->
+<button
+  axag-intent="cart.add_item"
+  axag-entity="cart"
+  axag-action-type="write"
+  axag-description="Add a product to the shopping cart"
+  axag-risk-level="low"
+  axag-idempotent="false"
+  axag-scope="user"
+  axag-required-parameters='[{"name":"product_id","type":"string","description":"Product identifier"},{"name":"quantity","type":"number","description":"Quantity to add"}]'
+  axag-side-effects='["cart_updated"]'
+>
+  Add to Cart
+</button>
+
+<!-- 3. cart.remove_item — delete, risk: medium -->
+<button
+  axag-intent="cart.remove_item"
+  axag-entity="cart"
+  axag-action-type="delete"
+  axag-description="Remove an item from the shopping cart"
+  axag-risk-level="medium"
+  axag-confirmation-required="true"
+  axag-idempotent="true"
+  axag-scope="user"
+  axag-required-parameters='[{"name":"cart_item_id","type":"string","description":"Cart item identifier"}]'
+>
+  Remove
+</button>
+
+<!-- 4. order.place — write, risk: high, with confirmation + side-effects -->
+<button
+  axag-intent="order.place"
+  axag-entity="order"
+  axag-action-type="write"
+  axag-description="Place a new order from the current cart"
+  axag-risk-level="high"
+  axag-confirmation-required="true"
+  axag-idempotent="false"
+  axag-scope="user"
+  axag-side-effects='["email_sent","inventory_deducted","payment_charged"]'
+  axag-preconditions='["cart_not_empty","payment_method_set"]'
+  axag-postconditions='["order_created","cart_emptied"]'
+>
+  Place Order
+</button>
+
+<!-- 5. account.delete — delete, risk: critical, approval required -->
+<button
+  axag-intent="account.delete"
+  axag-entity="account"
+  axag-action-type="delete"
+  axag-description="Permanently delete the user account and all associated data"
+  axag-risk-level="critical"
+  axag-confirmation-required="true"
+  axag-approval-required="true"
+  axag-approval-roles='["admin","compliance_officer"]'
+  axag-idempotent="false"
+  axag-scope="user"
+  axag-preconditions='["no_pending_orders","data_export_completed"]'
+  axag-side-effects='["data_deleted","subscriptions_cancelled","email_sent"]'
+>
+  Delete My Account
+</button>
+
+</body>
+</html>

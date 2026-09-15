@@ -1,0 +1,16 @@
+node_modules/
+dist/
+.axag/
+*.log
+.env
+.env.local
+coverage/
+.DS_Store
+
+# Internal / planning (never push)
+.internal/
+
+# Website
+website/build/
+website/.docusaurus/
+website/node_modules/

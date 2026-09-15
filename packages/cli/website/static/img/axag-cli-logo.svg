@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
+  <rect x="10" y="20" width="80" height="65" rx="8" fill="#6b21a8"/>
+  <rect x="10" y="20" width="80" height="16" rx="8" fill="#5a1c8e"/>
+  <circle cx="24" cy="28" r="3" fill="#ef4444"/>
+  <circle cx="34" cy="28" r="3" fill="#f59e0b"/>
+  <circle cx="44" cy="28" r="3" fill="#22c55e"/>
+  <text x="20" y="58" font-family="monospace" font-size="14" fill="#e9d5ff" font-weight="bold">$ axag</text>
+  <text x="20" y="74" font-family="monospace" font-size="10" fill="#a855f7">scan ▸ infer ▸ apply</text>
+</svg>

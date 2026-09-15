@@ -1,0 +1,5 @@
+# axag-cli robots.txt
+User-agent: *
+Allow: /
+
+Sitemap: https://cli.axag.org/sitemap.xml

@@ -1,0 +1,14 @@
+.canvas {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.28;
+  transition: opacity 0.3s ease;
+}
+
+[data-theme='dark'] .canvas {
+  opacity: 0.85;
+}
