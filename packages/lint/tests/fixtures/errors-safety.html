@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head><title>Safety Errors</title></head>
+<body>
+  <!-- AXAG-LINT-006: High risk without confirmation -->
+  <button
+    axag-intent="order.cancel"
+    axag-entity="order"
+    axag-action-type="write"
+    axag-risk-level="high"
+    axag-idempotent="false"
+  >Cancel Order</button>
+
+  <!-- AXAG-LINT-007: Write without idempotent -->
+  <button
+    axag-intent="post.create"
+    axag-entity="post"
+    axag-action-type="write"
+    axag-risk-level="low"
+  >Create Post</button>
+
+  <!-- AXAG-LINT-023: Delete without risk-level -->
+  <button
+    axag-intent="file.delete"
+    axag-entity="file"
+    axag-action-type="delete"
+    axag-idempotent="false"
+  >Delete File</button>
+
+  <!-- AXAG-LINT-024: Delete with low risk -->
+  <button
+    axag-intent="cache.clear"
+    axag-entity="cache"
+    axag-action-type="delete"
+    axag-risk-level="low"
+    axag-idempotent="true"
+    axag-scope="user"
+  >Clear Cache</button>
+
+  <!-- AXAG-LINT-025: Read with high risk -->
+  <button
+    axag-intent="report.view"
+    axag-entity="report"
+    axag-action-type="read"
+    axag-risk-level="high"
+  >View Report</button>
+</body>
+</html>

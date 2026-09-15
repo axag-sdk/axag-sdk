@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head><title>Valid Full AXAG Example</title></head>
+<body>
+  <!-- Product search: read, no risk, idempotent -->
+  <button
+    axag-intent="product.search"
+    axag-entity="product"
+    axag-action-type="read"
+    axag-description="Search for products"
+    axag-risk-level="none"
+    axag-idempotent="true"
+    axag-scope="user"
+    axag-required-parameters='["query"]'
+    axag-optional-parameters='["category","page"]'
+  >Search</button>
+
+  <!-- Cart add: write, low risk, idempotent, with side effects -->
+  <button
+    axag-intent="cart.add_item"
+    axag-entity="cart"
+    axag-action-type="write"
+    axag-description="Add item to cart"
+    axag-risk-level="low"
+    axag-idempotent="true"
+    axag-scope="user"
+    axag-required-parameters='["product_id"]'
+    axag-optional-parameters='["quantity"]'
+    axag-side-effects='["cart_updated"]'
+  >Add to Cart</button>
+
+  <!-- Order place: write, high risk, confirmation, side effects, preconditions -->
+  <button
+    axag-intent="order.place"
+    axag-entity="order"
+    axag-action-type="write"
+    axag-description="Place an order"
+    axag-risk-level="high"
+    axag-confirmation-required="true"
+    axag-idempotent="false"
+    axag-scope="user"
+    axag-side-effects='["email_sent","inventory_deducted"]'
+    axag-preconditions='["cart_not_empty","payment_method_set"]'
+  >Place Order</button>
+
+  <!-- Account delete: delete, critical, approval + confirmation -->
+  <button
+    axag-intent="account.delete"
+    axag-entity="account"
+    axag-action-type="delete"
+    axag-description="Delete user account"
+    axag-risk-level="critical"
+    axag-confirmation-required="true"
+    axag-approval-required="true"
+    axag-approval-roles='["admin","security_officer"]'
+    axag-idempotent="false"
+    axag-scope="user"
+    axag-preconditions='["no_pending_orders"]'
+    axag-side-effects='["data_purged","subscriptions_cancelled"]'
+  >Delete Account</button>
+
+  <!-- Navigation: navigate, no risk -->
+  <a href="/products"
+    axag-intent="product.browse"
+    axag-entity="product"
+    axag-action-type="navigate"
+    axag-description="Browse product catalog"
+    axag-risk-level="none"
+    axag-scope="user"
+  >Browse Products</a>
+</body>
+</html>

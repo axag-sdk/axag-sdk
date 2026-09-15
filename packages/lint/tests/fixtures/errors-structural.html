@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head><title>Structural Errors</title></head>
+<body>
+  <!-- AXAG-LINT-001: Interactive element without axag-intent -->
+  <button onclick="doSomething()">Click Me</button>
+
+  <!-- AXAG-LINT-002: Has intent but no entity -->
+  <button
+    axag-intent="product.search"
+    axag-action-type="read"
+  >Search</button>
+
+  <!-- AXAG-LINT-003: Has intent but no action-type -->
+  <button
+    axag-intent="cart.add_item"
+    axag-entity="cart"
+  >Add</button>
+
+  <!-- AXAG-LINT-004: Invalid action-type -->
+  <button
+    axag-intent="item.update"
+    axag-entity="item"
+    axag-action-type="update"
+  >Update</button>
+
+  <!-- AXAG-LINT-005: Invalid risk-level -->
+  <button
+    axag-intent="item.modify"
+    axag-entity="item"
+    axag-action-type="write"
+    axag-risk-level="extreme"
+  >Modify</button>
+</body>
+</html>
