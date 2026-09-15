@@ -1,0 +1,14 @@
+{
+  "name": "axag-sdk",
+  "private": true,
+  "description": "AXAG tooling monorepo — core, CLI, linter, and framework packages",
+  "packageManager": "pnpm@9.15.9",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "build": "pnpm -r --filter ./packages/** run build",
+    "test": "pnpm -r --filter ./packages/** run test",
+    "typecheck": "pnpm -r --filter ./packages/** exec tsc --noEmit"
+  }
+}
