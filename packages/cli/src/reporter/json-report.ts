@@ -9,7 +9,7 @@ export function generateJsonReport(scanResult: ScanResult): ScanReport {
   const annotations = scanResult.annotations;
 
   const riskDistribution = { none: 0, low: 0, medium: 0, high: 0, critical: 0 } as Record<RiskLevel, number>;
-  const actionTypeDistribution = { read: 0, write: 0, delete: 0, execute: 0 } as Record<ActionType, number>;
+  const actionTypeDistribution = { read: 0, write: 0, delete: 0, navigate: 0 } as Record<ActionType, number>;
 
   let totalConfidence = 0;
 
@@ -42,7 +42,7 @@ export function generateJsonReport(scanResult: ScanResult): ScanReport {
     pages: scanResult.pages,
     annotations,
     conformance: {
-      level: 'A',
+      level: 'basic',
       passed: 0,
       failed: 0,
       warnings: 0,

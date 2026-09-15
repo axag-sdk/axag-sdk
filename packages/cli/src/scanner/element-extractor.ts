@@ -4,6 +4,7 @@
 
 import * as cheerio from 'cheerio';
 import type { Element as DomElement } from 'domhandler';
+import { normalizeAttributes } from '@axag/core';
 import { INTERACTIVE_SELECTORS } from '../utils/constants.js';
 import type { ScannedElement } from '../types/index.js';
 
@@ -51,12 +52,7 @@ export function extractElements(
     }
 
     // Extract existing axag-* annotations
-    const existingAnnotations: Record<string, string> = {};
-    for (const [key, value] of Object.entries(attributes)) {
-      if (key.startsWith('axag-')) {
-        existingAnnotations[key] = String(value);
-      }
-    }
+    const existingAnnotations = normalizeAttributes(attributes);
 
     // Build a reasonable CSS selector
     const selector = buildSelector($el, tagName, attributes);

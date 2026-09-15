@@ -21,7 +21,7 @@ Given an HTML element and its page context, infer the correct axag-* attributes.
 AXAG attributes:
 - axag-intent: "{entity}.{action}" format (e.g., "product.search", "order.checkout")
 - axag-entity: The business entity (e.g., "product", "user", "order")
-- axag-action-type: "read" | "write" | "delete" | "execute"
+- axag-action-type: "read" | "write" | "delete" | "navigate"
 - axag-description: Human-readable description of what this element does
 - axag-required-parameters: JSON array of required parameter names
 - axag-optional-parameters: JSON array of optional parameter names
@@ -41,7 +41,7 @@ Respond with ONLY valid JSON matching this schema:
 {
   "intent": string,
   "entity": string,
-  "actionType": "read" | "write" | "delete" | "execute",
+  "actionType": "read" | "write" | "delete" | "navigate",
   "description": string,
   "requiredParameters": string[],
   "optionalParameters": string[],

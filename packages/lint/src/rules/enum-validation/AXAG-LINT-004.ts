@@ -1,6 +1,7 @@
+import { ACTION_TYPES } from '@axag/core';
 import type { LintRule, AnnotatedElement, FileContext, Diagnostic } from '../../types.js';
 
-const VALID_ACTION_TYPES = ['read', 'write', 'delete', 'navigate'];
+const VALID_ACTION_TYPES: readonly string[] = ACTION_TYPES;
 
 /** axag-action-type value not in allowed enum. */
 export const rule: LintRule = {

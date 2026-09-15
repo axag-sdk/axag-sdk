@@ -21,7 +21,7 @@ describe('scan-local pipeline', () => {
     const elements = await scanFiles(FIXTURES_DIR);
     const manifest = generateManifest(elements, { paths: [FIXTURES_DIR] });
 
-    expect(manifest.version).toBe('1.0.0');
+    expect(manifest.version).toBe('1.1.0');
     expect(manifest.source.tool).toBe('axag-cli');
     expect(manifest.actions.length).toBeGreaterThanOrEqual(5);
   });

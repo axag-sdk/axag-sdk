@@ -1,47 +1,41 @@
 /* ─── AXAG Attribute Constants ───────────────── */
 
-/** All AXAG specification attributes — the CLI infers these from page context. */
+import { ATTR, ACTION_TYPES, RISK_LEVELS, CONFORMANCE_LEVELS } from '@axag/core';
+import type { ConformanceLevel } from '@axag/core';
+
+export { ACTION_TYPES, RISK_LEVELS, CONFORMANCE_LEVELS };
+export type { ActionType, RiskLevel, ConformanceLevel } from '@axag/core';
+
+/** AXAG attributes the CLI infers and validates, keyed for existing call sites. */
 export const AXAG_ATTRIBUTES = {
-  /* ── Core identity ─────────────────────────── */
-  INTENT: 'axag-intent',
-  ENTITY: 'axag-entity',
-  ACTION_TYPE: 'axag-action-type',
-  DESCRIPTION: 'axag-description',
-
-  /* ── Parameters ────────────────────────────── */
-  REQUIRED_PARAMETERS: 'axag-required-parameters',
-  OPTIONAL_PARAMETERS: 'axag-optional-parameters',
-  PARAMETER_SCHEMA: 'axag-parameter-schema',
-
-  /* ── Safety & governance ───────────────────── */
-  RISK_LEVEL: 'axag-risk-level',
-  CONFIRMATION_REQUIRED: 'axag-confirmation-required',
-  APPROVAL_REQUIRED: 'axag-approval-required',
-  UNDO_SUPPORTED: 'axag-undo-supported',
-
-  /* ── Behaviour qualifiers ──────────────────── */
-  IDEMPOTENT: 'axag-idempotent',
-  ASYNC: 'axag-async',
-  RATE_LIMIT: 'axag-rate-limit',
-
-  /* ── Multi-tenancy ─────────────────────────── */
-  TENANT_SCOPE: 'axag-tenant-scope',
-  AUTH_REQUIRED: 'axag-auth-required',
+  INTENT: ATTR.intent,
+  ENTITY: ATTR.entity,
+  ACTION_TYPE: ATTR.actionType,
+  DESCRIPTION: ATTR.description,
+  REQUIRED_PARAMETERS: ATTR.requiredParameters,
+  OPTIONAL_PARAMETERS: ATTR.optionalParameters,
+  RISK_LEVEL: ATTR.riskLevel,
+  CONFIRMATION_REQUIRED: ATTR.confirmationRequired,
+  APPROVAL_REQUIRED: ATTR.approvalRequired,
+  IDEMPOTENT: ATTR.idempotent,
+  ASYNC: ATTR.async,
+  RATE_LIMIT: ATTR.rateLimit,
+  TENANT_BOUNDARY: ATTR.tenantBoundary,
 } as const;
 
 export type AxagAttribute = (typeof AXAG_ATTRIBUTES)[keyof typeof AXAG_ATTRIBUTES];
 
-/** Valid action types from the AXAG spec. */
-export const ACTION_TYPES = ['read', 'write', 'delete', 'execute'] as const;
-export type ActionType = (typeof ACTION_TYPES)[number];
+/** Pre-1.1 CLI configs used WCAG-style level names. */
+const LEGACY_CONFORMANCE: Record<string, ConformanceLevel> = { A: 'basic', AA: 'intermediate', AAA: 'full' };
 
-/** Risk levels from the AXAG spec. */
-export const RISK_LEVELS = ['none', 'low', 'medium', 'high', 'critical'] as const;
-export type RiskLevel = (typeof RISK_LEVELS)[number];
-
-/** Conformance levels. */
-export const CONFORMANCE_LEVELS = ['A', 'AA', 'AAA'] as const;
-export type ConformanceLevel = (typeof CONFORMANCE_LEVELS)[number];
+/** Accept `basic | intermediate | full` or the legacy `A | AA | AAA`. */
+export function toConformanceLevel(value: string): ConformanceLevel {
+  const level = LEGACY_CONFORMANCE[value] ?? value;
+  if (!(CONFORMANCE_LEVELS as readonly string[]).includes(level)) {
+    throw new Error(`Unknown conformance level "${value}". Use one of: ${CONFORMANCE_LEVELS.join(', ')}`);
+  }
+  return level as ConformanceLevel;
+}
 
 /** Interactive HTML element selectors the scanner targets. */
 export const INTERACTIVE_SELECTORS = [
@@ -66,6 +60,9 @@ export const INTERACTIVE_SELECTORS = [
   '[data-action]',
   '[data-href]',
 ].join(', ');
+
+/** Bump together with the version in package.json. */
+export const CLI_VERSION = '1.0.2';
 
 /** Default output directory for scan results. */
 export const DEFAULT_OUTPUT_DIR = '.axag';

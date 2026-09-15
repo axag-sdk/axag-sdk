@@ -1,6 +1,7 @@
 import { cosmiconfig } from 'cosmiconfig';
 import { z } from 'zod';
 import { DEFAULT_OUTPUT_DIR } from './constants.js';
+import { toConformanceLevel } from './constants.js';
 
 /** Configuration schema validated with Zod. */
 export const ConfigSchema = z.object({
@@ -46,7 +47,7 @@ export const ConfigSchema = z.object({
   /** Validation settings. */
   validation: z
     .object({
-      conformanceLevel: z.enum(['A', 'AA', 'AAA']).default('A'),
+      conformanceLevel: z.string().default('basic').transform(toConformanceLevel),
       strict: z.boolean().default(false),
     })
     .default({}),

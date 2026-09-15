@@ -7,8 +7,11 @@
     "node": ">=18.0.0"
   },
   "scripts": {
-    "build": "pnpm -r --filter ./packages/** run build",
-    "test": "pnpm -r --filter ./packages/** run test",
-    "typecheck": "pnpm -r --filter ./packages/** exec tsc --noEmit"
+    "build": "pnpm -r run build",
+    "test": "pnpm --filter @axag/core run build && pnpm -r run test",
+    "typecheck": "pnpm --filter @axag/core run build && pnpm -r exec tsc --noEmit"
+  },
+  "devDependencies": {
+    "vite": "^7.1.0"
   }
 }

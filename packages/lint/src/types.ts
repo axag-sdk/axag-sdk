@@ -1,20 +1,6 @@
 /** A parsed element with axag-* attributes extracted from source. */
-export interface AnnotatedElement {
-  /** HTML tag name (button, a, input, etc.). */
-  tagName: string;
-  /** All axag-* attributes on the element (full attribute names as keys). */
-  attributes: Record<string, string>;
-  /** All HTML attributes on the element (for context checks like onclick, role). */
-  allAttributes: Record<string, string>;
-  /** Source file path. */
-  filePath: string;
-  /** Line number in source (1-based). */
-  line: number;
-  /** Column number in source (1-based). */
-  column: number;
-  /** Raw HTML snippet (optional, for error context). */
-  rawHtml?: string;
-}
+export type { AnnotatedElement } from '@axag/core';
+import type { AnnotatedElement } from '@axag/core';
 
 /** Context for the file being linted. */
 export interface FileContext {

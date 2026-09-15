@@ -46,9 +46,9 @@ const PATTERNS: PatternMatch[] = [
   { pattern: /refresh|reload|sync/i, intent: '{entity}.refresh', entity: '', actionType: 'read', riskLevel: 'none', confirmationRequired: false, idempotent: true },
 
   /* ── Execute actions ───────────────────────── */
-  { pattern: /run|execute|trigger|start|launch/i, intent: '{entity}.execute', entity: 'process', actionType: 'execute', riskLevel: 'medium', confirmationRequired: true, idempotent: false },
-  { pattern: /deploy|release|promote/i, intent: '{entity}.deploy', entity: 'deployment', actionType: 'execute', riskLevel: 'critical', confirmationRequired: true, idempotent: false },
-  { pattern: /send|notify|email|share/i, intent: '{entity}.send', entity: 'message', actionType: 'execute', riskLevel: 'medium', confirmationRequired: true, idempotent: false },
+  { pattern: /run|execute|trigger|start|launch/i, intent: '{entity}.execute', entity: 'process', actionType: 'write', riskLevel: 'medium', confirmationRequired: true, idempotent: false },
+  { pattern: /deploy|release|promote/i, intent: '{entity}.deploy', entity: 'deployment', actionType: 'write', riskLevel: 'critical', confirmationRequired: true, idempotent: false },
+  { pattern: /send|notify|email|share/i, intent: '{entity}.send', entity: 'message', actionType: 'write', riskLevel: 'medium', confirmationRequired: true, idempotent: false },
 
   /* ── Auth actions ──────────────────────────── */
   { pattern: /log\s*in|sign\s*in|authenticate/i, intent: 'session.login', entity: 'session', actionType: 'write', riskLevel: 'none', confirmationRequired: false, idempotent: true },

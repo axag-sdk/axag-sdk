@@ -6,6 +6,8 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import type { InferredAnnotation } from '../types/index.js';
 import { logger } from '../utils/logger.js';
+import { ATTR } from '@axag/core';
+import { ACTION_TYPES } from '../utils/constants.js';
 import { showAnnotationDiff } from './diff-viewer.js';
 
 /**
@@ -139,42 +141,42 @@ async function modifyAnnotation(
     switch (field) {
       case 'intent': {
         const { value } = await inquirer.prompt([{ type: 'input', name: 'value', message: 'New intent:', default: annotation.intent }]);
-        overrides['axag-intent'] = value;
+        overrides[ATTR.intent] = value;
         break;
       }
       case 'entity': {
         const { value } = await inquirer.prompt([{ type: 'input', name: 'value', message: 'New entity:', default: annotation.entity }]);
-        overrides['axag-entity'] = value;
+        overrides[ATTR.entity] = value;
         break;
       }
       case 'actionType': {
-        const { value } = await inquirer.prompt([{ type: 'list', name: 'value', message: 'New action type:', choices: ['read', 'write', 'delete', 'execute'], default: annotation.actionType }]);
-        overrides['axag-action-type'] = value;
+        const { value } = await inquirer.prompt([{ type: 'list', name: 'value', message: 'New action type:', choices: [...ACTION_TYPES], default: annotation.actionType }]);
+        overrides[ATTR.actionType] = value;
         break;
       }
       case 'description': {
         const { value } = await inquirer.prompt([{ type: 'input', name: 'value', message: 'New description:', default: annotation.description }]);
-        overrides['axag-description'] = value;
+        overrides[ATTR.description] = value;
         break;
       }
       case 'riskLevel': {
         const { value } = await inquirer.prompt([{ type: 'list', name: 'value', message: 'New risk level:', choices: ['none', 'low', 'medium', 'high', 'critical'], default: annotation.riskLevel }]);
-        overrides['axag-risk-level'] = value;
+        overrides[ATTR.riskLevel] = value;
         break;
       }
       case 'confirmationRequired': {
         const { value } = await inquirer.prompt([{ type: 'confirm', name: 'value', message: 'Require confirmation?', default: annotation.confirmationRequired }]);
-        overrides['axag-confirmation-required'] = String(value);
+        overrides[ATTR.confirmationRequired] = String(value);
         break;
       }
       case 'requiredParameters': {
         const { value } = await inquirer.prompt([{ type: 'input', name: 'value', message: 'Required params (comma-separated):', default: annotation.requiredParameters.join(', ') }]);
-        overrides['axag-required-parameters'] = JSON.stringify(value.split(',').map((s: string) => s.trim()).filter(Boolean));
+        overrides[ATTR.requiredParameters] = JSON.stringify(value.split(',').map((s: string) => s.trim()).filter(Boolean));
         break;
       }
       case 'optionalParameters': {
         const { value } = await inquirer.prompt([{ type: 'input', name: 'value', message: 'Optional params (comma-separated):', default: annotation.optionalParameters.join(', ') }]);
-        overrides['axag-optional-parameters'] = JSON.stringify(value.split(',').map((s: string) => s.trim()).filter(Boolean));
+        overrides[ATTR.optionalParameters] = JSON.stringify(value.split(',').map((s: string) => s.trim()).filter(Boolean));
         break;
       }
     }

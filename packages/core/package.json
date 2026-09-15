@@ -1,0 +1,78 @@
+{
+  "name": "@axag/core",
+  "version": "0.1.0",
+  "description": "Canonical AXAG vocabulary, annotation reader, manifest and tool generation shared by every AXAG tool",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./html": {
+      "types": "./dist/adapters/html.d.ts",
+      "import": "./dist/adapters/html.js"
+    },
+    "./jsx": {
+      "types": "./dist/adapters/jsx.d.ts",
+      "import": "./dist/adapters/jsx.js"
+    },
+    "./dom": {
+      "types": "./dist/adapters/dom.d.ts",
+      "import": "./dist/adapters/dom.js"
+    },
+    "./schema.json": "./schema/axag-manifest.schema.json"
+  },
+  "files": [
+    "dist",
+    "schema"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "license": "MIT",
+  "keywords": [
+    "axag",
+    "agent-experience",
+    "semantic-contract",
+    "mcp",
+    "webmcp"
+  ],
+  "peerDependencies": {
+    "@babel/parser": "^7.29.0",
+    "@babel/traverse": "^7.29.0",
+    "cheerio": "^1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "@babel/parser": {
+      "optional": true
+    },
+    "@babel/traverse": {
+      "optional": true
+    },
+    "cheerio": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@babel/parser": "^7.29.2",
+    "@babel/traverse": "^7.29.0",
+    "@babel/types": "^7.29.0",
+    "@types/babel__traverse": "^7.28.0",
+    "@types/node": "^22.0.0",
+    "ajv": "^8.18.0",
+    "ajv-formats": "^3.0.1",
+    "cheerio": "^1.2.0",
+    "domhandler": "^5.0.3",
+    "happy-dom": "^20.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  }
+}

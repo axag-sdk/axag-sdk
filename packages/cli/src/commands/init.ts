@@ -77,9 +77,9 @@ export async function initCommand(options: InitOptions): Promise<void> {
       name: 'conformanceLevel',
       message: 'Target conformance level:',
       choices: [
-        { name: 'A  — Core attributes only', value: 'A' },
-        { name: 'AA — Core + safety & parameters', value: 'AA' },
-        { name: 'AAA — Full specification compliance', value: 'AAA' },
+        { name: 'basic        — Core attributes only', value: 'basic' },
+        { name: 'intermediate — Core + safety & parameters', value: 'intermediate' },
+        { name: 'full         — Full specification compliance', value: 'full' },
       ],
     },
   ]);

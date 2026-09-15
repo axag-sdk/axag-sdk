@@ -1,6 +1,7 @@
+import { RISK_LEVELS } from '@axag/core';
 import type { LintRule, AnnotatedElement, FileContext, Diagnostic } from '../../types.js';
 
-const VALID_RISK_LEVELS = ['none', 'low', 'medium', 'high', 'critical'];
+const VALID_RISK_LEVELS: readonly string[] = RISK_LEVELS;
 
 /** axag-risk-level value not in allowed enum. */
 export const rule: LintRule = {

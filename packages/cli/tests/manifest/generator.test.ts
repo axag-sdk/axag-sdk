@@ -211,12 +211,12 @@ describe('generateManifest', () => {
 
     const manifest = generateManifest(elements, { paths: ['/src'], url: 'https://example.com' });
 
-    expect(manifest.version).toBe('1.0.0');
+    expect(manifest.version).toBe('1.1.0');
     expect(manifest.generated_at).toBeDefined();
     expect(manifest.source.paths).toEqual(['/src']);
     expect(manifest.source.url).toBe('https://example.com');
     expect(manifest.source.tool).toBe('axag-cli');
-    expect(manifest.source.tool_version).toBe('1.0.0');
+    expect(manifest.source.tool_version).toBe('1.0.2');
     expect(manifest.conformance).toBeDefined();
   });
 });

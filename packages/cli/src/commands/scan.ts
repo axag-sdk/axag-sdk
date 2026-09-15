@@ -9,7 +9,7 @@ import chalk from 'chalk';
 import type { ScanResult } from '../types/index.js';
 import { scanUrl, scanDirectory } from '../scanner/index.js';
 import { scanFiles } from '../scanner/file-scanner.js';
-import { generateManifest } from '../manifest/generator.js';
+import { generateManifestWithDiagnostics } from '../manifest/generator.js';
 import { validateManifest } from '../manifest/schema-validator.js';
 import { inferAnnotations } from '../annotator/index.js';
 import { interactiveReview } from '../interactive/index.js';
@@ -169,7 +169,7 @@ export async function scanCommand(
       const resolvedDir = path.resolve(target);
       const annotatedElements = await scanFiles(resolvedDir);
 
-      const manifest = generateManifest(annotatedElements, {
+      const { manifest, diagnostics } = generateManifestWithDiagnostics(annotatedElements, {
         paths: [resolvedDir],
       });
 
@@ -179,6 +179,9 @@ export async function scanCommand(
 
       logger.kv('Actions', `${manifest.actions.length}`);
       logger.kv('Conformance', manifest.conformance);
+      for (const d of diagnostics) {
+        logger.warn(`${d.code} ${path.relative(resolvedDir, d.filePath ?? '')}:${d.line ?? 1} ${d.message}`);
+      }
 
       // Validate if requested
       if (options.validate) {

@@ -20,6 +20,7 @@ import { applyCommand } from '../src/commands/apply.js';
 import { validateCommand } from '../src/commands/validate.js';
 import { generateToolsCommand } from '../src/commands/generate-tools.js';
 import { initCommand } from '../src/commands/init.js';
+import { CLI_VERSION } from '../src/utils/constants.js';
 
 const program = new Command();
 
@@ -29,7 +30,7 @@ program
     chalk.bold('AXAG CLI') +
       ' — Scan websites, infer semantic annotations, review & apply automatically.',
   )
-  .version('1.0.0');
+  .version(CLI_VERSION);
 
 /* ─── scan ───────────────────────────────────── */
 program
@@ -72,7 +73,7 @@ program
   .command('validate [target]')
   .description('Validate existing AXAG annotations on a URL or in local files')
   .option('--strict', 'Use strict validation (fail on warnings)', false)
-  .option('--level <level>', 'Minimum conformance level: A | AA | AAA', 'A')
+  .option('--level <level>', 'Minimum conformance level: basic | intermediate | full', 'basic')
   .action(validateCommand);
 
 /* ─── init ───────────────────────────────────── */

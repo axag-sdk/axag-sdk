@@ -8,7 +8,8 @@ import chalk from 'chalk';
 import * as cheerio from 'cheerio';
 import type { Element as DomElement } from 'domhandler';
 import { table } from 'table';
-import { AXAG_ATTRIBUTES, INTERACTIVE_SELECTORS, RISK_LEVELS, ACTION_TYPES } from '../utils/constants.js';
+import { AXAG_ATTRIBUTES, CONFORMANCE_LEVELS, RISK_LEVELS, ACTION_TYPES, toConformanceLevel } from '../utils/constants.js';
+import type { ConformanceLevel } from '../utils/constants.js';
 import type { ValidationRuleResult } from '../types/index.js';
 import { logger } from '../utils/logger.js';
 
@@ -24,7 +25,7 @@ const VALIDATION_RULES: Array<{
   id: string;
   name: string;
   severity: 'error' | 'warning';
-  level: 'A' | 'AA' | 'AAA';
+  level: ConformanceLevel;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   check: (el: cheerio.Cheerio<any>, $: cheerio.CheerioAPI) => string | null;
 }> = [
@@ -32,7 +33,7 @@ const VALIDATION_RULES: Array<{
     id: 'AX-001',
     name: 'axag-intent required',
     severity: 'error',
-    level: 'A',
+    level: 'basic',
     check: (el) => {
       if (!el.attr(AXAG_ATTRIBUTES.INTENT)) {
         return 'Missing required axag-intent attribute';
@@ -48,14 +49,14 @@ const VALIDATION_RULES: Array<{
     id: 'AX-002',
     name: 'axag-entity required',
     severity: 'error',
-    level: 'A',
+    level: 'basic',
     check: (el) => !el.attr(AXAG_ATTRIBUTES.ENTITY) ? 'Missing required axag-entity attribute' : null,
   },
   {
     id: 'AX-003',
     name: 'axag-action-type valid',
     severity: 'error',
-    level: 'A',
+    level: 'basic',
     check: (el) => {
       const action = el.attr(AXAG_ATTRIBUTES.ACTION_TYPE);
       if (!action) return 'Missing required axag-action-type attribute';
@@ -69,14 +70,14 @@ const VALIDATION_RULES: Array<{
     id: 'AX-004',
     name: 'axag-description present',
     severity: 'warning',
-    level: 'AA',
+    level: 'intermediate',
     check: (el) => !el.attr(AXAG_ATTRIBUTES.DESCRIPTION) ? 'Missing axag-description (recommended)' : null,
   },
   {
     id: 'AX-005',
     name: 'axag-risk-level valid',
     severity: 'error',
-    level: 'A',
+    level: 'basic',
     check: (el) => {
       const risk = el.attr(AXAG_ATTRIBUTES.RISK_LEVEL);
       if (!risk) return null; // Optional
@@ -90,7 +91,7 @@ const VALIDATION_RULES: Array<{
     id: 'AX-006',
     name: 'High-risk actions require confirmation',
     severity: 'warning',
-    level: 'AA',
+    level: 'intermediate',
     check: (el) => {
       const risk = el.attr(AXAG_ATTRIBUTES.RISK_LEVEL);
       if (risk === 'high' || risk === 'critical') {
@@ -105,7 +106,7 @@ const VALIDATION_RULES: Array<{
     id: 'AX-007',
     name: 'Write/delete actions specify risk',
     severity: 'warning',
-    level: 'AA',
+    level: 'intermediate',
     check: (el) => {
       const action = el.attr(AXAG_ATTRIBUTES.ACTION_TYPE);
       if (action === 'write' || action === 'delete') {
@@ -120,7 +121,7 @@ const VALIDATION_RULES: Array<{
     id: 'AX-008',
     name: 'JSON parameters are valid',
     severity: 'error',
-    level: 'A',
+    level: 'basic',
     check: (el) => {
       for (const attr of [AXAG_ATTRIBUTES.REQUIRED_PARAMETERS, AXAG_ATTRIBUTES.OPTIONAL_PARAMETERS]) {
         const value = el.attr(attr);
@@ -140,15 +141,13 @@ const VALIDATION_RULES: Array<{
     id: 'AX-009',
     name: 'Boolean attributes are valid',
     severity: 'error',
-    level: 'A',
+    level: 'basic',
     check: (el) => {
       const boolAttrs = [
         AXAG_ATTRIBUTES.IDEMPOTENT,
         AXAG_ATTRIBUTES.CONFIRMATION_REQUIRED,
         AXAG_ATTRIBUTES.APPROVAL_REQUIRED,
         AXAG_ATTRIBUTES.ASYNC,
-        AXAG_ATTRIBUTES.UNDO_SUPPORTED,
-        AXAG_ATTRIBUTES.AUTH_REQUIRED,
       ];
       for (const attr of boolAttrs) {
         const val = el.attr(attr);
@@ -187,7 +186,8 @@ export async function validateCommand(
     return;
   }
 
-  logger.info(`Validating ${files.length} files at conformance level ${options.level}...`);
+  const level = toConformanceLevel(options.level);
+  logger.info(`Validating ${files.length} files at conformance level ${level}...`);
   logger.blank();
 
   const allResults: ValidationRuleResult[] = [];
@@ -208,7 +208,7 @@ export async function validateCommand(
 
       for (const rule of VALIDATION_RULES) {
         // Skip rules above requested level
-        if (!isLevelIncluded(rule.level, options.level)) continue;
+        if (!isLevelIncluded(rule.level, level)) continue;
 
         const message = rule.check($el, $);
         if (message) {
@@ -316,7 +316,6 @@ function buildSelector(
   return text ? `${tag}:contains("${text}")` : tag;
 }
 
-function isLevelIncluded(ruleLevel: string, requestedLevel: string): boolean {
-  const order = ['A', 'AA', 'AAA'];
-  return order.indexOf(ruleLevel) <= order.indexOf(requestedLevel);
+function isLevelIncluded(ruleLevel: ConformanceLevel, requestedLevel: ConformanceLevel): boolean {
+  return CONFORMANCE_LEVELS.indexOf(ruleLevel) <= CONFORMANCE_LEVELS.indexOf(requestedLevel);
 }

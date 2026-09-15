@@ -1,0 +1,261 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://axag.org/schema/v1.1/axag-manifest.schema.json",
+  "title": "AXAG Semantic Manifest",
+  "description": "Schema for validating AXAG semantic manifest files that describe agent-accessible operations.",
+  "type": "object",
+  "required": [
+    "version",
+    "generated_at",
+    "source",
+    "conformance",
+    "actions"
+  ],
+  "properties": {
+    "version": {
+      "type": "string",
+      "pattern": "^\\d+\\.\\d+\\.\\d+(-[a-zA-Z0-9]+)?$",
+      "description": "AXAG specification version (semver)"
+    },
+    "generated_at": {
+      "type": "string",
+      "format": "date-time",
+      "description": "ISO 8601 timestamp of manifest generation"
+    },
+    "source": {
+      "$ref": "#/definitions/Source"
+    },
+    "conformance": {
+      "type": "string",
+      "enum": [
+        "basic",
+        "intermediate",
+        "full"
+      ],
+      "description": "Conformance level of the manifest"
+    },
+    "actions": {
+      "type": "array",
+      "items": {
+        "$ref": "#/definitions/Action"
+      },
+      "description": "Array of operation definitions"
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "Source": {
+      "type": "object",
+      "properties": {
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Source application URL"
+        },
+        "paths": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Source file paths scanned"
+        },
+        "tool": {
+          "type": "string",
+          "description": "Tool that generated this manifest"
+        },
+        "tool_version": {
+          "type": "string",
+          "description": "Version of the generating tool"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Action": {
+      "type": "object",
+      "required": [
+        "intent",
+        "entity",
+        "action_type",
+        "description"
+      ],
+      "properties": {
+        "intent": {
+          "type": "string",
+          "pattern": "^[a-z_]+\\.[a-z_]+$",
+          "description": "Semantic intent in entity.verb format"
+        },
+        "entity": {
+          "type": "string",
+          "pattern": "^[a-z_]+$",
+          "description": "Domain entity this operation acts on"
+        },
+        "action_type": {
+          "type": "string",
+          "enum": [
+            "read",
+            "write",
+            "delete",
+            "navigate"
+          ],
+          "description": "Type of operation"
+        },
+        "operation_id": {
+          "type": "string",
+          "description": "Unique operation identifier"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable description of the operation"
+        },
+        "required_parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "description": "Parameters that must be provided"
+        },
+        "optional_parameters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Parameter"
+          },
+          "description": "Parameters that may be provided"
+        },
+        "risk_level": {
+          "type": "string",
+          "enum": [
+            "none",
+            "low",
+            "medium",
+            "high",
+            "critical"
+          ],
+          "description": "Risk classification for this operation"
+        },
+        "confirmation_required": {
+          "type": "boolean",
+          "description": "Whether human confirmation is required before execution"
+        },
+        "approval_required": {
+          "type": "boolean",
+          "description": "Whether role-based approval is required"
+        },
+        "approval_roles": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Roles authorized to approve this operation"
+        },
+        "idempotent": {
+          "type": "boolean",
+          "description": "Whether the operation is safe to retry"
+        },
+        "scope": {
+          "type": "string",
+          "enum": [
+            "public",
+            "user",
+            "tenant",
+            "global"
+          ],
+          "description": "Operational boundary"
+        },
+        "side_effects": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Observable side effects of the operation"
+        },
+        "preconditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Required state before execution"
+        },
+        "postconditions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Guaranteed state after execution"
+        },
+        "element_selector": {
+          "type": "string",
+          "description": "CSS selector of the source element"
+        },
+        "source_file": {
+          "type": "string",
+          "description": "File path where the annotation lives"
+        },
+        "source_line": {
+          "type": "integer",
+          "minimum": 1,
+          "description": "Line number in the source file"
+        }
+      },
+      "additionalProperties": false
+    },
+    "Parameter": {
+      "type": "object",
+      "required": [
+        "name",
+        "type"
+      ],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Parameter name"
+        },
+        "type": {
+          "type": "string",
+          "enum": [
+            "string",
+            "number",
+            "boolean",
+            "array",
+            "object"
+          ],
+          "description": "Parameter data type"
+        },
+        "description": {
+          "type": "string",
+          "description": "Human-readable parameter description"
+        },
+        "enum": {
+          "type": "array",
+          "description": "Allowed values"
+        },
+        "min": {
+          "type": "number",
+          "description": "Minimum numeric value"
+        },
+        "max": {
+          "type": "number",
+          "description": "Maximum numeric value"
+        },
+        "maxLength": {
+          "type": "integer",
+          "description": "Maximum string length"
+        },
+        "format": {
+          "type": "string",
+          "enum": [
+            "email",
+            "url",
+            "date",
+            "datetime",
+            "uuid"
+          ],
+          "description": "Value format hint"
+        },
+        "default": {
+          "description": "Default value if not provided"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}
