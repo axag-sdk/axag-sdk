@@ -1,0 +1,64 @@
+name: AXAG Lint
+description: Lint AXAG annotations and surface findings on the pull request and the Security tab.
+author: AXAG Standard Contributors
+
+branding:
+  icon: check-circle
+  color: purple
+
+inputs:
+  path:
+    description: File or directory to lint.
+    required: false
+    default: src
+  manifest:
+    description: Manifest for the cross-reference rules. Generate it first with `axag generate`.
+    required: false
+  config:
+    description: Config file, when it isn't .axaglintrc.json in the working directory.
+    required: false
+  changed-since:
+    description: Only lint files changed since this git ref, e.g. origin/main.
+    required: false
+  baseline:
+    description: Baseline file of findings to ignore.
+    required: false
+  sarif:
+    description: Also write SARIF here, for upload to code scanning.
+    required: false
+    default: axag-lint.sarif
+  version:
+    description: Version of @web-axag/axag-lint to run.
+    required: false
+    default: latest
+
+outputs:
+  sarif-file:
+    description: Path to the SARIF report.
+    value: ${{ inputs.sarif }}
+
+runs:
+  using: composite
+  steps:
+    # Annotations on the diff, so a reviewer sees findings in context.
+    - name: Lint annotations
+      shell: bash
+      run: |
+        npx --yes @web-axag/axag-lint@${{ inputs.version }} "${{ inputs.path }}" \
+          --format github \
+          ${{ inputs.manifest && format('--manifest {0}', inputs.manifest) || '' }} \
+          ${{ inputs.config && format('--config {0}', inputs.config) || '' }} \
+          ${{ inputs.changed-since && format('--changed-since {0}', inputs.changed-since) || '' }} \
+          ${{ inputs.baseline && format('--baseline {0}', inputs.baseline) || '' }}
+
+    # Written even when the step above failed, so findings still reach the Security tab.
+    - name: Write SARIF
+      if: ${{ always() && inputs.sarif != '' }}
+      shell: bash
+      run: |
+        npx --yes @web-axag/axag-lint@${{ inputs.version }} "${{ inputs.path }}" \
+          --format sarif --output "${{ inputs.sarif }}" \
+          ${{ inputs.manifest && format('--manifest {0}', inputs.manifest) || '' }} \
+          ${{ inputs.config && format('--config {0}', inputs.config) || '' }} \
+          ${{ inputs.changed-since && format('--changed-since {0}', inputs.changed-since) || '' }} \
+          ${{ inputs.baseline && format('--baseline {0}', inputs.baseline) || '' }} || true

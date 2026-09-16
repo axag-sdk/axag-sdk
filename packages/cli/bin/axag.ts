@@ -79,6 +79,7 @@ program
   .description('Validate existing AXAG annotations on a URL or in local files')
   .option('--strict', 'Use strict validation (fail on warnings)', false)
   .option('--level <level>', 'Minimum conformance level: basic | intermediate | full', 'basic')
+  .option('-m, --manifest <path>', 'Manifest for the cross-reference rules')
   .action(validateCommand);
 
 /* ─── fmt ────────────────────────────────────── */

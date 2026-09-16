@@ -39,5 +39,7 @@ export const DEFAULT_CONFIG: LintConfig = {
     'AXAG-LINT-033': 'info',
     'AXAG-LINT-034': 'error',
     'AXAG-LINT-035': 'error',
+    'AXAG-LINT-036': 'error',
+    'AXAG-LINT-037': 'warning',
   },
 };

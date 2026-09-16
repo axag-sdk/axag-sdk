@@ -82,6 +82,8 @@ axag-lint --init
 | AXAG-LINT-033 | Dynamic `axag={spec}` is registered at runtime only | info |
 | AXAG-LINT-034 | `axag-intent` does not match `entity.verb` | error |
 | AXAG-LINT-035 | `axag-entity` is not a lowercase name | error |
+| AXAG-LINT-036 | Tenant-scoped action exposes a tenant parameter | error |
+| AXAG-LINT-037 | High-risk action has no server-side enforcement (needs `enforcedIntentsPath`) | warning |
 
 Elements annotated with the `axag="write:user.deactivate!critical?confirm"` macro are expanded before any rule runs, so every rule applies to macro and longhand annotations alike.
 
@@ -94,6 +96,30 @@ Elements annotated with the `axag="write:user.deactivate!critical?confirm"` macr
 | `.vue` | The `<template>` block; `:axag` bindings count as runtime-only |
 
 A value neither the linter nor the build can read is reported once, as AXAG-LINT-033, rather than as a missing annotation.
+
+## CI
+
+```yaml
+- uses: axag-cli/axag-sdk/.github/actions/axag-lint@main
+  with: { path: src, manifest: axag-manifest.json, changed-since: origin/main }
+```
+
+| Flag | Description |
+|------|-------------|
+| `--format console\|json\|github\|sarif` | `github` annotates the PR; `sarif` feeds code scanning |
+| `--output <path>` | Write the report to a file instead of stdout |
+| `--changed-since <ref>` | Only lint files changed since a git ref |
+| `--baseline [path]` | Ignore findings recorded in a baseline |
+| `--update-baseline [path]` | Record today's findings and exit 0 |
+
+Turning the linter on in an existing codebase:
+
+```bash
+npx axag-lint src --update-baseline   # record what's already there
+npx axag-lint src --baseline          # from now on, only new findings fail
+```
+
+The baseline records rule and file, not line numbers, so unrelated edits don't reset it — but a new finding of the same kind in the same file still reports.
 
 ## Configuration
 

@@ -160,7 +160,10 @@ axag validate                         # Validate current directory
 axag validate ./src                   # Validate specific directory
 axag validate --level intermediate    # Validate at intermediate conformance
 axag validate --strict                # Fail on warnings too
+axag validate ./src -m axag-manifest.json   # include the cross-reference rules
 ```
+
+`validate` runs the same rules as [`axag-lint`](https://www.npmjs.com/package/@web-axag/axag-lint), limited to what the conformance level asks for — identity and syntax at `basic`, safety and scope at `intermediate`, contradictions and enforcement at `full`.
 
 ### Parameters
 

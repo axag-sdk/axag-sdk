@@ -42,6 +42,7 @@ export function loadConfig(cwd: string, configPath?: string): {
     include: userConfig.include ?? DEFAULT_CONFIG.include,
     exclude: userConfig.exclude ?? DEFAULT_CONFIG.exclude,
     manifestPath: userConfig.manifestPath,
+    enforcedIntentsPath: userConfig.enforcedIntentsPath,
     rules: { ...DEFAULT_CONFIG.rules, ...userConfig.rules },
   };
 

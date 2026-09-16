@@ -36,6 +36,8 @@ export interface RegisterOptions {
   middleware?: Middleware[];
   /** Override the browser's model context (tests, or the fallback shim). */
   modelContext?: ModelContext;
+  /** Adjust the tool before it is registered, e.g. to remove tenant parameters. */
+  transformTool?: (tool: WebMcpTool) => WebMcpTool;
   /** Re-register when the element's operability changes. Default true when an element is given. */
   watchOperability?: boolean;
   onError?: (error: unknown) => void;
@@ -50,7 +52,8 @@ export interface Registration {
 
 const NOOP: Registration = { unregister: () => undefined, active: false };
 
-export function registerTool(tool: WebMcpTool, options: RegisterOptions = {}): Registration {
+export function registerTool(input: WebMcpTool, options: RegisterOptions = {}): Registration {
+  const tool = options.transformTool ? options.transformTool(input) : input;
   const context = getModelContext(options.modelContext);
   if (!context) {
     options.onError?.(new Error('This browser has no WebMCP support (document.modelContext). Load @axag/shim to bridge instead.'));

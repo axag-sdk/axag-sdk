@@ -61,18 +61,50 @@ Every annotated element on the page is registered, with parameters harvested fro
 - **Operability is watched.** An action whose element is disabled, `hidden`, `inert`, `aria-hidden`, `aria-disabled` or detached is unregistered, and registered again when the element comes back. One `MutationObserver` serves every registration.
 - **No handler needed.** The default handler fills the element's form from the tool's arguments — writing through the prototype setter so React and Vue see the change — then presses the control.
 
-## Middleware
+## Safety enforcers
+
+The middleware high-risk actions need, without writing the glue yourself:
 
 ```ts
-registerManifest(tools, {
-  signal: route.signal,
-  middleware: [
-    async (ctx, next) => (await confirm(ctx.tool)) ? next() : { error: 'declined' },
-  ],
+import { createEnforcers, registerManifest } from '@axag/webmcp';
+
+const safety = createEnforcers({
+  confirm: { from: 'high', endpoint: '/axag/confirm' },
+  tenant: { id: () => session.tenantId },
+  csrf: {},
+  audit: event => analytics.track('agent_action', event),
 });
+
+registerManifest(tools, { signal: route.signal, handlers, ...safety });
 ```
 
-Middleware wraps every call, in order. This is where confirmation, tenant scoping and audit hooks belong.
+- **Confirmation** — a dialog in a closed shadow root, showing the action and its parameters read-only, for anything at `high` risk or above (or with `confirmation_required`). Declining refuses the call with `AXAG_CONFIRMATION_MISSING`. With `endpoint`, the answer is exchanged for a single-use token the server can verify.
+- **Tenant scope** — tenant parameters are removed from the agent-facing schema, so an agent cannot choose a tenant, and the session's tenant is attached instead.
+- **CSRF** — the token from `<meta name="csrf-token">` is attached.
+- **Audit** — every call is recorded with its outcome and *parameter names only*.
+
+What they add travels in a reserved `_axag` entry alongside the agent's parameters. Your handler forwards it:
+
+```ts
+import { axagHeaders, withoutEnvelope } from '@axag/webmcp';
+
+const handler = input =>
+  fetch('/api/users/deactivate', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...axagHeaders(input) },
+    body: JSON.stringify(withoutEnvelope(input)),
+  });
+```
+
+Custom middleware still works the same way, and runs in the order given:
+
+```ts
+registerManifest(tools, { signal: route.signal, middleware: [async (ctx, next) => next()] });
+```
+
+:::warning
+These run in the page. An agent with the page's credentials can call your API directly, so [`@axag/server`](../server) has to check the same things.
+:::
 
 ## The draft it targets
 

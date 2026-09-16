@@ -35,6 +35,7 @@ axag validate --strict
 | Flag | Default | Description |
 |------|---------|-------------|
 | `--level <level>` | `basic` | Conformance level: `basic`, `intermediate`, `full`. The legacy `A`, `AA`, `AAA` names still work. |
+| `-m, --manifest <path>` | — | Manifest for the cross-reference rules |
 | `--strict` | `false` | Treat warnings as errors |
 | `--format <format>` | `text` | Output format: `text`, `json` |
 

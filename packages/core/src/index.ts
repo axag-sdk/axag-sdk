@@ -14,6 +14,8 @@ export type { ManifestOptions, ManifestResult } from './manifest.js';
 export { generateToolRegistry, actionToTool, buildInputSchema, toWebMcpTool } from './tools.js';
 export { walk, ancestors, textContent, findById, selectElements, toAnnotatedElement, createNode, appendChild } from './tree.js';
 export type { ElementNode, ElementTree, AttributeSpan } from './tree.js';
+export { AXAG_ERRORS, AxagError, refusal } from './errors.js';
+export type { AxagErrorCode, AxagRefusal } from './errors.js';
 export { defineAction, specToAttributes } from './spec.js';
 export type { ActionSpec, SpecParameter } from './spec.js';
 export { formatTree } from './format.js';

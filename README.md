@@ -7,6 +7,9 @@ Tooling for the [Agent Experience Accessibility Guidelines](https://axag.org).
 | `@axag/core` | `packages/core` | Vocabulary, macro and annotation reader, parameter harvesting, manifest and tool generation, HTML/JSX/DOM adapters |
 | `@axag/compiler` | `packages/compiler` | Build-time extraction and the Vite/webpack/Rollup/Rspack/esbuild plugin |
 | `@axag/webmcp` | `packages/webmcp` | Register actions as WebMCP tools, tied to the UI's lifetime |
+| `@axag/shim` | `packages/shim` | A WebMCP registry for browsers without one |
+| `@axag/bridge` | `packages/bridge` | Expose a tab's tools to MCP clients through a local relay |
+| `@axag/server` | `packages/server` | Server-side enforcement: confirmation tokens, approval, tenant scope, CSRF, audit |
 | `@axag/react` | `packages/react` | React: `useAxag`, `<AxagAction>` |
 | `@axag/vue` | `packages/vue` | Vue: `useAxag`, `v-axag` |
 | `@axag/angular` | `packages/angular` | Angular: `[axag]` directive |

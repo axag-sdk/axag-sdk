@@ -7,6 +7,8 @@ export interface FileContext {
   filePath: string;
   elements: AnnotatedElement[];
   manifest?: ManifestData;
+  /** Intents the server enforces, from `enforcedIntentsPath`. */
+  enforcedIntents?: Set<string>;
 }
 
 /** A single diagnostic produced by a rule. */
@@ -57,5 +59,7 @@ export interface LintConfig {
   include: string[];
   exclude: string[];
   manifestPath?: string;
+  /** JSON file listing the intents your server enforces — an array, or `{ "intents": [...] }`. */
+  enforcedIntentsPath?: string;
   rules: Record<string, 'error' | 'warning' | 'info' | 'off'>;
 }
