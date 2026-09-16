@@ -6,8 +6,9 @@
 import { parse } from '@babel/parser';
 import _traverse from '@babel/traverse';
 import type { NodePath, TraverseOptions } from '@babel/traverse';
-import type { JSXAttribute, JSXElement, Node } from '@babel/types';
+import type { Expression, JSXAttribute, JSXElement, Node } from '@babel/types';
 import { hasIntent } from '../annotation.js';
+import { MACRO_ATTRIBUTE } from '../macro.js';
 import { formatTree } from '../format.js';
 import type { FormatMode, FormatResult } from '../format.js';
 import { appendChild, createNode, selectElements } from '../tree.js';
@@ -18,7 +19,16 @@ import type { AnnotatedElement, ElementFilter } from '../types.js';
 type Traverse = (ast: Node, visitors: TraverseOptions) => void;
 const traverse = ((_traverse as unknown as { default?: Traverse }).default ?? _traverse) as unknown as Traverse;
 
-export interface ExtractOptions {
+export interface ParseOptions {
+  /**
+   * Expand a dynamic `axag={spec}` value into attributes. @axag/compiler passes
+   * this to resolve `defineAction({...})` objects at build time; without it a
+   * dynamic value stays empty and the element is registered at runtime instead.
+   */
+  resolveSpec?: (expression: Expression, filePath: string) => Record<string, string> | undefined;
+}
+
+export interface ExtractOptions extends ParseOptions {
   /** Defaults to elements that declare axag-intent. */
   filter?: ElementFilter;
 }
@@ -30,7 +40,7 @@ const byIntent: ElementFilter = el => hasIntent(el.allAttributes);
  * inside expressions (`{open && <Dialog/>}`, `.map(...)`) attaches to the
  * nearest enclosing JSX element. Unparseable source yields an empty tree.
  */
-export function parseJsxTree(source: string, filePath: string): ElementTree {
+export function parseJsxTree(source: string, filePath: string, options: ParseOptions = {}): ElementTree {
   const tree: ElementTree = { filePath, roots: [] };
 
   let ast;
@@ -55,10 +65,24 @@ export function parseJsxTree(source: string, filePath: string): ElementTree {
 
       const attributes: Record<string, string> = {};
       const spans: Record<string, AttributeSpan> = {};
+      let resolved: Record<string, string> | undefined;
       for (const attr of opening.attributes) {
         if (attr.type !== 'JSXAttribute' || attr.name.type !== 'JSXIdentifier') continue;
         attributes[attr.name.name] = staticValue(attr);
         spans[attr.name.name] = { start: attr.start ?? 0, end: attr.end ?? 0, static: isStringLiteral(attr) };
+
+        const expression = attr.name.name === MACRO_ATTRIBUTE && attr.value?.type === 'JSXExpressionContainer'
+          ? attr.value.expression
+          : undefined;
+        if (options.resolveSpec && expression && expression.type !== 'JSXEmptyExpression') {
+          resolved = options.resolveSpec(expression, filePath);
+        }
+      }
+      // A resolved spec stands in for the attributes an author would have written.
+      if (resolved) {
+        delete attributes[MACRO_ATTRIBUTE];
+        delete spans[MACRO_ATTRIBUTE];
+        Object.assign(attributes, resolved);
       }
 
       const node = createNode({
@@ -85,7 +109,7 @@ export function parseJsxTree(source: string, filePath: string): ElementTree {
 }
 
 export function extractJsx(source: string, filePath: string, options: ExtractOptions = {}): AnnotatedElement[] {
-  return selectElements(parseJsxTree(source, filePath), options.filter ?? byIntent);
+  return selectElements(parseJsxTree(source, filePath, options), options.filter ?? byIntent);
 }
 
 /** Rewrite every annotated element in JSX/TSX source to macro or longhand form. */

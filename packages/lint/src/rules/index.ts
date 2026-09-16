@@ -52,6 +52,9 @@ import { rule as rule030 } from './harvesting/AXAG-LINT-030.js';
 import { rule as rule031 } from './harvesting/AXAG-LINT-031.js';
 import { rule as rule032 } from './harvesting/AXAG-LINT-032.js';
 
+// Build rules
+import { rule as rule033 } from './build/AXAG-LINT-033.js';
+
 export const ALL_RULES: LintRule[] = [
   rule001, rule002, rule003,
   rule004, rule005,
@@ -63,6 +66,7 @@ export const ALL_RULES: LintRule[] = [
   rule017,
   rule027, rule028,
   rule029, rule030, rule031, rule032,
+  rule033,
 ];
 
 export function getRuleById(id: string): LintRule | undefined {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { parseHtml } from '../../src/parser/index.js';
+import { parseHtml, parseJsx } from '../../src/parser/index.js';
 import { ALL_RULES } from '../../src/rules/index.js';
 import type { FileContext, ManifestData } from '../../src/types.js';
 
@@ -98,5 +98,24 @@ describe('AXAG-LINT-001 with harvesting', () => {
       'Interactive <form> element is missing axag-intent attribute',
       'Interactive <button> element is missing axag-intent attribute',
     ]);
+  });
+});
+
+describe('AXAG-LINT-033: dynamic spec', () => {
+  it('flags an axag value the build cannot read, but not a static one', () => {
+    const elements = parseJsx(
+      `const A = () => (<>
+        <button axag={rowSpec}>Row</button>
+        <button axag="read:a.b">Static</button>
+      </>);`,
+      'a.tsx',
+    );
+    const context: FileContext = { filePath: 'a.tsx', elements };
+    const rule = ALL_RULES.find(r => r.id === 'AXAG-LINT-033')!;
+    const diags = elements.flatMap(el => rule.check(el, context));
+
+    expect(diags).toHaveLength(1);
+    expect(diags[0]).toMatchObject({ line: 2, severity: 'info' });
+    expect(diags[0].message).toContain('defineAction');
   });
 });

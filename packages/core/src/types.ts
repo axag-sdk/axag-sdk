@@ -130,6 +130,8 @@ export interface Manifest {
   };
   conformance: ConformanceLevel;
   actions: ManifestAction[];
+  /** Annotations that only exist at runtime, so this manifest is not the whole story. */
+  dynamic_actions?: DynamicAction[];
 }
 
 /* ─── Tool registry ───────────────────────────── */
@@ -174,6 +176,27 @@ export interface MCPToolDefinition {
     source_intent: string;
     source_entity: string;
   };
+}
+
+/** A tool as WebMCP's `registerTool` expects it. */
+export interface WebMcpTool {
+  name: string;
+  description: string;
+  inputSchema: MCPToolDefinition['input_schema'];
+  annotations: {
+    readOnlyHint: boolean;
+    destructiveHint: boolean;
+    idempotentHint: boolean;
+    /** The AXAG metadata, unchanged. */
+    axag: MCPToolDefinition['metadata'];
+  };
+}
+
+/** An annotation whose value could not be read at build time. */
+export interface DynamicAction {
+  source_file: string;
+  source_line: number;
+  reason: string;
 }
 
 export interface ToolRegistry {

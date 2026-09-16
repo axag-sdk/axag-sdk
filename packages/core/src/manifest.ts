@@ -6,7 +6,7 @@ import { readAnnotation } from './annotation.js';
 import { mergeParameters, nameOnlyParameters } from './parameters.js';
 import { ATTR, SPEC_VERSION } from './vocabulary.js';
 import type { ConformanceLevel } from './vocabulary.js';
-import type { CoreDiagnostic, Manifest, ManifestAction, ManifestSourceElement } from './types.js';
+import type { CoreDiagnostic, DynamicAction, Manifest, ManifestAction, ManifestSourceElement } from './types.js';
 
 export interface ManifestOptions {
   paths: string[];
@@ -17,6 +17,8 @@ export interface ManifestOptions {
   generatedAt?: string;
   /** Add parameters harvested from form markup (default true). */
   harvest?: boolean;
+  /** Annotations that could not be read statically, recorded for runtimes. */
+  dynamicActions?: DynamicAction[];
 }
 
 export interface ManifestResult {
@@ -84,6 +86,7 @@ export function buildManifest(elements: ManifestSourceElement[], options: Manife
     conformance: determineConformance(actions),
     actions,
   };
+  if (options.dynamicActions?.length) manifest.dynamic_actions = options.dynamicActions;
 
   return { manifest, diagnostics };
 }

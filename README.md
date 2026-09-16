@@ -5,6 +5,7 @@ Tooling for the [Agent Experience Accessibility Guidelines](https://axag.org).
 | Package | Path | Purpose |
 |---------|------|---------|
 | `@axag/core` | `packages/core` | Vocabulary, macro and annotation reader, parameter harvesting, manifest and tool generation, HTML/JSX/DOM adapters |
+| `@axag/compiler` | `packages/compiler` | Build-time extraction and the Vite/webpack/Rollup/Rspack/esbuild plugin |
 | `@axag/schema-zod` | `packages/schema-zod` | Zod 4 schemas as action parameters |
 | `@axag/schema-openapi` | `packages/schema-openapi` | OpenAPI 3.0/3.1 operations as action parameters |
 | `@web-axag/axag-cli` | `packages/cli` | Scan sites, infer and apply annotations, generate manifests and MCP tools |

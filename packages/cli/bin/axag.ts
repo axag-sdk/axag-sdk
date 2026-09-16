@@ -9,6 +9,7 @@
  *   axag apply             Apply confirmed annotations to source files
  *   axag validate          Validate existing AXAG annotations
  *   axag fmt               Convert annotations between macro and longhand form
+ *   axag generate          Compile source files into a manifest and MCP tools
  *   axag generate-tools    Generate MCP tool definitions from a manifest
  *   axag init              Initialize .axag config in the current project
  */
@@ -20,6 +21,7 @@ import { reportCommand } from '../src/commands/report.js';
 import { applyCommand } from '../src/commands/apply.js';
 import { validateCommand } from '../src/commands/validate.js';
 import { generateToolsCommand } from '../src/commands/generate-tools.js';
+import { generateCommand } from '../src/commands/generate.js';
 import { initCommand } from '../src/commands/init.js';
 import { fmtCommand } from '../src/commands/fmt.js';
 import { CLI_VERSION } from '../src/utils/constants.js';
@@ -93,6 +95,17 @@ program
   .description('Initialize AXAG configuration in the current project')
   .option('--force', 'Overwrite existing config', false)
   .action(initCommand);
+
+/* ─── generate ───────────────────────────────── */
+program
+  .command('generate [target]')
+  .description('Compile HTML, JSX, Vue and Angular sources into a Semantic Manifest and MCP tools')
+  .option('-m, --manifest <path>', 'Where to write the manifest', 'axag-manifest.json')
+  .option('-t, --tools <path>', 'Also write the MCP tool registry')
+  .option('-w, --webmcp <path>', 'Also write WebMCP tool definitions')
+  .option('--no-harvest', 'Only use declared and schema-bound parameters, not form controls')
+  .option('--validate', 'Validate the manifest against the AXAG JSON Schema', false)
+  .action(generateCommand);
 
 /* ─── generate-tools ─────────────────────────── */
 program

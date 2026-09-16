@@ -40,6 +40,30 @@
         "$ref": "#/definitions/Action"
       },
       "description": "Array of operation definitions"
+    },
+    "dynamic_actions": {
+      "type": "array",
+      "description": "Annotations that could not be read at build time and are registered at runtime instead (1.1)",
+      "items": {
+        "type": "object",
+        "required": [
+          "source_file",
+          "source_line"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "source_file": {
+            "type": "string"
+          },
+          "source_line": {
+            "type": "integer",
+            "minimum": 1
+          },
+          "reason": {
+            "type": "string"
+          }
+        }
+      }
     }
   },
   "additionalProperties": false,

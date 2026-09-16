@@ -16,6 +16,7 @@ const sidebars: SidebarsConfig = {
         'commands/apply',
         'commands/report',
         'commands/validate',
+        'commands/generate',
         'commands/fmt',
         'commands/init',
       ],

@@ -79,6 +79,7 @@ axag-lint --init
 | AXAG-LINT-030 | Form constraint disagrees with the linked Zod/OpenAPI schema (needs `--manifest`) | warning |
 | AXAG-LINT-031 | Annotated button, link or control has no accessible name | error |
 | AXAG-LINT-032 | Harvested parameter has no label or description | warning |
+| AXAG-LINT-033 | Dynamic `axag={spec}` is registered at runtime only | info |
 
 Elements annotated with the `axag="write:user.deactivate!critical?confirm"` macro are expanded before any rule runs, so every rule applies to macro and longhand annotations alike.
 

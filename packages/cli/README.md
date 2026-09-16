@@ -172,6 +172,27 @@ A manifest action's parameters come from three places, highest precedence first:
 
 Declared placement and fields win; lower sources only fill gaps. Parameters that weren't declared carry `"source": "harvested:html" | "zod" | "openapi"` in the manifest.
 
+### `axag generate [target]`
+
+Compile HTML, JSX/TSX, Vue and Angular sources into a Semantic Manifest and MCP tools. This is the same compiler the bundler plugins use, so CI and your build agree.
+
+```bash
+axag generate ./src                                   # writes axag-manifest.json
+axag generate ./src -m public/.well-known/axag-manifest.json --validate
+axag generate ./src -t tools/tool-registry.json -w public/axag-tools.webmcp.json
+axag generate ./src --no-harvest                      # declared and schema-bound parameters only
+```
+
+| Flag | Default | Description |
+|------|---------|-------------|
+| `-m, --manifest <path>` | `axag-manifest.json` | Where to write the manifest |
+| `-t, --tools <path>` | — | Also write the MCP tool registry |
+| `-w, --webmcp <path>` | — | Also write WebMCP tool definitions |
+| `--no-harvest` | harvest on | Don't read parameters from form controls |
+| `--validate` | `false` | Validate against the AXAG JSON Schema |
+
+For an app with a bundler, [`@axag/compiler`](https://www.npmjs.com/package/@axag/compiler) does this on every build instead.
+
 ### `axag fmt [target]`
 
 Rewrite annotations as `axag="..."` macros or as longhand `axag-*` attributes. Only AXAG attributes change; the generated manifest stays identical.

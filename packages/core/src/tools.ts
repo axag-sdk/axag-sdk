@@ -3,6 +3,7 @@
  */
 
 import type {
+  WebMcpTool,
   JSONSchemaProperty,
   Manifest,
   ManifestAction,
@@ -46,6 +47,25 @@ export function actionToTool(action: ManifestAction): MCPToolDefinition {
     description: action.description,
     input_schema: { type: 'object', properties, required },
     metadata,
+  };
+}
+
+/**
+ * A tool in the shape `navigator.modelContext.registerTool()` takes: camel-cased
+ * `inputSchema`, with the AXAG metadata kept under `annotations` for runtimes
+ * that enforce risk and confirmation.
+ */
+export function toWebMcpTool(tool: MCPToolDefinition): WebMcpTool {
+  return {
+    name: tool.name,
+    description: tool.description,
+    inputSchema: tool.input_schema,
+    annotations: {
+      readOnlyHint: tool.metadata.action_type === 'read' || tool.metadata.action_type === 'navigate',
+      destructiveHint: tool.metadata.action_type === 'delete',
+      idempotentHint: tool.metadata.idempotent,
+      axag: tool.metadata,
+    },
   };
 }
 

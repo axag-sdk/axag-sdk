@@ -1,0 +1,51 @@
+{
+  "name": "@axag/compiler",
+  "version": "0.1.0",
+  "description": "Build-time AXAG extraction: manifests and WebMCP tools from HTML, JSX, Vue and Angular sources",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
+    "./vite": { "types": "./dist/vite.d.ts", "import": "./dist/vite.js" },
+    "./rollup": { "types": "./dist/rollup.d.ts", "import": "./dist/rollup.js" },
+    "./webpack": { "types": "./dist/webpack.d.ts", "import": "./dist/webpack.js" },
+    "./rspack": { "types": "./dist/rspack.d.ts", "import": "./dist/rspack.js" },
+    "./esbuild": { "types": "./dist/esbuild.d.ts", "import": "./dist/esbuild.js" }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": { "node": ">=18.0.0" },
+  "license": "MIT",
+  "keywords": ["axag", "vite", "webpack", "rollup", "unplugin", "mcp", "webmcp"],
+  "dependencies": {
+    "@axag/core": "workspace:*",
+    "@babel/parser": "^7.29.2",
+    "@babel/traverse": "^7.29.0",
+    "cheerio": "^1.2.0",
+    "fast-glob": "^3.3.3",
+    "unplugin": "^3.3.0"
+  },
+  "peerDependencies": {
+    "@angular/compiler": ">=17",
+    "@vue/compiler-sfc": "^3.4.0"
+  },
+  "peerDependenciesMeta": {
+    "@angular/compiler": { "optional": true },
+    "@vue/compiler-sfc": { "optional": true }
+  },
+  "devDependencies": {
+    "@angular/compiler": "^22.1.6",
+    "@babel/types": "^7.29.0",
+    "@types/babel__traverse": "^7.28.0",
+    "@types/node": "^22.0.0",
+    "@vue/compiler-sfc": "^3.5.42",
+    "typescript": "^5.9.3",
+    "vite": "^7.1.0",
+    "vitest": "^4.1.0"
+  }
+}

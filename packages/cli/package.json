@@ -37,6 +37,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
+    "@axag/compiler": "workspace:*",
     "@axag/core": "workspace:*",
     "@axag/schema-openapi": "workspace:*",
     "@axag/schema-zod": "workspace:*",

@@ -11,9 +11,11 @@ export { MACRO_ATTRIBUTE, MACRO_KEYS, parseMacro, toMacro, sameAttributeValue } 
 export type { MacroError, MacroParseResult, MacroConversion } from './macro.js';
 export { buildManifest, determineConformance } from './manifest.js';
 export type { ManifestOptions, ManifestResult } from './manifest.js';
-export { generateToolRegistry, actionToTool, buildInputSchema } from './tools.js';
-export { walk, ancestors, textContent, findById, selectElements, toAnnotatedElement } from './tree.js';
+export { generateToolRegistry, actionToTool, buildInputSchema, toWebMcpTool } from './tools.js';
+export { walk, ancestors, textContent, findById, selectElements, toAnnotatedElement, createNode, appendChild } from './tree.js';
 export type { ElementNode, ElementTree, AttributeSpan } from './tree.js';
+export { defineAction, specToAttributes } from './spec.js';
+export type { ActionSpec, SpecParameter } from './spec.js';
 export { formatTree } from './format.js';
 export { harvestParameters, parameterScope, coveringIntent, accessibleName, labelFor, toSnakeCase } from './harvest.js';
 export type { HarvestResult, UnnamedControl } from './harvest.js';
