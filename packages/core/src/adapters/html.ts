@@ -29,6 +29,12 @@ export function parseHtmlTree(html: string, filePath: string): ElementTree {
         if (parent) parent.ownText += domNode.data;
         continue;
       }
+      // parse5 puts <template> contents in a fragment node; walk through it so
+      // annotations inside templates (including Vue SFCs) are visible.
+      if (domNode.type === 'root') {
+        visit((domNode as unknown as { children: AnyNode[] }).children, parent);
+        continue;
+      }
       if (domNode.type !== 'tag' && domNode.type !== 'script' && domNode.type !== 'style') continue;
 
       const el = domNode as Element;

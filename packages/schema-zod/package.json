@@ -11,15 +11,33 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "license": "MIT",
-  "keywords": ["axag", "zod", "json-schema", "mcp"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axag-cli/axag-sdk.git",
+    "directory": "packages/schema-zod"
+  },
+  "homepage": "https://axag.org",
+  "bugs": {
+    "url": "https://github.com/axag-cli/axag-sdk/issues"
+  },
+  "keywords": [
+    "axag",
+    "zod",
+    "json-schema",
+    "mcp"
+  ],
   "dependencies": {
     "@axag/core": "workspace:*",
     "jiti": "^2.7.0"

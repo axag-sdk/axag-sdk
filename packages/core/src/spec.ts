@@ -71,9 +71,15 @@ const JSON_FIELDS = [
   ['postconditions', ATTR.postconditions],
 ] as const;
 
-/** Flatten a spec into axag-* attributes. `handler` and unknown keys are dropped. */
+/**
+ * Flatten a spec into axag-* attributes. `handler` and unknown keys are dropped.
+ *
+ * Like the macro, a spec implies its entity from the intent, so `user.export`
+ * needs no `entity` of its own and still produces a complete annotation.
+ */
 export function specToAttributes(spec: ActionSpec): Record<string, string> {
   const attributes: Record<string, string> = {};
+  if (spec.intent && !spec.entity) attributes[ATTR.entity] = spec.intent.split('.')[0];
   for (const [key, attribute] of STRING_FIELDS) {
     const value = spec[key];
     if (typeof value === 'string') attributes[attribute] = value;

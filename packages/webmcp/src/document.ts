@@ -8,13 +8,13 @@
 
 import { actionToTool, buildManifest, hasIntent, readAttributes, toAnnotatedElement, toWebMcpTool, walk } from '@axag/core';
 import { readDomTree } from '@axag/core/dom';
-import { registerTool } from './register.js';
+import { handlerFor, registerTool } from './register.js';
 import type { Registration, RegisterOptions, ToolHandler } from './register.js';
 
 export interface RegisterDocumentOptions extends Omit<RegisterOptions, 'element'> {
   /** Defaults to `document`. */
   root?: ParentNode;
-  /** Handlers by intent; anything without one falls back to driving the control. */
+  /** Handlers by tool name or intent; anything without one falls back to driving the control. */
   handlers?: Record<string, ToolHandler>;
 }
 
@@ -35,13 +35,8 @@ export function registerDocument(options: RegisterDocumentOptions = {}): Registr
     const [action] = manifest.actions;
     if (!action) continue;
 
-    registrations.push(
-      registerTool(toWebMcpTool(actionToTool(action)), {
-        ...options,
-        element,
-        handler: options.handlers?.[action.intent] ?? options.handler,
-      }),
-    );
+    const tool = toWebMcpTool(actionToTool(action));
+    registrations.push(registerTool(tool, { ...options, element, handler: handlerFor(tool, options) }));
   }
 
   return {

@@ -60,6 +60,21 @@ const PATTERNS: PatternMatch[] = [
 ];
 
 /**
+ * Reduce free text to a spec-legal name: lowercase, letters and underscores only.
+ * The spec requires `^[a-z_]+$` for entities and `entity.verb` for intents, so
+ * inferred names have to survive punctuation, digits and non-Latin scripts.
+ */
+export function toSpecName(text: string, fallback: string): string {
+  const name = text
+    .toLowerCase()
+    .replace(/[^a-z]+/g, '_')
+    .replace(/^_+|_+$/g, '')
+    .slice(0, 40)
+    .replace(/_+$/, '');
+  return name || fallback;
+}
+
+/**
  * Infer the entity name from surrounding context, form fields, page headings, etc.
  */
 function inferEntity(element: ScannedElement, context: PageContext): string {
@@ -167,7 +182,7 @@ export function inferAnnotation(
     }
   }
 
-  const entity = inferEntity(element, context);
+  const entity = toSpecName(inferEntity(element, context), 'item');
   const { required, optional } = inferParameters(element, context);
 
   // Build the annotation
@@ -180,7 +195,9 @@ export function inferAnnotation(
   let reasoning: string;
 
   if (bestMatch) {
-    intent = bestMatch.intent.replace('{entity}', entity).replace('{action}', text.toLowerCase().split(/\s+/)[0] || 'navigate');
+    intent = bestMatch.intent
+      .replace('{entity}', entity)
+      .replace('{action}', toSpecName(text.split(/\s+/)[0] ?? '', 'navigate'));
     actionType = bestMatch.actionType;
     riskLevel = bestMatch.riskLevel;
     confirmationRequired = bestMatch.confirmationRequired;
@@ -189,8 +206,8 @@ export function inferAnnotation(
     reasoning = `Matched pattern "${bestMatch.pattern.source}" from element text "${text}".`;
   } else if (element.tagName === 'a' && element.parentContext === 'nav') {
     // Navigation links get a navigation-specific annotation
-    const slug = text.toLowerCase().replace(/\s+/g, '-') || 'page';
-    intent = `navigation.goto-${slug}`;
+    const slug = toSpecName(text, 'page');
+    intent = `navigation.goto_${slug}`;
     actionType = 'read';
     riskLevel = 'none';
     confirmationRequired = false;
@@ -199,8 +216,8 @@ export function inferAnnotation(
     reasoning = `Link inside <nav> — inferred as site navigation to "${text}".`;
   } else if (element.tagName === 'a') {
     // Links outside nav get a generic navigate annotation
-    const slug = text.toLowerCase().replace(/\s+/g, '-') || 'page';
-    intent = `${entity}.navigate-${slug}`;
+    const slug = toSpecName(text, 'page');
+    intent = `${entity}.navigate_${slug}`;
     actionType = 'read';
     riskLevel = 'none';
     confirmationRequired = false;
@@ -210,7 +227,7 @@ export function inferAnnotation(
   } else if (element.tagName === 'input' || element.tagName === 'textarea' || element.tagName === 'select') {
     // Form inputs get a generic input annotation
     const fieldName = element.attributes.name || element.attributes.placeholder || element.attributes.id || 'field';
-    intent = `form.input-${fieldName.toLowerCase().replace(/\s+/g, '-')}`;
+    intent = `form.input_${toSpecName(fieldName, 'field')}`;
     actionType = 'write';
     riskLevel = 'none';
     confirmationRequired = false;

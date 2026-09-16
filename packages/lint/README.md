@@ -80,8 +80,20 @@ axag-lint --init
 | AXAG-LINT-031 | Annotated button, link or control has no accessible name | error |
 | AXAG-LINT-032 | Harvested parameter has no label or description | warning |
 | AXAG-LINT-033 | Dynamic `axag={spec}` is registered at runtime only | info |
+| AXAG-LINT-034 | `axag-intent` does not match `entity.verb` | error |
+| AXAG-LINT-035 | `axag-entity` is not a lowercase name | error |
 
 Elements annotated with the `axag="write:user.deactivate!critical?confirm"` macro are expanded before any rule runs, so every rule applies to macro and longhand annotations alike.
+
+## What it reads
+
+| Files | Notes |
+|-------|-------|
+| `.html`, `.htm` | Including Angular templates; `[axag]` bindings count as runtime-only |
+| `.jsx`, `.tsx` | `axag={spec}` is resolved the way `@axag/compiler` resolves it — a module-level `const` or `defineAction({...})`, followed across relative imports |
+| `.vue` | The `<template>` block; `:axag` bindings count as runtime-only |
+
+A value neither the linter nor the build can read is reported once, as AXAG-LINT-033, rather than as a missing annotation.
 
 ## Configuration
 

@@ -1,7 +1,7 @@
 import type { LintConfig } from '../types.js';
 
 export const DEFAULT_CONFIG: LintConfig = {
-  include: ['**/*.{html,htm,jsx,tsx}'],
+  include: ['**/*.{html,htm,jsx,tsx,vue}'],
   exclude: ['node_modules/**', 'dist/**', 'build/**'],
   rules: {
     'AXAG-LINT-001': 'error',
@@ -37,5 +37,7 @@ export const DEFAULT_CONFIG: LintConfig = {
     'AXAG-LINT-031': 'error',
     'AXAG-LINT-032': 'warning',
     'AXAG-LINT-033': 'info',
+    'AXAG-LINT-034': 'error',
+    'AXAG-LINT-035': 'error',
   },
 };

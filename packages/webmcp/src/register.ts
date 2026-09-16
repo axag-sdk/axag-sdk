@@ -129,9 +129,7 @@ export function registerManifest(
   options: RegisterOptions & { handlers?: Record<string, ToolHandler> } = {},
 ): Registration {
   const list = Array.isArray(tools) ? tools : tools.tools;
-  const registrations = list.map(tool =>
-    registerTool(tool, { ...options, handler: options.handlers?.[tool.name] ?? options.handler }),
-  );
+  const registrations = list.map(tool => registerTool(tool, { ...options, handler: handlerFor(tool, options) }));
   return {
     unregister: () => registrations.forEach(registration => registration.unregister()),
     get active() {
@@ -157,6 +155,15 @@ function toolFromAttributes(attributes: Record<string, string>): WebMcpTool | un
   const { manifest } = buildManifest([{ attributes, filePath: '', line: 1 }], { paths: [] });
   const [action] = manifest.actions;
   return action ? toWebMcpTool(actionToTool(action) as MCPToolDefinition) : undefined;
+}
+
+/** Handlers may be keyed by tool name (`user_deactivate`) or by intent (`user.deactivate`). */
+export function handlerFor(
+  tool: WebMcpTool,
+  options: { handlers?: Record<string, ToolHandler>; handler?: ToolHandler },
+): ToolHandler | undefined {
+  const intent = tool.annotations?.axag?.source_intent;
+  return options.handlers?.[tool.name] ?? (intent ? options.handlers?.[intent] : undefined) ?? options.handler;
 }
 
 async function runMiddleware(middleware: Middleware[], context: ExecutionContext, handler: ToolHandler): Promise<unknown> {

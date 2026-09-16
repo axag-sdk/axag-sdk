@@ -1,6 +1,9 @@
 /**
  * Static resolution of `axag={spec}` values.
  *
+ * Node only: it reads the files a spec is imported from. Used by @axag/compiler
+ * at build time and by axag-lint, so both agree on which specs are readable.
+ *
  * A spec can be read at build time when it is a module-level `const` holding an
  * object literal or a `defineAction({...})` call, in this file or one it imports.
  * Anything else — a function call, a value built at runtime, a prop — stays
@@ -17,17 +20,21 @@ import type {
   ObjectExpression,
   Statement,
 } from '@babel/types';
-import { specToAttributes } from '@axag/core';
-import type { ActionSpec } from '@axag/core';
+import { specToAttributes } from './spec.js';
+import type { ActionSpec } from './spec.js';
 
 const EXTENSIONS = ['.ts', '.tsx', '.js', '.jsx', '.mjs', '.cjs'];
 
-export interface ResolvedSpec {
-  attributes: Record<string, string>;
-}
-
 export class SpecResolver {
   private readonly asts = new Map<string, File | null>();
+
+  /**
+   * Hand the resolver source it already has, so the file being read isn't read
+   * again from disk — and so a caller working on unsaved text still resolves.
+   */
+  provideSource(filePath: string, source: string): void {
+    this.asts.set(filePath, parseSource(source));
+  }
 
   /** Attributes for a statically readable spec, or undefined when it is dynamic. */
   resolve(expression: Expression, filePath: string): Record<string, string> | undefined {
@@ -90,17 +97,13 @@ export class SpecResolver {
 
   private parseFile(filePath: string): File | null {
     if (!this.asts.has(filePath)) {
-      let ast: File | null = null;
+      let source: string | undefined;
       try {
-        ast = parse(fs.readFileSync(filePath, 'utf-8'), {
-          sourceType: 'module',
-          plugins: ['jsx', 'typescript'],
-          errorRecovery: true,
-        });
+        source = fs.readFileSync(filePath, 'utf-8');
       } catch {
-        ast = null;
+        source = undefined;
       }
-      this.asts.set(filePath, ast);
+      this.asts.set(filePath, source === undefined ? null : parseSource(source));
     }
     return this.asts.get(filePath) ?? null;
   }
@@ -117,6 +120,14 @@ export class SpecResolver {
       ...['.ts', '.tsx'].map(ext => base.replace(/\.js$/, ext)),
     ];
     return candidates.find(candidate => fs.existsSync(candidate) && fs.statSync(candidate).isFile());
+  }
+}
+
+function parseSource(source: string): File | null {
+  try {
+    return parse(source, { sourceType: 'module', plugins: ['jsx', 'typescript'], errorRecovery: true });
+  } catch {
+    return null;
   }
 }
 

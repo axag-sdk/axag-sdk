@@ -119,3 +119,45 @@ describe('AXAG-LINT-033: dynamic spec', () => {
     expect(diags[0].message).toContain('defineAction');
   });
 });
+
+describe('specs and framework bindings', () => {
+  it('lints a resolvable axag={spec} like any other annotation', () => {
+    const elements = parseJsx(
+      `import { defineAction } from '@axag/core';
+       const wipe = defineAction({ intent: 'account.delete', actionType: 'delete', riskLevel: 'high' });
+       export const A = () => <button axag={wipe}>Delete</button>;`,
+      'a.tsx',
+    );
+    const context: FileContext = { filePath: 'a.tsx', elements };
+    const ids = (id: string) => elements.flatMap(el => ALL_RULES.find(r => r.id === id)!.check(el, context));
+
+    // The spec was read, so the element is annotated...
+    expect(elements.at(-1)!.attributes['axag-intent']).toBe('account.delete');
+    expect(ids('AXAG-LINT-001')).toEqual([]);
+    expect(ids('AXAG-LINT-033')).toEqual([]);
+    // ...and the usual safety rules apply to it.
+    expect(ids('AXAG-LINT-006').map(d => d.ruleId)).toEqual(['AXAG-LINT-006']);
+  });
+
+  it('reports only runtime-only values, without claiming the annotation is missing', () => {
+    const cases: Array<[string, ReturnType<typeof parseJsx>]> = [
+      ['jsx', parseJsx('const A = () => <button axag={rowSpec}>x</button>;', 'a.tsx')],
+      ['vue', parseHtml('<template><button :axag="rowSpec">x</button></template>', 'W.vue')],
+      ['angular', parseHtml('<button [axag]="rowSpec">x</button>', 'a.component.html')],
+    ];
+    for (const [name, elements] of cases) {
+      const context: FileContext = { filePath: name, elements };
+      const run = (id: string) => elements.flatMap(el => ALL_RULES.find(r => r.id === id)!.check(el, context));
+      expect(run('AXAG-LINT-001'), name).toEqual([]);
+      expect(run('AXAG-LINT-033').map(d => d.ruleId), name).toEqual(['AXAG-LINT-033']);
+    }
+  });
+
+  it('reads annotations in a Vue single-file component', () => {
+    const elements = parseHtml(
+      '<template>\n  <button axag="write:cart.add_item!low">Add</button>\n</template>\n<script setup>const x = 1;</script>',
+      'W.vue',
+    );
+    expect(elements.map(e => e.attributes['axag-intent'])).toEqual(['cart.add_item']);
+  });
+});

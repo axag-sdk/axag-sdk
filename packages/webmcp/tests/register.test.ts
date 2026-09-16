@@ -247,3 +247,22 @@ describe('registerElement and registerDocument', () => {
     expect(names()).toEqual([]);
   });
 });
+
+describe('handler lookup', () => {
+  it('accepts handlers keyed by tool name or by intent', async () => {
+    const { context, registered } = fakeModelContext();
+    const byName = vi.fn();
+    const byIntent = vi.fn();
+
+    registerManifest([searchTool], { modelContext: context, handlers: { product_search: byName } });
+    await Promise.resolve();
+    await registered.get('product_search')!.execute({});
+    expect(byName).toHaveBeenCalled();
+
+    registered.clear();
+    registerManifest([searchTool], { modelContext: context, handlers: { 'product.search': byIntent } });
+    await Promise.resolve();
+    await registered.get('product_search')!.execute({});
+    expect(byIntent).toHaveBeenCalled();
+  });
+});

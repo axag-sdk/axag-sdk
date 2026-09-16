@@ -6,22 +6,61 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-    "./vite": { "types": "./dist/vite.d.ts", "import": "./dist/vite.js" },
-    "./rollup": { "types": "./dist/rollup.d.ts", "import": "./dist/rollup.js" },
-    "./webpack": { "types": "./dist/webpack.d.ts", "import": "./dist/webpack.js" },
-    "./rspack": { "types": "./dist/rspack.d.ts", "import": "./dist/rspack.js" },
-    "./esbuild": { "types": "./dist/esbuild.d.ts", "import": "./dist/esbuild.js" }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./vite": {
+      "types": "./dist/vite.d.ts",
+      "import": "./dist/vite.js"
+    },
+    "./rollup": {
+      "types": "./dist/rollup.d.ts",
+      "import": "./dist/rollup.js"
+    },
+    "./webpack": {
+      "types": "./dist/webpack.d.ts",
+      "import": "./dist/webpack.js"
+    },
+    "./rspack": {
+      "types": "./dist/rspack.d.ts",
+      "import": "./dist/rspack.js"
+    },
+    "./esbuild": {
+      "types": "./dist/esbuild.d.ts",
+      "import": "./dist/esbuild.js"
+    }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "license": "MIT",
-  "keywords": ["axag", "vite", "webpack", "rollup", "unplugin", "mcp", "webmcp"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axag-cli/axag-sdk.git",
+    "directory": "packages/compiler"
+  },
+  "homepage": "https://axag.org",
+  "bugs": {
+    "url": "https://github.com/axag-cli/axag-sdk/issues"
+  },
+  "keywords": [
+    "axag",
+    "vite",
+    "webpack",
+    "rollup",
+    "unplugin",
+    "mcp",
+    "webmcp"
+  ],
   "dependencies": {
     "@axag/core": "workspace:*",
     "@babel/parser": "^7.29.2",
@@ -35,8 +74,12 @@
     "@vue/compiler-sfc": "^3.4.0"
   },
   "peerDependenciesMeta": {
-    "@angular/compiler": { "optional": true },
-    "@vue/compiler-sfc": { "optional": true }
+    "@angular/compiler": {
+      "optional": true
+    },
+    "@vue/compiler-sfc": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@angular/compiler": "^22.1.6",

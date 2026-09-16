@@ -2,6 +2,8 @@ import { describe, it, expect } from 'vitest';
 import { rule as rule001 } from '../../src/rules/identity/AXAG-LINT-001.js';
 import { rule as rule002 } from '../../src/rules/identity/AXAG-LINT-002.js';
 import { rule as rule003 } from '../../src/rules/identity/AXAG-LINT-003.js';
+import { rule as rule034 } from '../../src/rules/identity/AXAG-LINT-034.js';
+import { rule as rule035 } from '../../src/rules/identity/AXAG-LINT-035.js';
 import type { AnnotatedElement, FileContext } from '../../src/types.js';
 
 function makeElement(overrides: Partial<AnnotatedElement> = {}): AnnotatedElement {
@@ -108,5 +110,25 @@ describe('AXAG-LINT-003: Missing axag-action-type', () => {
     });
     const diags = rule003.check(el, makeContext([el]));
     expect(diags).toHaveLength(0);
+  });
+});
+
+describe('AXAG-LINT-034 / 035: name shapes the schema requires', () => {
+  const run = (rule: typeof rule034, attributes: Record<string, string>) =>
+    rule.check(makeElement({ attributes }), makeContext());
+
+  it.each(['navigation.goto-home', 'Cart.Add', 'cart add', 'cart'])('flags intent %s', intent => {
+    const [diagnostic] = run(rule034, { 'axag-intent': intent });
+    expect(diagnostic?.ruleId).toBe('AXAG-LINT-034');
+    expect(diagnostic?.severity).toBe('error');
+  });
+
+  it.each(['cart.add_item', 'purchase_order.approve'])('accepts intent %s', intent => {
+    expect(run(rule034, { 'axag-intent': intent })).toEqual([]);
+  });
+
+  it('flags a non-lowercase entity', () => {
+    expect(run(rule035, { 'axag-entity': 'Purchase Order' })).toHaveLength(1);
+    expect(run(rule035, { 'axag-entity': 'purchase_order' })).toEqual([]);
   });
 });

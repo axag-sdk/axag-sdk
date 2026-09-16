@@ -34,8 +34,8 @@ describe('macro annotations', () => {
     const [d] = diagnostics.filter(x => x.ruleId === 'AXAG-LINT-027');
     expect(d).toMatchObject({ line: 6, severity: 'error' });
     expect(d.message).toContain('Unknown action type "mutate"');
-    // The invalid element still counts as interactive and unannotated.
-    expect(byLine(diagnostics, 6)).toContain('AXAG-LINT-001');
+    // The macro error is the whole story: no "missing axag-intent" on top of it.
+    expect(byLine(diagnostics, 6)).toEqual(['AXAG-LINT-027']);
   });
 
   it('AXAG-LINT-028 reports macro/longhand conflicts', async () => {

@@ -4,6 +4,8 @@ import type { LintRule } from '../types.js';
 import { rule as rule001 } from './identity/AXAG-LINT-001.js';
 import { rule as rule002 } from './identity/AXAG-LINT-002.js';
 import { rule as rule003 } from './identity/AXAG-LINT-003.js';
+import { rule as rule034 } from './identity/AXAG-LINT-034.js';
+import { rule as rule035 } from './identity/AXAG-LINT-035.js';
 
 // Enum validation rules
 import { rule as rule004 } from './enum-validation/AXAG-LINT-004.js';
@@ -56,7 +58,7 @@ import { rule as rule032 } from './harvesting/AXAG-LINT-032.js';
 import { rule as rule033 } from './build/AXAG-LINT-033.js';
 
 export const ALL_RULES: LintRule[] = [
-  rule001, rule002, rule003,
+  rule001, rule002, rule003, rule034, rule035,
   rule004, rule005,
   rule006, rule007, rule023, rule024, rule025, rule026,
   rule008, rule009,

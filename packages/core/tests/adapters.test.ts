@@ -50,6 +50,27 @@ describe('source locations', () => {
   });
 });
 
+describe('template contents', () => {
+  it('reads annotations inside a <template> element', () => {
+    const html = '<template><button axag="read:a.b">x</button></template>';
+    expect(extractHtml(html, 't.html').map(e => e.attributes['axag-intent'])).toEqual(['a.b']);
+  });
+
+  it('reads the template block of a Vue single-file component', () => {
+    const sfc = [
+      '<template>',
+      '  <div>',
+      '    <button axag="write:cart.add_item!low">Add</button>',
+      '  </div>',
+      '</template>',
+      '<script setup>const x = 1;</script>',
+    ].join('\n');
+    const [el] = extractHtml(sfc, 'W.vue');
+    expect(el.attributes['axag-intent']).toBe('cart.add_item');
+    expect(el.line).toBe(3);
+  });
+});
+
 describe('filters', () => {
   it('let callers include unannotated interactive elements', () => {
     const html = '<button>Plain</button><div>no</div><a href="/x" axag-intent="x.open">X</a>';

@@ -5,22 +5,48 @@
   "type": "module",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
-  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
-  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "sideEffects": false,
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "license": "MIT",
-  "keywords": ["axag", "vue", "webmcp", "mcp", "agent"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axag-cli/axag-sdk.git",
+    "directory": "packages/vue"
+  },
+  "homepage": "https://axag.org",
+  "bugs": {
+    "url": "https://github.com/axag-cli/axag-sdk/issues"
+  },
+  "keywords": [
+    "axag",
+    "vue",
+    "webmcp",
+    "mcp",
+    "agent"
+  ],
   "dependencies": {
     "@axag/core": "workspace:*",
     "@axag/webmcp": "workspace:*"
   },
-  "peerDependencies": { "vue": "^3.4.0" },
+  "peerDependencies": {
+    "vue": "^3.4.0"
+  },
   "devDependencies": {
     "@types/node": "^22.0.0",
     "happy-dom": "^20.0.0",

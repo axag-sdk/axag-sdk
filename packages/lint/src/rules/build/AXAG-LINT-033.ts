@@ -10,8 +10,10 @@ export const rule: LintRule = {
   category: 'build',
   defaultSeverity: 'info',
   check(element: AnnotatedElement, _context: FileContext): Diagnostic[] {
-    const hasDynamicMacro = element.allAttributes.axag === '' && !element.attributes['axag-intent'];
-    if (!hasDynamicMacro) return [];
+    const bound =
+      element.allAttributes.axag === '' ||
+      [':axag', 'v-axag', '[axag]'].some(name => element.allAttributes[name] !== undefined);
+    if (!bound || element.attributes['axag-intent']) return [];
 
     return [{
       ruleId: 'AXAG-LINT-033',

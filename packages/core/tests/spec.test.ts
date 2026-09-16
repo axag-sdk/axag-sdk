@@ -21,6 +21,7 @@ const spec = defineAction({
 describe('specToAttributes', () => {
   it('produces the attributes an author would have written, dropping the handler', () => {
     expect(specToAttributes(spec)).toEqual({
+      'axag-entity': 'user',
       'axag-intent': 'user.deactivate',
       'axag-action-type': 'write',
       'axag-description': 'Deactivate a user',
@@ -44,6 +45,20 @@ describe('specToAttributes', () => {
       axag-description="Deactivate a user"
       axag-required-parameters='["user_id",{"name":"reason","type":"string","maxLength":200}]'>x</button>`;
     expect(fromSpec).toEqual(actions(extractHtml(html, 'x')));
+  });
+});
+
+describe('an implied entity', () => {
+  it('matches what the macro form produces for the same intent', () => {
+    expect(specToAttributes({ intent: 'user.export', actionType: 'read' })).toEqual({
+      'axag-entity': 'user',
+      'axag-intent': 'user.export',
+      'axag-action-type': 'read',
+    });
+  });
+
+  it('keeps an entity that differs from the intent prefix', () => {
+    expect(specToAttributes({ intent: 'checkout.confirm', entity: 'order' })['axag-entity']).toBe('order');
   });
 });
 

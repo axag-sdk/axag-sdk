@@ -22,7 +22,11 @@
       "types": "./dist/adapters/dom.d.ts",
       "import": "./dist/adapters/dom.js"
     },
-    "./schema.json": "./schema/axag-manifest.schema.json"
+    "./schema.json": "./schema/axag-manifest.schema.json",
+    "./spec-resolver": {
+      "types": "./dist/spec-resolver.d.ts",
+      "import": "./dist/spec-resolver.js"
+    }
   },
   "files": [
     "dist",
@@ -38,6 +42,15 @@
     "node": ">=18.0.0"
   },
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axag-cli/axag-sdk.git",
+    "directory": "packages/core"
+  },
+  "homepage": "https://axag.org",
+  "bugs": {
+    "url": "https://github.com/axag-cli/axag-sdk/issues"
+  },
   "keywords": [
     "axag",
     "agent-experience",

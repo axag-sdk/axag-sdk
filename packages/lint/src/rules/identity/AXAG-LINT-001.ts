@@ -11,6 +11,13 @@ function isInteractive(el: AnnotatedElement): boolean {
   return false;
 }
 
+/** Attribute spellings a framework uses to bind a spec: JSX, Vue, Angular. */
+const DYNAMIC_BINDINGS = ['axag', ':axag', 'v-axag', '[axag]'];
+
+function hasDynamicBinding(el: AnnotatedElement): boolean {
+  return DYNAMIC_BINDINGS.some(name => el.allAttributes[name] !== undefined);
+}
+
 /** Interactive element has no axag-intent. */
 export const rule: LintRule = {
   id: 'AXAG-LINT-001',
@@ -23,6 +30,8 @@ export const rule: LintRule = {
     if (element.attributes['axag-intent']) return [];
     // A submit button of an annotated form, or a form feeding an annotated action, is already covered.
     if (element.coveredBy) return [];
+    // Bound at runtime: annotated, just not in a form this linter can read. AXAG-LINT-033 covers it.
+    if (hasDynamicBinding(element)) return [];
 
     return [{
       ruleId: 'AXAG-LINT-001',

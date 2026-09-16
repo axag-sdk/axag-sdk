@@ -22,11 +22,11 @@ import type {
 import { parseHtmlTree } from '@axag/core/html';
 import { parseJsxTree } from '@axag/core/jsx';
 import { hasIntent, normalizeAttributes, selectElements } from '@axag/core';
-import { SpecResolver } from './spec-resolver.js';
+import { SpecResolver } from '@axag/core/spec-resolver';
 import { parseVueTree } from './vue.js';
 import { parseAngularTree } from './angular.js';
 
-export { SpecResolver } from './spec-resolver.js';
+export { SpecResolver } from '@axag/core/spec-resolver';
 export { parseVueTree } from './vue.js';
 export { parseAngularTree } from './angular.js';
 
@@ -130,6 +130,7 @@ async function parseTree(
   const extension = path.extname(file).toLowerCase();
   if (extension === '.vue') return parseVueTree(source, relative);
   if (extension === '.jsx' || extension === '.tsx') {
+    resolver.provideSource(file, source);
     return parseJsxTree(source, relative, {
       resolveSpec: expression => resolver.resolve(expression, file),
     });

@@ -11,15 +11,33 @@
       "import": "./dist/index.js"
     }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "license": "MIT",
-  "keywords": ["axag", "openapi", "json-schema", "mcp"],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axag-cli/axag-sdk.git",
+    "directory": "packages/schema-openapi"
+  },
+  "homepage": "https://axag.org",
+  "bugs": {
+    "url": "https://github.com/axag-cli/axag-sdk/issues"
+  },
+  "keywords": [
+    "axag",
+    "openapi",
+    "json-schema",
+    "mcp"
+  ],
   "dependencies": {
     "@axag/core": "workspace:*",
     "yaml": "^2.9.1"
