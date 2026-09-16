@@ -27,6 +27,8 @@ export interface ElementNode {
   rawHtml?: () => string;
   /** Source offsets of each attribute (`name="value"`), when read from source text. */
   spans?: Record<string, AttributeSpan>;
+  /** The live element, when the tree was read from a DOM. */
+  element?: Element;
 }
 
 export interface AttributeSpan {

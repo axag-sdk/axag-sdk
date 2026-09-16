@@ -1,0 +1,31 @@
+{
+  "name": "@axag/webmcp",
+  "version": "0.1.0",
+  "description": "Register AXAG actions as WebMCP tools, tied to the lifetime of the UI they belong to",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" }
+  },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": { "node": ">=18.0.0" },
+  "license": "MIT",
+  "keywords": ["axag", "webmcp", "mcp", "agent", "modelcontext"],
+  "dependencies": {
+    "@axag/core": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "esbuild": "^0.28.0",
+    "happy-dom": "^20.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  }
+}

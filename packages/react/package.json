@@ -1,0 +1,37 @@
+{
+  "name": "@axag/react",
+  "version": "0.1.0",
+  "description": "React bindings for AXAG: register agent actions for as long as the component is mounted",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": { "node": ">=18.0.0" },
+  "license": "MIT",
+  "keywords": ["axag", "react", "webmcp", "mcp", "agent"],
+  "dependencies": {
+    "@axag/core": "workspace:*",
+    "@axag/webmcp": "workspace:*"
+  },
+  "peerDependencies": {
+    "react": ">=18"
+  },
+  "devDependencies": {
+    "@testing-library/react": "^16.1.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.2.0",
+    "@types/react-dom": "^19.2.0",
+    "happy-dom": "^20.0.0",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0"
+  }
+}

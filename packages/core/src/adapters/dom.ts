@@ -35,6 +35,7 @@ export function readDomTree(root: ParentNode, source?: string): ElementTree {
       column: 1,
       selector: selectorFor(el),
       rawHtml: () => el.outerHTML.slice(0, 200),
+      element: el,
     });
     if (parent) appendChild(parent, node);
     else tree.roots.push(node);

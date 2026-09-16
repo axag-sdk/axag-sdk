@@ -1,0 +1,33 @@
+{
+  "name": "@axag/angular",
+  "version": "0.1.0",
+  "description": "Angular directive for AXAG: register agent actions for as long as the component is alive",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": { ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" } },
+  "files": ["dist"],
+  "sideEffects": false,
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": { "node": ">=18.0.0" },
+  "license": "MIT",
+  "keywords": ["axag", "angular", "webmcp", "mcp", "agent"],
+  "dependencies": {
+    "@axag/core": "workspace:*",
+    "@axag/webmcp": "workspace:*"
+  },
+  "peerDependencies": { "@angular/core": ">=16" },
+  "devDependencies": {
+    "@angular/core": "^22.1.6",
+    "@types/node": "^22.0.0",
+    "happy-dom": "^20.0.0",
+    "rxjs": "^7.8.1",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0",
+    "zone.js": "^0.15.0"
+  }
+}
