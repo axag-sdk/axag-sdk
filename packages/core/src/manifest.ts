@@ -3,7 +3,8 @@
  */
 
 import { readAnnotation } from './annotation.js';
-import { SPEC_VERSION } from './vocabulary.js';
+import { mergeParameters, nameOnlyParameters } from './parameters.js';
+import { ATTR, SPEC_VERSION } from './vocabulary.js';
 import type { ConformanceLevel } from './vocabulary.js';
 import type { CoreDiagnostic, Manifest, ManifestAction, ManifestSourceElement } from './types.js';
 
@@ -14,6 +15,8 @@ export interface ManifestOptions {
   toolVersion?: string;
   /** Override the timestamp (useful for reproducible builds). */
   generatedAt?: string;
+  /** Add parameters harvested from form markup (default true). */
+  harvest?: boolean;
 }
 
 export interface ManifestResult {
@@ -47,6 +50,22 @@ export function buildManifest(elements: ManifestSourceElement[], options: Manife
     }
 
     const action: ManifestAction = { ...read.action, source_file: el.filePath, source_line: el.line };
+
+    const binding = el.schemaBinding;
+    const harvested = options.harvest === false ? undefined : el.harvested;
+    if (binding || harvested) {
+      const declared = {
+        required: action.required_parameters,
+        optional: action.optional_parameters,
+        nameOnly: nameOnlyParameters(el.attributes[ATTR.requiredParameters], el.attributes[ATTR.optionalParameters]),
+      };
+      const merged = mergeParameters([declared, ...(binding ? [binding] : []), ...(harvested ? [harvested] : [])]);
+      action.required_parameters = merged.required;
+      action.optional_parameters = merged.optional;
+    }
+    if (binding?.riskLevel && action.risk_level === undefined) action.risk_level = binding.riskLevel;
+    if (binding?.description && el.attributes[ATTR.description] === undefined) action.description = binding.description;
+
     if (el.selector) action.element_selector = el.selector;
     byIntent.set(action.intent, action);
   }

@@ -104,6 +104,12 @@ axag scan https://app.example.com --ai --ai-provider openai --ai-model gpt-4o
 # Scan without interactive review (batch mode)
 axag scan https://app.example.com --no-interactive
 
+# Write a manifest; parameters come from annotations, schema bindings and form controls
+axag scan ./src --no-interactive --manifest axag-manifest.json --validate
+
+# Only use declared and schema-bound parameters
+axag scan ./src --no-interactive --manifest axag-manifest.json --no-harvest
+
 # Scan with visible browser
 axag scan https://app.example.com --no-headless
 
@@ -156,6 +162,16 @@ axag validate --level intermediate    # Validate at intermediate conformance
 axag validate --strict                # Fail on warnings too
 ```
 
+### Parameters
+
+A manifest action's parameters come from three places, highest precedence first:
+
+1. **Declared** on the annotation (`axag-required-parameters`, `req=` in a macro, `axag-parameter-*` on controls).
+2. **Schema bindings** — a Zod schema or OpenAPI operation named in `bindings` above or with `axag-schema="zod:./schemas/user.ts#InviteUser"` on the element. Needs `zod@4` for Zod bindings.
+3. **Harvested** from the form: control names, `required`, `type`, `min`/`max`, `minlength`/`maxlength`, `pattern`, `<select>`/radio options and `<label>`/ARIA text. A submit button uses its form; other elements can point at one with `axag-params-from="#form-id"`.
+
+Declared placement and fields win; lower sources only fill gaps. Parameters that weren't declared carry `"source": "harvested:html" | "zod" | "openapi"` in the manifest.
+
 ### `axag fmt [target]`
 
 Rewrite annotations as `axag="..."` macros or as longhand `axag-*` attributes. Only AXAG attributes change; the generated manifest stays identical.
@@ -202,6 +218,11 @@ Create `axag.config.json` in your project root (or run `axag init`):
     "headless": true,
     "timeout": 30000,
     "excludePatterns": ["logout", "signout", "/admin"]
+  },
+  "openapi": "./openapi.yaml",
+  "bindings": {
+    "user.invite": "zod:./src/schemas/user.ts#InviteUser",
+    "user.deactivate": "openapi:deactivateUser"
   },
   "validation": {
     "conformanceLevel": "intermediate",

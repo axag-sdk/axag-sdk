@@ -10,6 +10,7 @@ import type { ScanResult } from '../types/index.js';
 import { scanUrl, scanDirectory } from '../scanner/index.js';
 import { scanFiles } from '../scanner/file-scanner.js';
 import { generateManifestWithDiagnostics } from '../manifest/generator.js';
+import { resolveBindings } from '../manifest/bindings.js';
 import { validateManifest } from '../manifest/schema-validator.js';
 import { inferAnnotations } from '../annotator/index.js';
 import { interactiveReview } from '../interactive/index.js';
@@ -29,6 +30,8 @@ interface ScanOptions {
   interactive: boolean;
   manifest?: string;
   validate?: boolean;
+  /** `--no-harvest` sets this to false. */
+  harvest?: boolean;
 }
 
 export async function scanCommand(
@@ -169,9 +172,16 @@ export async function scanCommand(
       const resolvedDir = path.resolve(target);
       const annotatedElements = await scanFiles(resolvedDir);
 
-      const { manifest, diagnostics } = generateManifestWithDiagnostics(annotatedElements, {
-        paths: [resolvedDir],
+      const bound = await resolveBindings(annotatedElements, {
+        bindings: config.bindings,
+        openapi: config.openapi,
+        rootDir: config.rootDir,
       });
+      const { manifest, diagnostics: manifestDiagnostics } = generateManifestWithDiagnostics(bound.elements, {
+        paths: [resolvedDir],
+        harvest: options.harvest !== false,
+      });
+      const diagnostics = [...bound.diagnostics, ...manifestDiagnostics];
 
       const manifestPath = path.resolve(options.manifest);
       await fs.writeFile(manifestPath, JSON.stringify(manifest, null, 2), 'utf-8');

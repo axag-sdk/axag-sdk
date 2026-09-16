@@ -8,8 +8,8 @@
   },
   "scripts": {
     "build": "pnpm -r run build",
-    "test": "pnpm --filter @axag/core run build && pnpm -r run test",
-    "typecheck": "pnpm --filter @axag/core run build && pnpm -r exec tsc --noEmit"
+    "test": "pnpm -r run build && pnpm -r run test",
+    "typecheck": "pnpm -r run build && pnpm -r exec tsc --noEmit"
   },
   "devDependencies": {
     "vite": "^7.1.0"

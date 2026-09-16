@@ -1,3 +1,4 @@
+import path from 'node:path';
 import { cosmiconfig } from 'cosmiconfig';
 import { z } from 'zod';
 import { DEFAULT_OUTPUT_DIR } from './constants.js';
@@ -44,6 +45,18 @@ export const ConfigSchema = z.object({
     })
     .default({}),
 
+  /**
+   * Schema bindings by intent: `"zod:./schemas/user.ts#InviteUser"` or
+   * `"openapi:./openapi.yaml#inviteUser"`. Elements can also set `axag-schema`.
+   */
+  bindings: z.record(z.string(), z.string()).default({}),
+
+  /** OpenAPI document used by `openapi:<operationId>` refs that don't name a file. */
+  openapi: z.string().optional(),
+
+  /** Directory relative binding paths resolve from (the config file's directory). */
+  rootDir: z.string().default(process.cwd()),
+
   /** Validation settings. */
   validation: z
     .object({
@@ -76,6 +89,7 @@ export async function loadConfig(
 ): Promise<AxagConfig> {
   const result = await explorer.search();
   const fileConfig = result?.config ?? {};
+  if (result?.filepath && fileConfig.rootDir === undefined) fileConfig.rootDir = path.dirname(result.filepath);
   const merged = deepMerge(fileConfig, overrides);
   return ConfigSchema.parse(merged);
 }

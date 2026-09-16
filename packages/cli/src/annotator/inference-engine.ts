@@ -34,7 +34,7 @@ Rules:
 1. Write/delete actions should have appropriate risk levels
 2. High-risk or destructive actions should require confirmation
 3. Search and read actions are typically idempotent with no risk
-4. Parameters should be inferred from surrounding form fields or context
+4. Leave parameters empty for elements inside a <form>: AXAG harvests them from the form's controls. Only list parameters for elements outside forms
 5. Intent should follow "{entity}.{verb}" convention
 
 Respond with ONLY valid JSON matching this schema:

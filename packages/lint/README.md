@@ -75,6 +75,10 @@ axag-lint --init
 | AXAG-LINT-026 | Safety metadata mismatch for risk level | warning |
 | AXAG-LINT-027 | Invalid `axag` macro syntax | error |
 | AXAG-LINT-028 | `axag` macro conflicts with a longhand attribute | error |
+| AXAG-LINT-029 | Form control has no name, so it can't become a parameter | warning |
+| AXAG-LINT-030 | Form constraint disagrees with the linked Zod/OpenAPI schema (needs `--manifest`) | warning |
+| AXAG-LINT-031 | Annotated button, link or control has no accessible name | error |
+| AXAG-LINT-032 | Harvested parameter has no label or description | warning |
 
 Elements annotated with the `axag="write:user.deactivate!critical?confirm"` macro are expanded before any rule runs, so every rule applies to macro and longhand annotations alike.
 

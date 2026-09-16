@@ -1,0 +1,60 @@
+openapi: 3.1.0
+info: { title: Admin API, version: 1.0.0 }
+paths:
+  /tenants/{tenantId}/users/{userId}:
+    parameters:
+      - $ref: '#/components/parameters/TenantId'
+      - name: userId
+        in: path
+        required: true
+        schema: { type: string, format: uuid }
+    post:
+      operationId: deactivateUser
+      summary: Deactivate a user and revoke their sessions
+      x-axag-risk-level: critical
+      parameters:
+        - name: notify
+          in: query
+          description: Email the user
+          schema: { type: boolean, default: true }
+        - name: X-Request-Id
+          in: header
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              allOf:
+                - $ref: '#/components/schemas/Reason'
+                - type: object
+                  properties:
+                    effective_at: { type: string, format: date-time }
+    get:
+      operationId: getUser
+      responses: { '200': { description: ok } }
+components:
+  parameters:
+    TenantId:
+      name: tenantId
+      in: path
+      required: true
+      description: Tenant the user belongs to
+      schema: { type: string }
+  schemas:
+    Reason:
+      type: object
+      required: [reason]
+      properties:
+        reason:
+          type: string
+          enum: [offboarding, security, other]
+        manager:
+          $ref: '#/components/schemas/Person'
+    Person:
+      type: object
+      properties:
+        name: { type: string }
+        reports:
+          type: array
+          items: { $ref: '#/components/schemas/Person' }

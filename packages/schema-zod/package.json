@@ -1,0 +1,36 @@
+{
+  "name": "@axag/schema-zod",
+  "version": "0.1.0",
+  "description": "Use Zod schemas as the parameter source for AXAG actions",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "test": "vitest run",
+    "prepublishOnly": "npm run build"
+  },
+  "engines": { "node": ">=18.0.0" },
+  "license": "MIT",
+  "keywords": ["axag", "zod", "json-schema", "mcp"],
+  "dependencies": {
+    "@axag/core": "workspace:*",
+    "jiti": "^2.7.0"
+  },
+  "peerDependencies": {
+    "zod": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "typescript": "^5.9.3",
+    "vitest": "^4.1.0",
+    "zod": "^4.6.5"
+  }
+}

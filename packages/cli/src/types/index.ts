@@ -24,6 +24,8 @@ export interface ScannedElement {
   xpath: string;
   /** Parent context — nearest landmark/section heading. */
   parentContext: string;
+  /** Whether the element sits inside a <form>, whose controls supply its parameters. */
+  insideForm?: boolean;
   /** Screenshot data URI (thumbnail) if captured. */
   screenshot?: string;
   /** Whether the element already has any axag-* attributes. */

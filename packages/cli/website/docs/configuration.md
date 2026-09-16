@@ -63,6 +63,15 @@ When AI is enabled, set the `OPENAI_API_KEY` or `ANTHROPIC_API_KEY` environment 
 | `timeout` | `number` | `30000` | Page load timeout in milliseconds |
 | `excludePatterns` | `string[]` | `[]` | URL patterns to skip during crawling |
 
+### `bindings` and `openapi`
+
+| Field | Type | Default | Description |
+|-------|------|---------|-------------|
+| `bindings` | `Record<string, string>` | `{}` | Intent → schema ref. `zod:./schemas/user.ts#InviteUser` or `openapi:./openapi.yaml#inviteUser` |
+| `openapi` | `string` | — | OpenAPI document used by refs written as `openapi:<operationId>` |
+
+Relative paths resolve from the config file's directory. Elements can bind a schema directly with `axag-schema="…"`, which takes precedence over `bindings`. Bound parameters rank below parameters declared on the annotation and above parameters harvested from form controls.
+
 ### `validation`
 
 | Field | Type | Default | Description |

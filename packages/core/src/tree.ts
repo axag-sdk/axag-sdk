@@ -5,6 +5,7 @@
  */
 
 import { readAttributes } from './annotation.js';
+import { accessibleName, coveringIntent, harvestParameters } from './harvest.js';
 import type { AnnotatedElement, ElementFilter } from './types.js';
 
 export interface ElementNode {
@@ -79,19 +80,28 @@ export function findById(tree: ElementTree, id: string): ElementNode | undefined
   return undefined;
 }
 
-export function toAnnotatedElement(node: ElementNode, filePath: string): AnnotatedElement {
+export function toAnnotatedElement(node: ElementNode, tree: ElementTree): AnnotatedElement {
   const { attributes, diagnostics } = readAttributes(node.attributes);
   const el: AnnotatedElement = {
     tagName: node.tagName,
     attributes,
     allAttributes: node.attributes,
-    filePath,
+    filePath: tree.filePath,
     line: node.line,
     column: node.column,
   };
   if (node.rawHtml) el.rawHtml = node.rawHtml();
   if (node.selector) el.selector = node.selector;
   if (diagnostics.length > 0) el.diagnostics = diagnostics;
+  if (attributes['axag-intent']) {
+    const harvested = harvestParameters(node, tree);
+    if (harvested) el.harvested = harvested;
+    const name = accessibleName(node, tree);
+    if (name) el.accessibleName = name;
+  } else if (node.tagName === 'form' || node.tagName === 'button' || node.tagName === 'input') {
+    const covered = coveringIntent(node, tree);
+    if (covered) el.coveredBy = covered;
+  }
   return el;
 }
 
@@ -100,7 +110,7 @@ export function selectElements(tree: ElementTree, filter: ElementFilter): Annota
   const out: AnnotatedElement[] = [];
   for (const node of walk(tree)) {
     if (filter({ tagName: node.tagName, allAttributes: node.attributes })) {
-      out.push(toAnnotatedElement(node, tree.filePath));
+      out.push(toAnnotatedElement(node, tree));
     }
   }
   return out;

@@ -50,6 +50,7 @@ program
   .option('--no-interactive', 'Skip interactive review — just output the report')
   .option('--manifest <path>', 'Generate manifest JSON and write to specified path')
   .option('--validate', 'Validate generated manifest against AXAG JSON Schema', false)
+  .option('--no-harvest', 'Only use declared and schema-bound parameters, not form controls')
   .action(scanCommand);
 
 /* ─── report ─────────────────────────────────── */

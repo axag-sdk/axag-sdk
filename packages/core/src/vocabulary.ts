@@ -24,6 +24,23 @@ export const ATTR = {
   /* ── Parameters ────────────────────────────── */
   requiredParameters: 'axag-required-parameters',
   optionalParameters: 'axag-optional-parameters',
+  /** `#id` of the form whose controls supply parameters. */
+  paramsFrom: 'axag-params-from',
+  /** Schema binding, e.g. `zod:./schemas/user.ts#DeactivateUser` or `openapi:deactivateUser`. */
+  schema: 'axag-schema',
+
+  /* ── Parameter declarations on form controls ─ */
+  parameter: 'axag-parameter',
+  parameterType: 'axag-parameter-type',
+  parameterRequired: 'axag-parameter-required',
+  parameterDescription: 'axag-parameter-description',
+  parameterFormat: 'axag-parameter-format',
+  parameterEnum: 'axag-parameter-enum',
+  parameterMin: 'axag-parameter-min',
+  parameterMax: 'axag-parameter-max',
+  parameterPattern: 'axag-parameter-pattern',
+  parameterMinLength: 'axag-parameter-min-length',
+  parameterMaxLength: 'axag-parameter-max-length',
 
   /* ── State ─────────────────────────────────── */
   preconditions: 'axag-preconditions',

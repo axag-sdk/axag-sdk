@@ -15,4 +15,8 @@ export { generateToolRegistry, actionToTool, buildInputSchema } from './tools.js
 export { walk, ancestors, textContent, findById, selectElements, toAnnotatedElement } from './tree.js';
 export type { ElementNode, ElementTree, AttributeSpan } from './tree.js';
 export { formatTree } from './format.js';
+export { harvestParameters, parameterScope, coveringIntent, accessibleName, labelFor, toSnakeCase } from './harvest.js';
+export type { HarvestResult, UnnamedControl } from './harvest.js';
+export { mergeParameters, jsonSchemaToParameters, jsonSchemaToParameter, nameOnlyParameters } from './parameters.js';
+export type { ParameterSet, SchemaBinding } from './parameters.js';
 export type { FormatMode, FormatResult, FormatSkip } from './format.js';

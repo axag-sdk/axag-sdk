@@ -51,6 +51,9 @@ axag scan https://app.example.com --max-pages 5
 | `--ai-model <model>` | `gpt-4o` | AI model to use |
 | `--max-pages <n>` | `10` | Maximum pages to crawl |
 | `--interactive / --no-interactive` | `true` | Interactive review mode |
+| `--manifest <path>` | — | For local directories: write a Semantic Manifest to this path |
+| `--validate` | `false` | Validate the written manifest against the AXAG JSON Schema |
+| `--no-harvest` | harvest on | Don't add parameters from form controls; use only declared and schema-bound ones |
 
 ## Interactive Review
 

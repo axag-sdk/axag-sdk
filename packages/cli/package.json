@@ -38,6 +38,8 @@
   },
   "dependencies": {
     "@axag/core": "workspace:*",
+    "@axag/schema-openapi": "workspace:*",
+    "@axag/schema-zod": "workspace:*",
     "@babel/parser": "^7.29.2",
     "@babel/traverse": "^7.29.0",
     "ajv": "^8.18.0",

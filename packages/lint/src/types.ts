@@ -39,9 +39,17 @@ export interface ManifestAction {
   intent: string;
   entity: string;
   action_type: string;
-  required_parameters?: Array<{ name: string }>;
-  optional_parameters?: Array<{ name: string }>;
+  required_parameters?: ManifestParameterData[];
+  optional_parameters?: ManifestParameterData[];
   [key: string]: unknown;
+}
+
+export interface ManifestParameterData {
+  name: string;
+  type?: string;
+  enum?: unknown[];
+  /** `harvested:html`, `zod` or `openapi` for parameters not declared on the annotation. */
+  source?: string;
 }
 
 /** User config from .axaglintrc.json */

@@ -21,6 +21,8 @@ export const rule: LintRule = {
     // Only flag interactive elements that have NO axag-intent
     if (!isInteractive(element)) return [];
     if (element.attributes['axag-intent']) return [];
+    // A submit button of an annotated form, or a form feeding an annotated action, is already covered.
+    if (element.coveredBy) return [];
 
     return [{
       ruleId: 'AXAG-LINT-001',

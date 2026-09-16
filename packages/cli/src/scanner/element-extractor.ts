@@ -74,6 +74,7 @@ export function extractElements(
       pageUrl,
       xpath: '', // Populated during live scan if needed
       parentContext,
+      insideForm: $el.closest('form').length > 0,
       hasExistingAnnotations: Object.keys(existingAnnotations).length > 0,
       existingAnnotations,
     });

@@ -133,33 +133,17 @@ function isStopWord(word: string): boolean {
 }
 
 /**
- * Infer required/optional parameters from form fields and element context.
+ * Infer parameter names for elements outside forms. Elements inside a form get
+ * none: manifest generation harvests the form's controls, with real types,
+ * constraints and required flags, so writing names here would only duplicate them.
  */
 function inferParameters(
   element: ScannedElement,
-  context: PageContext,
+  _context: PageContext,
 ): { required: string[]; optional: string[] } {
-  const required: string[] = [];
-  const optional: string[] = [];
-
-  // Check if this element is inside/associated with a form
-  for (const form of context.forms) {
-    for (const field of form.fields) {
-      // Simple heuristic: first 2 fields required, rest optional
-      if (required.length < 2) {
-        required.push(field);
-      } else {
-        optional.push(field);
-      }
-    }
-  }
-
-  // For search elements, add 'query' as required
-  if (/search|find|look/i.test(element.textContent)) {
-    if (!required.includes('query')) required.unshift('query');
-  }
-
-  return { required, optional };
+  if (element.insideForm) return { required: [], optional: [] };
+  if (/search|find|look/i.test(element.textContent)) return { required: ['query'], optional: [] };
+  return { required: [], optional: [] };
 }
 
 /**

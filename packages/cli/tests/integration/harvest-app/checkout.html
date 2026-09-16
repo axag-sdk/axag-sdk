@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><title>Checkout</title></head>
+<body>
+  <!-- No axag-*-parameters anywhere: every parameter comes from the form itself. -->
+  <form axag="write:order.place!high?confirm&idempotent=false&scope=user" axag-description="Place an order for the items in the cart">
+    <label for="email">Email for the receipt</label>
+    <input id="email" name="email" type="email" required>
+
+    <fieldset>
+      <legend>Delivery speed</legend>
+      <label><input type="radio" name="shipping" value="standard" required> Standard</label>
+      <label><input type="radio" name="shipping" value="express"> Express</label>
+    </fieldset>
+
+    <label>Gift message <textarea name="gift_message" maxlength="200"></textarea></label>
+    <label>Quantity <input name="quantity" type="number" min="1" max="10" required></label>
+    <label><input type="checkbox" name="save_address"> Save this address</label>
+
+    <button type="submit">Place order</button>
+  </form>
+
+  <form id="coupon">
+    <label for="code">Coupon code</label>
+    <input id="code" name="code" pattern="[A-Z0-9]{6}" required>
+  </form>
+  <button type="submit" form="coupon" axag="write:coupon.apply!low?idempotent">Apply coupon</button>
+</body>
+</html>

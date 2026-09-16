@@ -1,3 +1,5 @@
+import type { HarvestResult } from './harvest.js';
+import type { SchemaBinding } from './parameters.js';
 import type {
   ActionType,
   ConformanceLevel,
@@ -30,11 +32,19 @@ export interface AnnotatedElement {
   selector?: string;
   /** Problems found while normalizing attributes (macro errors, conflicts). */
   diagnostics?: CoreDiagnostic[];
+  /** Parameters read from the element's form controls, when it has a parameter scope. */
+  harvested?: HarvestResult;
+  /** For unannotated elements: the intent of the annotation that covers them (their form, or the action they feed). */
+  coveredBy?: string;
+  /** Accessible name (label, aria-label, text, alt, title), for annotated elements. */
+  accessibleName?: string;
+  /** Parameters from a Zod or OpenAPI binding, attached by tools that resolve bindings. */
+  schemaBinding?: SchemaBinding;
 }
 
 /** The minimum a manifest generator needs from an element. */
 export type ManifestSourceElement = Pick<AnnotatedElement, 'attributes' | 'filePath' | 'line'> &
-  Partial<Pick<AnnotatedElement, 'selector' | 'diagnostics'>>;
+  Partial<Pick<AnnotatedElement, 'selector' | 'diagnostics' | 'harvested' | 'schemaBinding'>>;
 
 /** Decides which elements an adapter returns. */
 export type ElementFilter = (el: Pick<AnnotatedElement, 'tagName' | 'allAttributes'>) => boolean;
@@ -46,7 +56,8 @@ export type CoreDiagnosticCode =
   | 'AXAG-CORE-002' // value outside the attribute's enum
   | 'AXAG-CORE-003' // duplicate intent in one manifest
   | 'AXAG-CORE-004' // invalid axag macro
-  | 'AXAG-CORE-005'; // axag macro disagrees with a longhand attribute
+  | 'AXAG-CORE-005' // axag macro disagrees with a longhand attribute
+  | 'AXAG-CORE-006'; // schema binding could not be loaded
 
 export interface CoreDiagnostic {
   code: CoreDiagnosticCode;
@@ -77,7 +88,11 @@ export interface ManifestParameter {
   items?: Record<string, unknown>;
   /** JSON Schema properties for object parameters. */
   properties?: Record<string, unknown>;
+  /** Where an undeclared parameter came from: `harvested:html`, `zod` or `openapi`. */
+  source?: ParameterSource;
 }
+
+export type ParameterSource = 'harvested:html' | 'zod' | 'openapi';
 
 export interface ManifestAction {
   intent: string;

@@ -290,6 +290,15 @@
         "properties": {
           "type": "object",
           "description": "JSON Schema properties (when type is object)"
+        },
+        "source": {
+          "type": "string",
+          "enum": [
+            "harvested:html",
+            "zod",
+            "openapi"
+          ],
+          "description": "Where a parameter that was not declared on the annotation came from (1.1)"
         }
       },
       "additionalProperties": false

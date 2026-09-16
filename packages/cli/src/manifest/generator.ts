@@ -10,7 +10,7 @@ import { CLI_VERSION } from '../utils/constants.js';
 /** Generate a manifest and the diagnostics found while reading annotations. */
 export function generateManifestWithDiagnostics(
   elements: ManifestSourceElement[],
-  options: Pick<ManifestOptions, 'paths' | 'url'>,
+  options: Pick<ManifestOptions, 'paths' | 'url' | 'harvest'>,
 ): ManifestResult {
   return buildManifest(elements, { ...options, tool: 'axag-cli', toolVersion: CLI_VERSION });
 }
