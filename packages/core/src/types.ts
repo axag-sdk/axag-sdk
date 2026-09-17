@@ -36,6 +36,8 @@ export interface AnnotatedElement {
   harvested?: HarvestResult;
   /** For unannotated elements: the intent of the annotation that covers them (their form, or the action they feed). */
   coveredBy?: string;
+  /** Context attributes this element took from an ancestor (scope, tenant boundary, roles). */
+  inherited?: string[];
   /** Accessible name (label, aria-label, text, alt, title), for annotated elements. */
   accessibleName?: string;
   /** Parameters from a Zod or OpenAPI binding, attached by tools that resolve bindings. */

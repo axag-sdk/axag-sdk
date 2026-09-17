@@ -6,7 +6,14 @@
 
 import { readAttributes } from './annotation.js';
 import { accessibleName, coveringIntent, harvestParameters } from './harvest.js';
+import { ATTR } from './vocabulary.js';
 import type { AnnotatedElement, ElementFilter } from './types.js';
+
+/**
+ * Attributes a container passes down to the annotations inside it
+ * (specification/context-inheritance). An element's own value wins.
+ */
+export const INHERITED_ATTRIBUTES = [ATTR.scope, ATTR.tenantBoundary, ATTR.requiredRoles] as const;
 
 export interface ElementNode {
   /** Lower-cased tag name, or `component` for JSX member expressions. */
@@ -96,6 +103,8 @@ export function toAnnotatedElement(node: ElementNode, tree: ElementTree): Annota
   if (node.selector) el.selector = node.selector;
   if (diagnostics.length > 0) el.diagnostics = diagnostics;
   if (attributes['axag-intent']) {
+    const inherited = inheritContext(node, attributes);
+    if (inherited.length > 0) el.inherited = inherited;
     const harvested = harvestParameters(node, tree);
     if (harvested) el.harvested = harvested;
     const name = accessibleName(node, tree);
@@ -105,6 +114,25 @@ export function toAnnotatedElement(node: ElementNode, tree: ElementTree): Annota
     if (covered) el.coveredBy = covered;
   }
   return el;
+}
+
+/** Fill scope, tenant boundary and roles the element leaves out from its nearest ancestor that declares them. */
+function inheritContext(node: ElementNode, attributes: Record<string, string>): string[] {
+  const missing = INHERITED_ATTRIBUTES.filter(name => !attributes[name]);
+  if (missing.length === 0) return [];
+
+  const inherited: string[] = [];
+  for (const ancestor of ancestors(node)) {
+    if (!INHERITED_ATTRIBUTES.some(name => ancestor.attributes[name]) && !ancestor.attributes[ATTR.macro]) continue;
+    const declared = readAttributes(ancestor.attributes).attributes;
+    for (const name of missing) {
+      if (attributes[name] || !declared[name]) continue;
+      attributes[name] = declared[name];
+      inherited.push(name);
+    }
+    if (inherited.length === missing.length) break;
+  }
+  return inherited;
 }
 
 /** Flatten a tree to the elements a caller cares about. */

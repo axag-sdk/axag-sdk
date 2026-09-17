@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { describe, it, expect } from 'vitest';
-import { ancestors, findById, textContent, walk } from '../src/index.js';
+import { ancestors, buildManifest, findById, selectElements, textContent, walk } from '../src/index.js';
 import type { ElementNode, ElementTree } from '../src/index.js';
 import { parseHtmlTree } from '../src/adapters/html.js';
 import { parseJsxTree } from '../src/adapters/jsx.js';
@@ -69,5 +69,58 @@ describe('element trees', () => {
 
   it('return an empty tree for unparseable JSX', () => {
     expect(parseJsxTree('const = <', 'bad.tsx').roots).toEqual([]);
+  });
+});
+
+describe('context inheritance', () => {
+  const SECTION = `<section axag-scope="tenant" axag-tenant-boundary="strict" axag-required-roles='["admin"]'>
+  <div>
+    <button axag-intent="user.create" axag-entity="user" axag-action-type="write">Add User</button>
+    <button axag-intent="user.delete" axag-entity="user" axag-action-type="delete" axag-required-roles='["super_admin"]'>Delete User</button>
+  </div>
+</section>
+<button axag-intent="help.search" axag-entity="help" axag-action-type="read">Help</button>`;
+
+  const read = (tree: ElementTree) =>
+    Object.fromEntries(
+      selectElements(tree, el => Boolean(el.allAttributes['axag-intent'])).map(el => [el.attributes['axag-intent'], el]),
+    );
+
+  it('passes scope, tenant boundary and roles to annotations inside a container', () => {
+    const byIntent = read(parseHtmlTree(SECTION, 'page.html'));
+    expect(byIntent['user.create'].attributes).toMatchObject({
+      'axag-scope': 'tenant',
+      'axag-tenant-boundary': 'strict',
+      'axag-required-roles': '["admin"]',
+    });
+    expect(byIntent['user.create'].inherited).toEqual(['axag-scope', 'axag-tenant-boundary', 'axag-required-roles']);
+  });
+
+  it("keeps an element's own value", () => {
+    const byIntent = read(parseHtmlTree(SECTION, 'page.html'));
+    expect(byIntent['user.delete'].attributes['axag-required-roles']).toBe('["super_admin"]');
+    expect(byIntent['user.delete'].inherited).toEqual(['axag-scope', 'axag-tenant-boundary']);
+  });
+
+  it('leaves annotations outside the container alone', () => {
+    const byIntent = read(parseHtmlTree(SECTION, 'page.html'));
+    expect(byIntent['help.search'].attributes['axag-scope']).toBeUndefined();
+    expect(byIntent['help.search'].inherited).toBeUndefined();
+  });
+
+  it('works the same from JSX and the DOM', () => {
+    const jsx = read(parseJsxTree(`<>${SECTION}</>`, 'Page.tsx'));
+    expect(jsx['user.create'].attributes['axag-scope']).toBe('tenant');
+
+    document.body.innerHTML = SECTION;
+    const dom = read(readDomTree(document.body));
+    expect(dom['user.create'].attributes['axag-tenant-boundary']).toBe('strict');
+  });
+
+  it('reaches the manifest', () => {
+    const elements = selectElements(parseHtmlTree(SECTION, 'page.html'), el => Boolean(el.allAttributes['axag-intent']));
+    const { manifest } = buildManifest(elements, { paths: [] });
+    const create = manifest.actions.find(a => a.intent === 'user.create')!;
+    expect(create).toMatchObject({ scope: 'tenant', tenant_boundary: 'strict', required_roles: ['admin'] });
   });
 });
