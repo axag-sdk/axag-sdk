@@ -5,30 +5,63 @@
   "type": "module",
   "main": "./dist/src/index.js",
   "types": "./dist/src/index.d.ts",
-  "bin": { "axag-bridge": "./dist/bin/axag-bridge.js" },
-  "exports": {
-    ".": { "types": "./dist/src/index.d.ts", "import": "./dist/src/index.js" },
-    "./client": { "types": "./dist/src/client.d.ts", "import": "./dist/src/client.js" },
-    "./relay": { "types": "./dist/src/relay.d.ts", "import": "./dist/src/relay.js" }
+  "bin": {
+    "axag-bridge": "./dist/bin/axag-bridge.js"
   },
-  "files": ["dist"],
+  "exports": {
+    ".": {
+      "types": "./dist/src/index.d.ts",
+      "import": "./dist/src/index.js"
+    },
+    "./client": {
+      "types": "./dist/src/client.d.ts",
+      "import": "./dist/src/client.js"
+    },
+    "./relay": {
+      "types": "./dist/src/relay.d.ts",
+      "import": "./dist/src/relay.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/axag-cli/axag-sdk.git", "directory": "packages/bridge" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/web-axag/axag-sdk.git",
+    "directory": "packages/bridge"
+  },
   "homepage": "https://axag.org",
-  "bugs": { "url": "https://github.com/axag-cli/axag-sdk/issues" },
-  "keywords": ["axag", "mcp", "webmcp", "bridge", "agent"],
+  "bugs": {
+    "url": "https://github.com/web-axag/axag-sdk/issues"
+  },
+  "keywords": [
+    "axag",
+    "mcp",
+    "webmcp",
+    "bridge",
+    "agent"
+  ],
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
     "ws": "^8.21.3"
   },
-  "peerDependencies": { "@axag/shim": "workspace:*" },
-  "peerDependenciesMeta": { "@axag/shim": { "optional": true } },
+  "peerDependencies": {
+    "@axag/shim": "workspace:*"
+  },
+  "peerDependenciesMeta": {
+    "@axag/shim": {
+      "optional": true
+    }
+  },
   "devDependencies": {
     "@axag/shim": "workspace:*",
     "@types/node": "^22.0.0",

@@ -1,10 +1,9 @@
 name: Deploy CLI Website
 
+# Manual only. The CLI's website has its own home; publishing it from this
+# repository would take over these Pages. Turn the push trigger back on if this
+# repository becomes where that site is built.
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'packages/cli/website/**'
   workflow_dispatch:
 
 permissions:

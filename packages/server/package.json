@@ -6,21 +6,44 @@
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
   "exports": {
-    ".": { "types": "./dist/index.d.ts", "import": "./dist/index.js" },
-    "./express": { "types": "./dist/express.d.ts", "import": "./dist/express.js" }
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./express": {
+      "types": "./dist/express.d.ts",
+      "import": "./dist/express.js"
+    }
   },
-  "files": ["dist"],
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "tsc -p tsconfig.build.json",
     "test": "vitest run",
     "prepublishOnly": "npm run build"
   },
-  "engines": { "node": ">=18.0.0" },
+  "engines": {
+    "node": ">=18.0.0"
+  },
   "license": "MIT",
-  "repository": { "type": "git", "url": "https://github.com/axag-cli/axag-sdk.git", "directory": "packages/server" },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/web-axag/axag-sdk.git",
+    "directory": "packages/server"
+  },
   "homepage": "https://axag.org",
-  "bugs": { "url": "https://github.com/axag-cli/axag-sdk/issues" },
-  "keywords": ["axag", "mcp", "webmcp", "agent", "authorization", "express"],
+  "bugs": {
+    "url": "https://github.com/web-axag/axag-sdk/issues"
+  },
+  "keywords": [
+    "axag",
+    "mcp",
+    "webmcp",
+    "agent",
+    "authorization",
+    "express"
+  ],
   "dependencies": {
     "@axag/core": "workspace:*"
   },

@@ -31,7 +31,8 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/axag-cli/axag-cli"
+    "url": "https://github.com/web-axag/axag-sdk.git",
+    "directory": "packages/cli"
   },
   "engines": {
     "node": ">=18.0.0"
@@ -67,5 +68,9 @@
     "eslint": "^9.0.0",
     "typescript": "^5.6.0",
     "vitest": "^4.1.0"
+  },
+  "homepage": "https://axag.org",
+  "bugs": {
+    "url": "https://github.com/web-axag/axag-sdk/issues"
   }
 }
