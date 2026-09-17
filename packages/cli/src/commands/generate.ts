@@ -7,8 +7,8 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import chalk from 'chalk';
 import { createSpinner } from 'nanospinner';
-import { compile } from '@axag/compiler';
-import { toWebMcpTool } from '@axag/core';
+import { compile } from '@web-axag/compiler';
+import { toWebMcpTool } from '@web-axag/core';
 import { validateManifest } from '../manifest/schema-validator.js';
 import { resolveBindings } from '../manifest/bindings.js';
 import { loadConfig } from '../utils/config.js';
@@ -29,12 +29,15 @@ export async function generateCommand(target: string | undefined, options: Gener
   console.log(chalk.dim('─'.repeat(50)));
   console.log();
 
-  const root = path.resolve(target ?? '.');
+  const resolved = path.resolve(target ?? '.');
+  const isFile = (await fs.stat(resolved).catch(() => undefined))?.isFile() ?? false;
+  const root = isFile ? path.dirname(resolved) : resolved;
   const config = await loadConfig();
-  const spinner = createSpinner(`Compiling annotations in ${root}...`).start();
+  const spinner = createSpinner(`Compiling annotations in ${resolved}...`).start();
 
   const result = await compile({
     root,
+    ...(isFile ? { files: [resolved] } : {}),
     harvest: options.harvest !== false,
     tool: 'axag-cli',
     toolVersion: CLI_VERSION,
