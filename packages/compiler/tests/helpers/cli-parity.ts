@@ -6,10 +6,10 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import fg from 'fast-glob';
-import { buildManifest } from '@axag/core';
-import { extractHtml } from '@axag/core/html';
-import { extractJsx } from '@axag/core/jsx';
-import type { Manifest } from '@axag/core';
+import { buildManifest } from '@web-axag/core';
+import { extractHtml } from '@web-axag/core/html';
+import { extractJsx } from '@web-axag/core/jsx';
+import type { Manifest } from '@web-axag/core';
 
 export async function scanFilesLikeCli(root: string): Promise<Manifest> {
   const files = (await fg(['**/*.{html,htm,jsx,tsx}'], { cwd: root, absolute: true, ignore: ['**/node_modules/**'] })).sort();
@@ -22,5 +22,5 @@ export async function scanFilesLikeCli(root: string): Promise<Manifest> {
       ? extractJsx(source, relative)
       : extractHtml(source, relative)));
   }
-  return buildManifest(elements, { paths: [root], tool: '@axag/compiler', toolVersion: '0.1.0', generatedAt: 'fixed' }).manifest;
+  return buildManifest(elements, { paths: [root], tool: '@web-axag/compiler', toolVersion: '0.1.0', generatedAt: 'fixed' }).manifest;
 }

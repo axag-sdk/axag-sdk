@@ -19,7 +19,7 @@ jobs:
         with: { fetch-depth: 0 }   # --changed-since needs the history
 
       - name: Generate the manifest
-        run: npx --yes @web-axag/axag-cli generate src --manifest axag-manifest.json --validate
+        run: npx --yes @web-axag/cli generate src --manifest axag-manifest.json --validate
 
       - uses: axag-sdk/axag-sdk/.github/actions/axag-lint@main
         with:
@@ -41,6 +41,6 @@ jobs:
 | `changed-since` | — | Only lint files changed since a git ref |
 | `baseline` | — | Baseline file of findings to ignore |
 | `sarif` | `axag-lint.sarif` | Where to write SARIF; empty to skip |
-| `version` | `latest` | Version of `@web-axag/axag-lint` to run |
+| `version` | `latest` | Version of `@web-axag/lint` to run |
 
 The job fails when the linter reports an error. Warnings and info appear as annotations without failing it.

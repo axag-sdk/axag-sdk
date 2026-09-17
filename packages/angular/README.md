@@ -1,14 +1,14 @@
-# @axag/angular
+# @web-axag/angular
 
 An Angular directive that registers an AXAG action while the element is in the view.
 
 ```bash
-npm install @axag/angular
+npm install @web-axag/angular
 ```
 
 ```ts
-import { AxagDirective } from '@axag/angular';
-import { defineAction } from '@axag/core';
+import { AxagDirective } from '@web-axag/angular';
+import { defineAction } from '@web-axag/core';
 
 @Component({
   standalone: true,

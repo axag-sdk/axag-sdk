@@ -1,6 +1,6 @@
 {
-  "name": "@axag/schema-zod",
-  "version": "0.1.0",
+  "name": "@web-axag/schema-zod",
+  "version": "1.1.0",
   "description": "Use Zod schemas as the parameter source for AXAG actions",
   "type": "module",
   "main": "./dist/index.js",
@@ -39,7 +39,7 @@
     "mcp"
   ],
   "dependencies": {
-    "@axag/core": "workspace:*",
+    "@web-axag/core": "workspace:*",
     "jiti": "^2.7.0"
   },
   "peerDependencies": {
@@ -50,5 +50,8 @@
     "typescript": "^5.9.3",
     "vitest": "^4.1.0",
     "zod": "^4.6.5"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

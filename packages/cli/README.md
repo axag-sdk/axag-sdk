@@ -163,7 +163,7 @@ axag validate --strict                # Fail on warnings too
 axag validate ./src -m axag-manifest.json   # include the cross-reference rules
 ```
 
-`validate` runs the same rules as [`axag-lint`](https://www.npmjs.com/package/@web-axag/axag-lint), limited to what the conformance level asks for — identity and syntax at `basic`, safety and scope at `intermediate`, contradictions and enforcement at `full`.
+`validate` runs the same rules as [`axag-lint`](https://www.npmjs.com/package/@web-axag/lint), limited to what the conformance level asks for — identity and syntax at `basic`, safety and scope at `intermediate`, contradictions and enforcement at `full`.
 
 ### Parameters
 
@@ -194,7 +194,7 @@ axag generate ./src --no-harvest                      # declared and schema-boun
 | `--no-harvest` | harvest on | Don't read parameters from form controls |
 | `--validate` | `false` | Validate against the AXAG JSON Schema |
 
-For an app with a bundler, [`@axag/compiler`](https://www.npmjs.com/package/@axag/compiler) does this on every build instead.
+For an app with a bundler, [`@web-axag/compiler`](https://www.npmjs.com/package/@web-axag/compiler) does this on every build instead.
 
 ### `axag fmt [target]`
 

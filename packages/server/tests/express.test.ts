@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { buildManifest } from '@axag/core';
-import { extractHtml } from '@axag/core/html';
+import { buildManifest } from '@web-axag/core';
+import { extractHtml } from '@web-axag/core/html';
 import { createEnforcer } from '../src/index.js';
 import { axagConfirmRoute, axagGuard } from '../src/express.js';
 

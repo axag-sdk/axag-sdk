@@ -1,4 +1,4 @@
-import { RISK_LEVELS } from '@axag/core';
+import { RISK_LEVELS } from '@web-axag/core';
 import type { LintRule, AnnotatedElement, FileContext, Diagnostic } from '../../types.js';
 
 const VALID_RISK_LEVELS: readonly string[] = RISK_LEVELS;

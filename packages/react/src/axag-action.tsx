@@ -1,6 +1,6 @@
 import { createElement } from 'react';
 import type { ElementType, ReactNode } from 'react';
-import type { ActionSpec } from '@axag/core';
+import type { ActionSpec } from '@web-axag/core';
 import { useAxag } from './use-axag.js';
 import type { UseAxagOptions } from './use-axag.js';
 

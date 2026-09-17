@@ -1,5 +1,5 @@
-import { extractHtml } from '@axag/core/html';
-import type { AnnotatedElement, ElementFilter } from '@axag/core';
+import { extractHtml } from '@web-axag/core/html';
+import type { AnnotatedElement, ElementFilter } from '@web-axag/core';
 
 const IDENTITY_ATTRIBUTES = ['axag', 'axag-intent', 'axag-entity', 'axag-action-type'];
 

@@ -80,7 +80,7 @@ export function buildManifest(elements: ManifestSourceElement[], options: Manife
     source: {
       url: options.url,
       paths: options.paths,
-      tool: options.tool ?? '@axag/core',
+      tool: options.tool ?? '@web-axag/core',
       tool_version: options.toolVersion ?? SPEC_VERSION,
     },
     conformance: determineConformance(actions),

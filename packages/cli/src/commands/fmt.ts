@@ -6,9 +6,9 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import chalk from 'chalk';
 import fg from 'fast-glob';
-import { formatHtml } from '@axag/core/html';
-import { formatJsx } from '@axag/core/jsx';
-import type { FormatMode, FormatResult } from '@axag/core';
+import { formatHtml } from '@web-axag/core/html';
+import { formatJsx } from '@web-axag/core/jsx';
+import type { FormatMode, FormatResult } from '@web-axag/core';
 import { logger } from '../utils/logger.js';
 
 interface FmtOptions {

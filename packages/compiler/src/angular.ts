@@ -3,8 +3,8 @@
  * Requires the optional peer dependency `@angular/compiler`.
  */
 
-import { appendChild, createNode } from '@axag/core';
-import type { ElementNode, ElementTree } from '@axag/core';
+import { appendChild, createNode } from '@web-axag/core';
+import type { ElementNode, ElementTree } from '@web-axag/core';
 
 /* Duck-typed TmplAst nodes, so @angular/compiler stays an optional dependency. */
 interface AngularSpan {

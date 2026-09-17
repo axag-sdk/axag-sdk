@@ -1,9 +1,9 @@
 import { onScopeDispose, ref, toValue, watch } from 'vue';
 import type { MaybeRefOrGetter, Ref } from 'vue';
-import { specToAttributes } from '@axag/core';
-import type { ActionSpec } from '@axag/core';
-import { registerAction } from '@axag/webmcp';
-import type { Middleware, ToolHandler } from '@axag/webmcp';
+import { specToAttributes } from '@web-axag/core';
+import type { ActionSpec } from '@web-axag/core';
+import { registerAction } from '@web-axag/webmcp';
+import type { Middleware, ToolHandler } from '@web-axag/webmcp';
 
 export interface UseAxagOptions {
   handler?: ToolHandler;

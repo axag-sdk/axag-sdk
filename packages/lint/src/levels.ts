@@ -7,7 +7,7 @@
  */
 
 import { ALL_RULES } from './rules/index.js';
-import type { ConformanceLevel } from '@axag/core';
+import type { ConformanceLevel } from '@web-axag/core';
 
 const CATEGORIES: Record<ConformanceLevel, string[]> = {
   // Is the annotation there, and does it say something valid?

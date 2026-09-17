@@ -5,11 +5,11 @@
  * These run in the page. They stop a cooperative agent from doing the wrong
  * thing and give a person the chance to refuse — but an agent with the page's
  * credentials can call your API directly, so the server must check the same
- * things. @axag/server is the other half.
+ * things. @web-axag/server is the other half.
  */
 
-import { AxagError, RISK_LEVELS, refusal } from '@axag/core';
-import type { AxagRefusal, RiskLevel, WebMcpTool } from '@axag/core';
+import { AxagError, RISK_LEVELS, refusal } from '@web-axag/core';
+import type { AxagRefusal, RiskLevel, WebMcpTool } from '@web-axag/core';
 import { confirmInShadowRoot } from './confirm-dialog.js';
 import type { ConfirmationRequest } from './confirm-dialog.js';
 import type { ExecutionContext, Middleware } from './register.js';

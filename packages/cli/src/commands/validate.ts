@@ -8,8 +8,8 @@
 import path from 'node:path';
 import chalk from 'chalk';
 import { table } from 'table';
-import { lint, rulesForLevel } from '@web-axag/axag-lint';
-import type { LintResult } from '@web-axag/axag-lint';
+import { lint, rulesForLevel } from '@web-axag/lint';
+import type { LintResult } from '@web-axag/lint';
 import { toConformanceLevel } from '../utils/constants.js';
 import { logger } from '../utils/logger.js';
 

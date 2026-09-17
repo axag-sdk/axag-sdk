@@ -1,4 +1,4 @@
-import { ENTITY_PATTERN } from '@axag/core';
+import { ENTITY_PATTERN } from '@web-axag/core';
 import type { LintRule, AnnotatedElement, FileContext, Diagnostic } from '../../types.js';
 
 /** `axag-entity` that isn't a plain lowercase name, which the manifest schema rejects. */

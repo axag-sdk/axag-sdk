@@ -4,7 +4,7 @@
 
 import * as cheerio from 'cheerio';
 import type { Element as DomElement } from 'domhandler';
-import { normalizeAttributes } from '@axag/core';
+import { normalizeAttributes } from '@web-axag/core';
 import { INTERACTIVE_SELECTORS } from '../utils/constants.js';
 import type { ScannedElement } from '../types/index.js';
 

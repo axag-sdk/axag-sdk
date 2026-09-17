@@ -8,7 +8,7 @@ description: "Compile source files into a Semantic Manifest and MCP tools."
 
 Read `axag` annotations from HTML, JSX/TSX, Vue SFCs and Angular templates and write a Semantic Manifest, an MCP tool registry and WebMCP tool definitions.
 
-This runs the same compiler as the bundler plugins in `@axag/compiler`, so a manifest built in CI matches the one your build produces.
+This runs the same compiler as the bundler plugins in `@web-axag/compiler`, so a manifest built in CI matches the one your build produces.
 
 ## Usage
 

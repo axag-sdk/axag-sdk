@@ -1,4 +1,4 @@
-# @axag/bridge
+# @web-axag/bridge
 
 Gives an MCP client — Claude Desktop, Claude Code, anything that speaks MCP — access to the tools a browser tab has registered.
 
@@ -14,8 +14,8 @@ npx axag-bridge
 In the page:
 
 ```ts
-import { installShim } from '@axag/shim';
-import { connectBridge } from '@axag/bridge/client';
+import { installShim } from '@web-axag/shim';
+import { connectBridge } from '@web-axag/bridge/client';
 
 installShim();
 connectBridge({ url: 'ws://127.0.0.1:53422', pairingCode: '7f3a91c2' });
@@ -62,7 +62,7 @@ Configure it like any other MCP server:
 ## Embedding the relay
 
 ```ts
-import { startBridgeServer } from '@axag/bridge';
+import { startBridgeServer } from '@web-axag/bridge';
 
 const { mcp, relay, pairingCode, port, close } = await startBridgeServer({ allowedOrigins: ['https://app.example.com'] });
 await mcp.connect(myTransport);

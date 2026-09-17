@@ -1,6 +1,6 @@
 {
-  "name": "@axag/react",
-  "version": "0.1.0",
+  "name": "@web-axag/react",
+  "version": "1.1.0",
   "description": "React bindings for AXAG: register agent actions for as long as the component is mounted",
   "type": "module",
   "main": "./dist/index.js",
@@ -41,8 +41,8 @@
     "agent"
   ],
   "dependencies": {
-    "@axag/core": "workspace:*",
-    "@axag/webmcp": "workspace:*"
+    "@web-axag/core": "workspace:*",
+    "@web-axag/webmcp": "workspace:*"
   },
   "peerDependencies": {
     "react": ">=18"
@@ -57,5 +57,8 @@
     "react-dom": "^19.2.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

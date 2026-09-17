@@ -1,5 +1,5 @@
 /**
- * @axag/shim — a `document.modelContext` for browsers that don't have one.
+ * @web-axag/shim — a `document.modelContext` for browsers that don't have one.
  *
  * It implements the part of the WebMCP draft that pages call — `registerTool`
  * with an `AbortSignal` — and keeps the registered tools somewhere a bridge or

@@ -1,4 +1,4 @@
-import { defineAction } from '@axag/core';
+import { defineAction } from '@web-axag/core';
 import { deactivateUser } from './specs.js';
 
 const exportUsers = defineAction({

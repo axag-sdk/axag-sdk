@@ -1,16 +1,16 @@
-# @axag/vue
+# @web-axag/vue
 
 Vue bindings for AXAG. An action is registered while its component is mounted.
 
 ```bash
-npm install @axag/vue
+npm install @web-axag/vue
 ```
 
 ## Composable
 
 ```vue
 <script setup lang="ts">
-import { defineAction, useAxag } from '@axag/vue';
+import { defineAction, useAxag } from '@web-axag/vue';
 
 const addItem = defineAction({
   intent: 'cart.add_item',
@@ -36,7 +36,7 @@ const { el, attrs } = useAxag(addItem, { enabled: () => user.canOrder });
 ## Directive
 
 ```ts
-import { AxagPlugin } from '@axag/vue';
+import { AxagPlugin } from '@web-axag/vue';
 app.use(AxagPlugin);
 ```
 

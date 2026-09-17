@@ -2,8 +2,8 @@
  * Manifest Generator — convert extracted annotated elements into an AXAG manifest.
  */
 
-import { buildManifest } from '@axag/core';
-import type { ManifestOptions, ManifestResult, ManifestSourceElement } from '@axag/core';
+import { buildManifest } from '@web-axag/core';
+import type { ManifestOptions, ManifestResult, ManifestSourceElement } from '@web-axag/core';
 import type { ManifestOutput } from './types.js';
 import { CLI_VERSION } from '../utils/constants.js';
 

@@ -1,4 +1,4 @@
-import { INTENT_PATTERN } from '@axag/core';
+import { INTENT_PATTERN } from '@web-axag/core';
 import type { LintRule, AnnotatedElement, FileContext, Diagnostic } from '../../types.js';
 
 /**

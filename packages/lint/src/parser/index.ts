@@ -1,7 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { extname } from 'node:path';
 import type { AnnotatedElement } from '../types.js';
-import { SpecResolver } from '@axag/core/spec-resolver';
+import { SpecResolver } from '@web-axag/core/spec-resolver';
 import { parseHtml } from './html-parser.js';
 import { parseJsx } from './jsx-parser.js';
 

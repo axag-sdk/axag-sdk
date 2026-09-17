@@ -1,18 +1,18 @@
-# @axag/shim
+# @web-axag/shim
 
 A `document.modelContext` for browsers that don't have one yet, so code written against [WebMCP](https://github.com/webmachinelearning/webmcp) runs unchanged.
 
 ```bash
-npm install @axag/shim
+npm install @web-axag/shim
 ```
 
 ```ts
-import { installShim } from '@axag/shim';
+import { installShim } from '@web-axag/shim';
 
 installShim(); // no-op where the browser has its own implementation
 ```
 
-Then register as usual — [`@axag/webmcp`](../webmcp) and the framework bindings find the shim exactly as they find a native implementation:
+Then register as usual — [`@web-axag/webmcp`](../webmcp) and the framework bindings find the shim exactly as they find a native implementation:
 
 ```ts
 registerManifest(tools, { signal: route.signal, handlers });
@@ -22,12 +22,12 @@ registerManifest(tools, { signal: route.signal, handlers });
 
 It implements the part of the draft a page calls: `registerTool(tool, { signal })`, with abort unregistering. It keeps the registered tools somewhere a bridge or an inspector can read them.
 
-Installing it **connects no agent**. It is the socket a connection plugs into — [`@axag/bridge`](../bridge) is one such connection.
+Installing it **connects no agent**. It is the socket a connection plugs into — [`@web-axag/bridge`](../bridge) is one such connection.
 
 ## Reading the registry
 
 ```ts
-import { getShimRegistry } from '@axag/shim';
+import { getShimRegistry } from '@web-axag/shim';
 
 const registry = getShimRegistry();
 registry?.listTools();                       // what is registered right now

@@ -1,6 +1,6 @@
 {
-  "name": "@axag/shim",
-  "version": "0.1.0",
+  "name": "@web-axag/shim",
+  "version": "1.1.0",
   "description": "A WebMCP registry for browsers that don't have one yet, so AXAG code runs unchanged",
   "type": "module",
   "main": "./dist/index.js",
@@ -41,11 +41,14 @@
     "modelcontext"
   ],
   "devDependencies": {
-    "@axag/webmcp": "workspace:*",
+    "@web-axag/webmcp": "workspace:*",
     "@types/node": "^22.0.0",
     "esbuild": "^0.28.0",
     "happy-dom": "^20.0.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

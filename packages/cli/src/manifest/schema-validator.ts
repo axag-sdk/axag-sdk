@@ -13,9 +13,9 @@ const Ajv = (_Ajv as any).default ?? _Ajv;
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const addFormats = (_addFormats as any).default ?? _addFormats;
 
-// The canonical schema ships with @axag/core.
+// The canonical schema ships with @web-axag/core.
 const require = createRequire(import.meta.url);
-const SCHEMA = require('@axag/core/schema.json') as object;
+const SCHEMA = require('@web-axag/core/schema.json') as object;
 
 export function validateManifest(manifest: ManifestOutput): {
   valid: boolean;

@@ -5,7 +5,7 @@
  * issues the token the page asks for once a person has confirmed.
  */
 
-import { AxagError } from '@axag/core';
+import { AxagError } from '@web-axag/core';
 import type { Actor, AxagRequest, Enforcer } from './enforcer.js';
 
 /** The slice of Express this adapter uses, so the package needs no Express types. */

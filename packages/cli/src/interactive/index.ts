@@ -6,7 +6,7 @@ import inquirer from 'inquirer';
 import chalk from 'chalk';
 import type { InferredAnnotation } from '../types/index.js';
 import { logger } from '../utils/logger.js';
-import { ATTR } from '@axag/core';
+import { ATTR } from '@web-axag/core';
 import { ACTION_TYPES } from '../utils/constants.js';
 import { showAnnotationDiff } from './diff-viewer.js';
 

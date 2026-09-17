@@ -1,9 +1,9 @@
-# @axag/server
+# @web-axag/server
 
 Enforces, on the server, what an annotation promised. The page's middleware improves what a cooperative agent does; this is what makes it true.
 
 ```bash
-npm install @axag/server
+npm install @web-axag/server
 ```
 
 ## Why both halves exist
@@ -11,8 +11,8 @@ npm install @axag/server
 An agent running in the page holds the page's credentials. It can skip your confirmation dialog and call the API directly. So every safety field an annotation declares is checked again here, against the generated manifest rather than against anything the caller sent.
 
 ```ts
-import { createEnforcer } from '@axag/server';
-import { axagGuard, axagConfirmRoute } from '@axag/server/express';
+import { createEnforcer } from '@web-axag/server';
+import { axagGuard, axagConfirmRoute } from '@web-axag/server/express';
 import manifest from './public/.well-known/axag-manifest.json' with { type: 'json' };
 
 const enforcer = createEnforcer({

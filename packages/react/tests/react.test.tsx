@@ -2,9 +2,9 @@
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { StrictMode, useState } from 'react';
 import { render, screen, act } from '@testing-library/react';
-import { defineAction } from '@axag/core';
+import { defineAction } from '@web-axag/core';
 import { useAxag, AxagAction } from '../src/index.js';
-import type { ModelContext, WebMcpToolDefinition } from '@axag/webmcp';
+import type { ModelContext, WebMcpToolDefinition } from '@web-axag/webmcp';
 
 const registered = new Map<string, WebMcpToolDefinition>();
 const modelContext: ModelContext = {

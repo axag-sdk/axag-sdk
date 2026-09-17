@@ -123,7 +123,7 @@ describe('AXAG-LINT-033: dynamic spec', () => {
 describe('specs and framework bindings', () => {
   it('lints a resolvable axag={spec} like any other annotation', () => {
     const elements = parseJsx(
-      `import { defineAction } from '@axag/core';
+      `import { defineAction } from '@web-axag/core';
        const wipe = defineAction({ intent: 'account.delete', actionType: 'delete', riskLevel: 'high' });
        export const A = () => <button axag={wipe}>Delete</button>;`,
       'a.tsx',

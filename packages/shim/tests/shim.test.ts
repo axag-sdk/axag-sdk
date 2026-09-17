@@ -88,9 +88,9 @@ describe('installShim', () => {
     expect(getShimRegistry()).toBeUndefined();
   });
 
-  it('is what @axag/webmcp then registers into', async () => {
+  it('is what @web-axag/webmcp then registers into', async () => {
     const registry = installShim()!;
-    const { registerTool } = await import('@axag/webmcp');
+    const { registerTool } = await import('@web-axag/webmcp');
 
     const controller = new AbortController();
     registerTool(

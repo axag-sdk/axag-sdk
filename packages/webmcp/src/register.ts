@@ -7,9 +7,9 @@
  * watched too, so an agent is never offered a disabled or hidden control.
  */
 
-import { actionToTool, buildManifest, readAttributes, toWebMcpTool } from '@axag/core';
-import type { ActionSpec, MCPToolDefinition, WebMcpTool } from '@axag/core';
-import { specToAttributes } from '@axag/core';
+import { actionToTool, buildManifest, readAttributes, toWebMcpTool } from '@web-axag/core';
+import type { ActionSpec, MCPToolDefinition, WebMcpTool } from '@web-axag/core';
+import { specToAttributes } from '@web-axag/core';
 import { createDefaultHandler } from './handler.js';
 import { getModelContext, registerWith } from './model-context.js';
 import type { ModelContext, WebMcpToolDefinition } from './model-context.js';
@@ -56,7 +56,7 @@ export function registerTool(input: WebMcpTool, options: RegisterOptions = {}): 
   const tool = options.transformTool ? options.transformTool(input) : input;
   const context = getModelContext(options.modelContext);
   if (!context) {
-    options.onError?.(new Error('This browser has no WebMCP support (document.modelContext). Load @axag/shim to bridge instead.'));
+    options.onError?.(new Error('This browser has no WebMCP support (document.modelContext). Load @web-axag/shim to bridge instead.'));
     return NOOP;
   }
   if (options.signal?.aborted) return NOOP;

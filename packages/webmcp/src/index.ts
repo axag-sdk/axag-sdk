@@ -1,5 +1,5 @@
 /**
- * @axag/webmcp — register AXAG actions as WebMCP tools for the time their UI is on screen.
+ * @web-axag/webmcp — register AXAG actions as WebMCP tools for the time their UI is on screen.
  */
 
 export { registerTool, registerAction, registerManifest, registerElement } from './register.js';

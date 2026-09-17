@@ -45,7 +45,7 @@ const OPEN = 1;
 
 export function connectBridge(options: ConnectOptions): BridgeConnection {
   const registry = options.registry ?? defaultRegistry();
-  if (!registry) throw new Error('No tool registry on this page. Install @axag/shim, or pass one as `registry`.');
+  if (!registry) throw new Error('No tool registry on this page. Install @web-axag/shim, or pass one as `registry`.');
 
   const create = options.socketFactory ?? ((url: string) => new WebSocket(url) as unknown as WebSocketLike);
   const socket = create(options.url);

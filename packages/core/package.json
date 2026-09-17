@@ -1,6 +1,6 @@
 {
-  "name": "@axag/core",
-  "version": "0.1.0",
+  "name": "@web-axag/core",
+  "version": "1.1.0",
   "description": "Canonical AXAG vocabulary, annotation reader, manifest and tool generation shared by every AXAG tool",
   "type": "module",
   "main": "./dist/index.js",
@@ -87,5 +87,8 @@
     "happy-dom": "^20.0.0",
     "typescript": "^5.9.3",
     "vitest": "^4.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

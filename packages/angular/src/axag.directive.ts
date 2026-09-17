@@ -1,8 +1,8 @@
 import { Directive, ElementRef, Inject, Input, OnChanges, OnDestroy, Optional, PLATFORM_ID } from '@angular/core';
-import { specToAttributes } from '@axag/core';
-import type { ActionSpec } from '@axag/core';
-import { registerAction } from '@axag/webmcp';
-import type { Middleware, ToolHandler } from '@axag/webmcp';
+import { specToAttributes } from '@web-axag/core';
+import type { ActionSpec } from '@web-axag/core';
+import { registerAction } from '@web-axag/webmcp';
+import type { Middleware, ToolHandler } from '@web-axag/webmcp';
 
 /**
  * `[axag]` — registers an agent action while the element is in the view.

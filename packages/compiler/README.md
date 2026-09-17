@@ -1,11 +1,11 @@
-# @axag/compiler
+# @web-axag/compiler
 
 Build-time AXAG extraction. Reads `axag` annotations from HTML, JSX/TSX, Vue SFCs and Angular templates, and writes the Semantic Manifest and the tools an agent runtime registers.
 
 One implementation runs everywhere: the bundler plugin, `axag-cli generate` and your own scripts all call the same `compile()`, so the manifest is identical whichever produces it.
 
 ```bash
-npm install -D @axag/compiler
+npm install -D @web-axag/compiler
 ```
 
 ## Bundler plugin
@@ -14,7 +14,7 @@ Built on [unplugin](https://github.com/unjs/unplugin), so it works with Vite, Ro
 
 ```ts title="vite.config.ts"
 import { defineConfig } from 'vite';
-import axag from '@axag/compiler/vite';
+import axag from '@web-axag/compiler/vite';
 
 export default defineConfig({
   plugins: [axag()],
@@ -22,7 +22,7 @@ export default defineConfig({
 ```
 
 ```js title="webpack.config.js"
-const axag = require('@axag/compiler/webpack').default;
+const axag = require('@web-axag/compiler/webpack').default;
 module.exports = { plugins: [axag()] };
 ```
 
@@ -60,7 +60,7 @@ In dev, Vite serves both files from memory and recompiles when an annotated file
 `axag` can take an action spec instead of a macro string. The compiler reads it when it is a module-level `const` or a `defineAction({...})` call, in that file or one it imports:
 
 ```tsx
-import { defineAction } from '@axag/core';
+import { defineAction } from '@web-axag/core';
 
 const deactivateUser = defineAction({
   intent: 'user.deactivate',
@@ -79,7 +79,7 @@ Anything the compiler can't read — a prop, a value built at runtime — is lis
 ## API
 
 ```ts
-import { compile } from '@axag/compiler';
+import { compile } from '@web-axag/compiler';
 
 const { manifest, registry, webmcpTools, diagnostics, files } = await compile({ root: 'src' });
 ```

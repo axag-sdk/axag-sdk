@@ -21,7 +21,7 @@ const traverse = ((_traverse as unknown as { default?: Traverse }).default ?? _t
 
 export interface ParseOptions {
   /**
-   * Expand a dynamic `axag={spec}` value into attributes. @axag/compiler passes
+   * Expand a dynamic `axag={spec}` value into attributes. @web-axag/compiler passes
    * this to resolve `defineAction({...})` objects at build time; without it a
    * dynamic value stays empty and the element is registered at runtime instead.
    */

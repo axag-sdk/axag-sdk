@@ -1,5 +1,5 @@
 /**
- * @axag/schema-zod — turn a Zod 4 object schema into AXAG action parameters,
+ * @web-axag/schema-zod — turn a Zod 4 object schema into AXAG action parameters,
  * so forms and APIs share one definition instead of re-declaring it in attributes.
  */
 
@@ -8,8 +8,8 @@ import { pathToFileURL } from 'node:url';
 import { createJiti } from 'jiti';
 import { toJSONSchema } from 'zod';
 import type { ZodType } from 'zod';
-import { jsonSchemaToParameters } from '@axag/core';
-import type { SchemaBinding } from '@axag/core';
+import { jsonSchemaToParameters } from '@web-axag/core';
+import type { SchemaBinding } from '@web-axag/core';
 
 /** Convert a Zod object schema. Uses the input side, which is what an agent sends. */
 export function zodToBinding(schema: unknown): SchemaBinding {

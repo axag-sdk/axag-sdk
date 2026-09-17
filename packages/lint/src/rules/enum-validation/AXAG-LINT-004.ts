@@ -1,4 +1,4 @@
-import { ACTION_TYPES } from '@axag/core';
+import { ACTION_TYPES } from '@web-axag/core';
 import type { LintRule, AnnotatedElement, FileContext, Diagnostic } from '../../types.js';
 
 const VALID_ACTION_TYPES: readonly string[] = ACTION_TYPES;

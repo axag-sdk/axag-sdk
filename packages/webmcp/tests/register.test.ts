@@ -1,6 +1,6 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { defineAction } from '@axag/core';
+import { defineAction } from '@web-axag/core';
 import { registerAction, registerElement, registerManifest, registerTool } from '../src/index.js';
 import { registerDocument } from '../src/document.js';
 import type { ModelContext, WebMcpToolDefinition } from '../src/model-context.js';

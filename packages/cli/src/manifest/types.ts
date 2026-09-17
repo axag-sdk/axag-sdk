@@ -1,3 +1,3 @@
 /* ─── Manifest Output Types ───────────────────── */
 
-export type { Manifest as ManifestOutput, ManifestAction, ManifestParameter } from '@axag/core';
+export type { Manifest as ManifestOutput, ManifestAction, ManifestParameter } from '@web-axag/core';

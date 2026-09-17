@@ -1,13 +1,13 @@
 /**
- * @axag/schema-openapi — read an OpenAPI 3.0/3.1 operation's parameters and
+ * @web-axag/schema-openapi — read an OpenAPI 3.0/3.1 operation's parameters and
  * JSON request body as AXAG action parameters.
  */
 
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import { parse as parseYaml } from 'yaml';
-import { RISK_LEVELS, jsonSchemaToParameter, jsonSchemaToParameters, mergeParameters } from '@axag/core';
-import type { ManifestParameter, RiskLevel, SchemaBinding } from '@axag/core';
+import { RISK_LEVELS, jsonSchemaToParameter, jsonSchemaToParameters, mergeParameters } from '@web-axag/core';
+import type { ManifestParameter, RiskLevel, SchemaBinding } from '@web-axag/core';
 
 type Json = Record<string, unknown>;
 

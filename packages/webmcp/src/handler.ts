@@ -5,7 +5,7 @@
  * An app that wants to call its own code passes a `handler` instead.
  */
 
-import { toSnakeCase } from '@axag/core';
+import { toSnakeCase } from '@web-axag/core';
 
 export interface DispatchResult {
   dispatched: 'click' | 'submit';

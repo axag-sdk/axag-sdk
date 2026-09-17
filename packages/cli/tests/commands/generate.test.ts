@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { compile } from '@axag/compiler';
+import { compile } from '@web-axag/compiler';
 import { validateManifest } from '../../src/manifest/schema-validator.js';
 import { resolveBindings } from '../../src/manifest/bindings.js';
 

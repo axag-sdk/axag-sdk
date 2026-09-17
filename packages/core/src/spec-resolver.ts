@@ -1,7 +1,7 @@
 /**
  * Static resolution of `axag={spec}` values.
  *
- * Node only: it reads the files a spec is imported from. Used by @axag/compiler
+ * Node only: it reads the files a spec is imported from. Used by @web-axag/compiler
  * at build time and by axag-lint, so both agree on which specs are readable.
  *
  * A spec can be read at build time when it is a module-level `const` holding an

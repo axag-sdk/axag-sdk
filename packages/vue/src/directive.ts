@@ -1,7 +1,7 @@
-import { specToAttributes } from '@axag/core';
-import type { ActionSpec } from '@axag/core';
-import { registerAction } from '@axag/webmcp';
-import type { ToolHandler } from '@axag/webmcp';
+import { specToAttributes } from '@web-axag/core';
+import type { ActionSpec } from '@web-axag/core';
+import { registerAction } from '@web-axag/webmcp';
+import type { ToolHandler } from '@web-axag/webmcp';
 import type { App, Directive, DirectiveBinding } from 'vue';
 
 type Value = ActionSpec | { spec: ActionSpec; handler?: ToolHandler };

@@ -14,10 +14,10 @@ importers:
 
   packages/angular:
     dependencies:
-      '@axag/core':
+      '@web-axag/core':
         specifier: workspace:*
         version: link:../core
-      '@axag/webmcp':
+      '@web-axag/webmcp':
         specifier: workspace:*
         version: link:../webmcp
     devDependencies:
@@ -52,15 +52,15 @@ importers:
         specifier: ^8.21.3
         version: 8.21.3
     devDependencies:
-      '@axag/shim':
-        specifier: workspace:*
-        version: link:../shim
       '@types/node':
         specifier: ^22.0.0
         version: 22.20.2
       '@types/ws':
         specifier: ^8.18.1
         version: 8.18.1
+      '@web-axag/shim':
+        specifier: workspace:*
+        version: link:../shim
       typescript:
         specifier: ^5.9.3
         version: 5.9.3
@@ -70,27 +70,27 @@ importers:
 
   packages/cli:
     dependencies:
-      '@axag/compiler':
-        specifier: workspace:*
-        version: link:../compiler
-      '@axag/core':
-        specifier: workspace:*
-        version: link:../core
-      '@axag/schema-openapi':
-        specifier: workspace:*
-        version: link:../schema-openapi
-      '@axag/schema-zod':
-        specifier: workspace:*
-        version: link:../schema-zod
       '@babel/parser':
         specifier: ^7.29.2
         version: 7.29.8
       '@babel/traverse':
         specifier: ^7.29.0
         version: 7.29.8
-      '@web-axag/axag-lint':
+      '@web-axag/compiler':
+        specifier: workspace:*
+        version: link:../compiler
+      '@web-axag/core':
+        specifier: workspace:*
+        version: link:../core
+      '@web-axag/lint':
         specifier: workspace:*
         version: link:../lint
+      '@web-axag/schema-openapi':
+        specifier: workspace:*
+        version: link:../schema-openapi
+      '@web-axag/schema-zod':
+        specifier: workspace:*
+        version: link:../schema-zod
       ajv:
         specifier: ^8.18.0
         version: 8.20.0
@@ -158,15 +158,15 @@ importers:
 
   packages/compiler:
     dependencies:
-      '@axag/core':
-        specifier: workspace:*
-        version: link:../core
       '@babel/parser':
         specifier: ^7.29.2
         version: 7.29.8
       '@babel/traverse':
         specifier: ^7.29.0
         version: 7.29.8
+      '@web-axag/core':
+        specifier: workspace:*
+        version: link:../core
       cheerio:
         specifier: ^1.2.0
         version: 1.2.0
@@ -243,15 +243,15 @@ importers:
 
   packages/lint:
     dependencies:
-      '@axag/core':
-        specifier: workspace:*
-        version: link:../core
       '@babel/parser':
         specifier: ^7.29.2
         version: 7.29.8
       '@babel/traverse':
         specifier: ^7.29.0
         version: 7.29.8
+      '@web-axag/core':
+        specifier: workspace:*
+        version: link:../core
       ajv:
         specifier: ^8.18.0
         version: 8.20.0
@@ -283,10 +283,10 @@ importers:
 
   packages/react:
     dependencies:
-      '@axag/core':
+      '@web-axag/core':
         specifier: workspace:*
         version: link:../core
-      '@axag/webmcp':
+      '@web-axag/webmcp':
         specifier: workspace:*
         version: link:../webmcp
     devDependencies:
@@ -320,7 +320,7 @@ importers:
 
   packages/schema-openapi:
     dependencies:
-      '@axag/core':
+      '@web-axag/core':
         specifier: workspace:*
         version: link:../core
       yaml:
@@ -339,7 +339,7 @@ importers:
 
   packages/schema-zod:
     dependencies:
-      '@axag/core':
+      '@web-axag/core':
         specifier: workspace:*
         version: link:../core
       jiti:
@@ -361,7 +361,7 @@ importers:
 
   packages/server:
     dependencies:
-      '@axag/core':
+      '@web-axag/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:
@@ -377,12 +377,12 @@ importers:
 
   packages/shim:
     devDependencies:
-      '@axag/webmcp':
-        specifier: workspace:*
-        version: link:../webmcp
       '@types/node':
         specifier: ^22.0.0
         version: 22.20.2
+      '@web-axag/webmcp':
+        specifier: workspace:*
+        version: link:../webmcp
       esbuild:
         specifier: ^0.28.0
         version: 0.28.2
@@ -398,10 +398,10 @@ importers:
 
   packages/vue:
     dependencies:
-      '@axag/core':
+      '@web-axag/core':
         specifier: workspace:*
         version: link:../core
-      '@axag/webmcp':
+      '@web-axag/webmcp':
         specifier: workspace:*
         version: link:../webmcp
     devDependencies:
@@ -423,7 +423,7 @@ importers:
 
   packages/webmcp:
     dependencies:
-      '@axag/core':
+      '@web-axag/core':
         specifier: workspace:*
         version: link:../core
     devDependencies:

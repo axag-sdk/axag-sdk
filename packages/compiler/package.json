@@ -1,6 +1,6 @@
 {
-  "name": "@axag/compiler",
-  "version": "0.1.0",
+  "name": "@web-axag/compiler",
+  "version": "1.1.0",
   "description": "Build-time AXAG extraction: manifests and WebMCP tools from HTML, JSX, Vue and Angular sources",
   "type": "module",
   "main": "./dist/index.js",
@@ -62,7 +62,7 @@
     "webmcp"
   ],
   "dependencies": {
-    "@axag/core": "workspace:*",
+    "@web-axag/core": "workspace:*",
     "@babel/parser": "^7.29.2",
     "@babel/traverse": "^7.29.0",
     "cheerio": "^1.2.0",
@@ -90,5 +90,8 @@
     "typescript": "^5.9.3",
     "vite": "^7.1.0",
     "vitest": "^4.1.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

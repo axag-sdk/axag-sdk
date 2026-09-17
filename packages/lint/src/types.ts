@@ -1,6 +1,6 @@
 /** A parsed element with axag-* attributes extracted from source. */
-export type { AnnotatedElement } from '@axag/core';
-import type { AnnotatedElement } from '@axag/core';
+export type { AnnotatedElement } from '@web-axag/core';
+import type { AnnotatedElement } from '@web-axag/core';
 
 /** Context for the file being linted. */
 export interface FileContext {

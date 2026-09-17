@@ -1,5 +1,5 @@
 /**
- * @axag/bridge — give MCP clients access to the tools a browser tab has registered.
+ * @web-axag/bridge — give MCP clients access to the tools a browser tab has registered.
  */
 
 export { connectBridge } from './client.js';

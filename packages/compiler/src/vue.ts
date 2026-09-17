@@ -3,8 +3,8 @@
  * Requires the optional peer dependency `@vue/compiler-sfc`.
  */
 
-import { appendChild, createNode } from '@axag/core';
-import type { ElementNode, ElementTree } from '@axag/core';
+import { appendChild, createNode } from '@web-axag/core';
+import type { ElementNode, ElementTree } from '@web-axag/core';
 
 /* Node and prop kinds from @vue/compiler-core, duck-typed so the dependency stays optional. */
 const ELEMENT = 1;

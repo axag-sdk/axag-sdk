@@ -1,13 +1,13 @@
-# @axag/react
+# @web-axag/react
 
 React bindings for AXAG. An action is registered while its component is mounted and unregistered when it isn't.
 
 ```bash
-npm install @axag/react
+npm install @web-axag/react
 ```
 
 ```tsx
-import { defineAction, useAxag } from '@axag/react';
+import { defineAction, useAxag } from '@web-axag/react';
 
 const deactivateUser = defineAction({
   intent: 'user.deactivate',
@@ -37,7 +37,7 @@ The returned props carry the `axag-*` attributes as well as a ref, so the annota
 ## Wrapping a component you don't own
 
 ```tsx
-import { AxagAction } from '@axag/react';
+import { AxagAction } from '@web-axag/react';
 
 <AxagAction spec={deactivateUser} handler={deactivate}>
   <Button variant="danger">Deactivate</Button>

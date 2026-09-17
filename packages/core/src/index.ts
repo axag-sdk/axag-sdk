@@ -1,6 +1,6 @@
 /**
- * @axag/core — dependency-free AXAG model. Parsers live in the
- * `@axag/core/html`, `@axag/core/jsx` and `@axag/core/dom` subpaths.
+ * @web-axag/core — dependency-free AXAG model. Parsers live in the
+ * `@web-axag/core/html`, `@web-axag/core/jsx` and `@web-axag/core/dom` subpaths.
  */
 
 export * from './vocabulary.js';

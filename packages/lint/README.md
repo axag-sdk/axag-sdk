@@ -9,13 +9,13 @@ Static linter for [AXAG](https://axag.org) annotations in HTML, JSX, and TSX fil
 ## Install
 
 ```bash
-npm install -g @web-axag/axag-lint
+npm install -g @web-axag/lint
 ```
 
 Or run without installing:
 
 ```bash
-npx @web-axag/axag-lint ./src
+npx @web-axag/lint ./src
 ```
 
 ## Usage
@@ -92,7 +92,7 @@ Elements annotated with the `axag="write:user.deactivate!critical?confirm"` macr
 | Files | Notes |
 |-------|-------|
 | `.html`, `.htm` | Including Angular templates; `[axag]` bindings count as runtime-only |
-| `.jsx`, `.tsx` | `axag={spec}` is resolved the way `@axag/compiler` resolves it — a module-level `const` or `defineAction({...})`, followed across relative imports |
+| `.jsx`, `.tsx` | `axag={spec}` is resolved the way `@web-axag/compiler` resolves it — a module-level `const` or `defineAction({...})`, followed across relative imports |
 | `.vue` | The `<template>` block; `:axag` bindings count as runtime-only |
 
 A value neither the linter nor the build can read is reported once, as AXAG-LINT-033, rather than as a missing annotation.
@@ -143,7 +143,7 @@ Rules can be set to `"error"`, `"warning"`, `"info"`, or `"off"`.
 ## Programmatic API
 
 ```typescript
-import { lint } from '@web-axag/axag-lint';
+import { lint } from '@web-axag/lint';
 
 const result = await lint('./src', {
   format: 'json',

@@ -1,5 +1,5 @@
 /**
- * @axag/compiler — read annotations from source files at build time and produce
+ * @web-axag/compiler — read annotations from source files at build time and produce
  * the Semantic Manifest and the tools an agent runtime registers.
  *
  * The same reader the CLI uses runs here, so a manifest built by a bundler
@@ -9,7 +9,7 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
 import fg from 'fast-glob';
-import { buildManifest, generateToolRegistry, toWebMcpTool, walk } from '@axag/core';
+import { buildManifest, generateToolRegistry, toWebMcpTool, walk } from '@web-axag/core';
 import type {
   AnnotatedElement,
   CoreDiagnostic,
@@ -18,15 +18,15 @@ import type {
   Manifest,
   ToolRegistry,
   WebMcpTool,
-} from '@axag/core';
-import { parseHtmlTree } from '@axag/core/html';
-import { parseJsxTree } from '@axag/core/jsx';
-import { hasIntent, normalizeAttributes, selectElements } from '@axag/core';
-import { SpecResolver } from '@axag/core/spec-resolver';
+} from '@web-axag/core';
+import { parseHtmlTree } from '@web-axag/core/html';
+import { parseJsxTree } from '@web-axag/core/jsx';
+import { hasIntent, normalizeAttributes, selectElements } from '@web-axag/core';
+import { SpecResolver } from '@web-axag/core/spec-resolver';
 import { parseVueTree } from './vue.js';
 import { parseAngularTree } from './angular.js';
 
-export { SpecResolver } from '@axag/core/spec-resolver';
+export { SpecResolver } from '@web-axag/core/spec-resolver';
 export { parseVueTree } from './vue.js';
 export { parseAngularTree } from './angular.js';
 
@@ -103,7 +103,7 @@ export async function compile(options: CompileOptions): Promise<CompileResult> {
   const { manifest, diagnostics } = buildManifest(bound?.elements ?? elements, {
     paths: [root],
     url: options.url,
-    tool: options.tool ?? '@axag/compiler',
+    tool: options.tool ?? '@web-axag/compiler',
     toolVersion: options.toolVersion,
     generatedAt: options.generatedAt,
     harvest: options.harvest,

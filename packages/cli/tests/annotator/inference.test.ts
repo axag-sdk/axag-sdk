@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ENTITY_PATTERN, INTENT_PATTERN } from '@axag/core';
+import { ENTITY_PATTERN, INTENT_PATTERN } from '@web-axag/core';
 import { inferAnnotation, toSpecName } from '../../src/annotator/rules.js';
 import type { PageContext } from '../../src/scanner/context-analyzer.js';
 import type { ScannedElement } from '../../src/types/index.js';

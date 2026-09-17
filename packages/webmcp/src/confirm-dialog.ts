@@ -6,7 +6,7 @@
  * buttons. Apps that want their own dialog pass `render` instead.
  */
 
-import type { WebMcpTool } from '@axag/core';
+import type { WebMcpTool } from '@web-axag/core';
 
 export interface ConfirmationRequest {
   tool: WebMcpTool;

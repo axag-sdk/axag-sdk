@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest';
 import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
-import { extractHtml } from '@axag/core/html';
+import { extractHtml } from '@web-axag/core/html';
 import { parseBindingRef, resolveBindings } from '../../src/manifest/bindings.js';
 import { generateManifestWithDiagnostics } from '../../src/manifest/generator.js';
 

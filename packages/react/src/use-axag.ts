@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { specToAttributes } from '@axag/core';
-import type { ActionSpec } from '@axag/core';
-import { registerAction } from '@axag/webmcp';
-import type { Middleware, ToolHandler } from '@axag/webmcp';
+import { specToAttributes } from '@web-axag/core';
+import type { ActionSpec } from '@web-axag/core';
+import { registerAction } from '@web-axag/webmcp';
+import type { Middleware, ToolHandler } from '@web-axag/webmcp';
 
 export interface UseAxagOptions {
   /** What the tool does. Defaults to the spec's `handler`, then to driving the element. */

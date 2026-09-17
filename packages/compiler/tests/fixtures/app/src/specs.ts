@@ -1,4 +1,4 @@
-import { defineAction } from '@axag/core';
+import { defineAction } from '@web-axag/core';
 
 export const deactivateUser = defineAction({
   intent: 'user.deactivate',

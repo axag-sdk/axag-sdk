@@ -1,6 +1,6 @@
 import { describe, it, expect, vi } from 'vitest';
-import { buildManifest, AxagError } from '@axag/core';
-import { extractHtml } from '@axag/core/html';
+import { buildManifest, AxagError } from '@web-axag/core';
+import { extractHtml } from '@web-axag/core/html';
 import { createEnforcer, MemoryConfirmationStore } from '../src/index.js';
 import type { AuditRecord } from '../src/index.js';
 

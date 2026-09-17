@@ -4,8 +4,8 @@
  */
 
 import path from 'node:path';
-import { ATTR } from '@axag/core';
-import type { CoreDiagnostic, ManifestSourceElement, SchemaBinding } from '@axag/core';
+import { ATTR } from '@web-axag/core';
+import type { CoreDiagnostic, ManifestSourceElement, SchemaBinding } from '@web-axag/core';
 
 export interface BindingOptions {
   /** Intent → ref, from `bindings` in axag.config. */
@@ -60,8 +60,8 @@ export async function resolveBindings<T extends ManifestSourceElement>(
       cache.set(
         key,
         ref.kind === 'zod'
-          ? import('@axag/schema-zod').then(m => m.loadZodBinding(file, ref.exportName))
-          : import('@axag/schema-openapi').then(m => m.loadOpenApiBinding(file, ref.operationId)),
+          ? import('@web-axag/schema-zod').then(m => m.loadZodBinding(file, ref.exportName))
+          : import('@web-axag/schema-openapi').then(m => m.loadOpenApiBinding(file, ref.operationId)),
       );
     }
     return cache.get(key)!;

@@ -1,9 +1,9 @@
 // @vitest-environment happy-dom
 import { describe, it, expect, beforeEach, vi } from 'vitest';
 import { ElementRef } from '@angular/core';
-import { defineAction } from '@axag/core';
+import { defineAction } from '@web-axag/core';
 import { AxagDirective } from '../src/index.js';
-import type { ModelContext, WebMcpToolDefinition } from '@axag/webmcp';
+import type { ModelContext, WebMcpToolDefinition } from '@web-axag/webmcp';
 
 const registered = new Map<string, WebMcpToolDefinition>();
 const modelContext: ModelContext = {

@@ -6,8 +6,8 @@
  * for pages without a build step, or ones whose annotations only exist at runtime.
  */
 
-import { actionToTool, buildManifest, hasIntent, readAttributes, toAnnotatedElement, toWebMcpTool, walk } from '@axag/core';
-import { readDomTree } from '@axag/core/dom';
+import { actionToTool, buildManifest, hasIntent, readAttributes, toAnnotatedElement, toWebMcpTool, walk } from '@web-axag/core';
+import { readDomTree } from '@web-axag/core/dom';
 import { handlerFor, registerTool } from './register.js';
 import type { Registration, RegisterOptions, ToolHandler } from './register.js';
 

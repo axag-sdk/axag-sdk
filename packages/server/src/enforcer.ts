@@ -8,8 +8,8 @@
  * generated manifest rather than against anything the caller sent.
  */
 
-import { AxagError, RISK_LEVELS } from '@axag/core';
-import type { Manifest, ManifestAction, RiskLevel } from '@axag/core';
+import { AxagError, RISK_LEVELS } from '@web-axag/core';
+import type { Manifest, ManifestAction, RiskLevel } from '@web-axag/core';
 import { MemoryConfirmationStore, hashParameters } from './confirmations.js';
 import type { ConfirmationStore } from './confirmations.js';
 

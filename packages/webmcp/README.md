@@ -1,16 +1,16 @@
-# @axag/webmcp
+# @web-axag/webmcp
 
 Registers AXAG actions as [WebMCP](https://github.com/webmachinelearning/webmcp) tools, for as long as the UI they belong to is on screen.
 
 ```bash
-npm install @axag/webmcp
+npm install @web-axag/webmcp
 ```
 
 ## Registering the tools your build produced
 
 ```ts
-import { registerManifest } from '@axag/webmcp';
-import { tools } from 'virtual:axag/tools'; // from @axag/compiler
+import { registerManifest } from '@web-axag/webmcp';
+import { tools } from 'virtual:axag/tools'; // from @web-axag/compiler
 
 const route = new AbortController();
 registerManifest(tools, {
@@ -27,8 +27,8 @@ This path is ~1.8 KB gzipped: the tools were built ahead of time, so nothing tha
 ## Registering one action
 
 ```ts
-import { defineAction } from '@axag/core';
-import { registerAction } from '@axag/webmcp';
+import { defineAction } from '@web-axag/core';
+import { registerAction } from '@web-axag/webmcp';
 
 const controller = new AbortController();
 registerAction(
@@ -43,12 +43,12 @@ registerAction(
 );
 ```
 
-For components, use the framework bindings instead: [`@axag/react`](../react), [`@axag/vue`](../vue), [`@axag/angular`](../angular).
+For components, use the framework bindings instead: [`@web-axag/react`](../react), [`@web-axag/vue`](../vue), [`@web-axag/angular`](../angular).
 
 ## Reading the page instead
 
 ```ts
-import { registerDocument } from '@axag/webmcp';
+import { registerDocument } from '@web-axag/webmcp';
 
 registerDocument({ signal: controller.signal });
 ```
@@ -66,7 +66,7 @@ Every annotated element on the page is registered, with parameters harvested fro
 The middleware high-risk actions need, without writing the glue yourself:
 
 ```ts
-import { createEnforcers, registerManifest } from '@axag/webmcp';
+import { createEnforcers, registerManifest } from '@web-axag/webmcp';
 
 const safety = createEnforcers({
   confirm: { from: 'high', endpoint: '/axag/confirm' },
@@ -86,7 +86,7 @@ registerManifest(tools, { signal: route.signal, handlers, ...safety });
 What they add travels in a reserved `_axag` entry alongside the agent's parameters. Your handler forwards it:
 
 ```ts
-import { axagHeaders, withoutEnvelope } from '@axag/webmcp';
+import { axagHeaders, withoutEnvelope } from '@web-axag/webmcp';
 
 const handler = input =>
   fetch('/api/users/deactivate', {
@@ -103,7 +103,7 @@ registerManifest(tools, { signal: route.signal, middleware: [async (ctx, next) =
 ```
 
 :::warning
-These run in the page. An agent with the page's credentials can call your API directly, so [`@axag/server`](../server) has to check the same things.
+These run in the page. An agent with the page's credentials can call your API directly, so [`@web-axag/server`](../server) has to check the same things.
 :::
 
 ## The draft it targets

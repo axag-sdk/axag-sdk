@@ -2,8 +2,8 @@
  * HTML Extractor — extract elements with axag-* attributes from HTML files.
  */
 
-import { extractHtml } from '@axag/core/html';
-import type { AnnotatedElement } from '@axag/core';
+import { extractHtml } from '@web-axag/core/html';
+import type { AnnotatedElement } from '@web-axag/core';
 
 export type { AnnotatedElement };
 

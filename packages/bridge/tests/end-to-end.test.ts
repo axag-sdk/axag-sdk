@@ -7,7 +7,7 @@ import { describe, it, expect, afterEach } from 'vitest';
 import { WebSocket } from 'ws';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { InMemoryTransport } from '@modelcontextprotocol/sdk/inMemory.js';
-import { createRegistry } from '@axag/shim';
+import { createRegistry } from '@web-axag/shim';
 import { connectBridge } from '../src/client.js';
 import { startBridgeServer } from '../src/server.js';
 

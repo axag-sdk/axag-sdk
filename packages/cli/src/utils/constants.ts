@@ -1,10 +1,10 @@
 /* ─── AXAG Attribute Constants ───────────────── */
 
-import { ATTR, ACTION_TYPES, RISK_LEVELS, CONFORMANCE_LEVELS } from '@axag/core';
-import type { ConformanceLevel } from '@axag/core';
+import { ATTR, ACTION_TYPES, RISK_LEVELS, CONFORMANCE_LEVELS } from '@web-axag/core';
+import type { ConformanceLevel } from '@web-axag/core';
 
 export { ACTION_TYPES, RISK_LEVELS, CONFORMANCE_LEVELS };
-export type { ActionType, RiskLevel, ConformanceLevel } from '@axag/core';
+export type { ActionType, RiskLevel, ConformanceLevel } from '@web-axag/core';
 
 /** AXAG attributes the CLI infers and validates, keyed for existing call sites. */
 export const AXAG_ATTRIBUTES = {
@@ -62,7 +62,7 @@ export const INTERACTIVE_SELECTORS = [
 ].join(', ');
 
 /** Bump together with the version in package.json. */
-export const CLI_VERSION = '1.0.2';
+export const CLI_VERSION = '1.1.0';
 
 /** Default output directory for scan results. */
 export const DEFAULT_OUTPUT_DIR = '.axag';
