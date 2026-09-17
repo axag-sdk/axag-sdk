@@ -21,7 +21,7 @@ jobs:
       - name: Generate the manifest
         run: npx --yes @web-axag/axag-cli generate src --manifest axag-manifest.json --validate
 
-      - uses: web-axag/axag-sdk/.github/actions/axag-lint@main
+      - uses: axag-sdk/axag-sdk/.github/actions/axag-lint@main
         with:
           path: src
           manifest: axag-manifest.json

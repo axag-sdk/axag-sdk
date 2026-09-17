@@ -100,7 +100,7 @@ A value neither the linter nor the build can read is reported once, as AXAG-LINT
 ## CI
 
 ```yaml
-- uses: web-axag/axag-sdk/.github/actions/axag-lint@main
+- uses: axag-sdk/axag-sdk/.github/actions/axag-lint@main
   with: { path: src, manifest: axag-manifest.json, changed-since: origin/main }
 ```
 
