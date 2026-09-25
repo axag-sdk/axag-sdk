@@ -7,6 +7,7 @@ import path from 'node:path';
 import { generateManifest } from '../../src/manifest/generator.js';
 import { validateManifest } from '../../src/manifest/schema-validator.js';
 import type { AnnotatedElement } from '../../src/scanner/html-extractor.js';
+import { CLI_VERSION } from '../../src/utils/constants.js';
 
 function makeElement(attrs: Record<string, string>, overrides?: Partial<AnnotatedElement>): AnnotatedElement {
   return {
@@ -216,7 +217,7 @@ describe('generateManifest', () => {
     expect(manifest.source.paths).toEqual(['/src']);
     expect(manifest.source.url).toBe('https://example.com');
     expect(manifest.source.tool).toBe('axag-cli');
-    expect(manifest.source.tool_version).toBe('1.0.2');
+    expect(manifest.source.tool_version).toBe(CLI_VERSION);
     expect(manifest.conformance).toBeDefined();
   });
 });

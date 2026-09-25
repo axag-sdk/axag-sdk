@@ -1,0 +1,39 @@
+{
+  "name": "axag",
+  "version": "1.1.0",
+  "description": "AXAG CLI \u2014 generate Semantic Manifests and MCP tools from axag-* annotations. Wrapper for @web-axag/cli.",
+  "keywords": [
+    "axag",
+    "agent-experience",
+    "mcp",
+    "webmcp",
+    "accessibility",
+    "lint"
+  ],
+  "license": "MIT",
+  "homepage": "https://axag.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axag-sdk/axag-sdk.git",
+    "directory": "packages/alias-axag"
+  },
+  "bugs": {
+    "url": "https://github.com/axag-sdk/axag-sdk/issues"
+  },
+  "type": "module",
+  "bin": {
+    "axag": "./bin/axag.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "dependencies": {
+    "@web-axag/cli": "workspace:*"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

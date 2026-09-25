@@ -1,0 +1,39 @@
+{
+  "name": "axag-lint",
+  "version": "1.1.0",
+  "description": "Lint AXAG annotations in HTML, JSX, TSX and Vue. Wrapper for @web-axag/lint.",
+  "keywords": [
+    "axag",
+    "agent-experience",
+    "mcp",
+    "webmcp",
+    "accessibility",
+    "lint"
+  ],
+  "license": "MIT",
+  "homepage": "https://axag.org",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/axag-sdk/axag-sdk.git",
+    "directory": "packages/alias-axag-lint"
+  },
+  "bugs": {
+    "url": "https://github.com/axag-sdk/axag-sdk/issues"
+  },
+  "type": "module",
+  "bin": {
+    "axag-lint": "./bin/axag-lint.js"
+  },
+  "files": [
+    "bin"
+  ],
+  "dependencies": {
+    "@web-axag/lint": "workspace:*"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+}

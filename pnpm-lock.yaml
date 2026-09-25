@@ -12,6 +12,18 @@ importers:
         specifier: ^7.1.0
         version: 7.3.6(@types/node@25.9.6)(jiti@2.7.0)(yaml@2.9.1)
 
+  packages/alias-axag:
+    dependencies:
+      '@web-axag/cli':
+        specifier: workspace:*
+        version: link:../cli
+
+  packages/alias-axag-lint:
+    dependencies:
+      '@web-axag/lint':
+        specifier: workspace:*
+        version: link:../lint
+
   packages/angular:
     dependencies:
       '@web-axag/core':
